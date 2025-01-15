@@ -6,13 +6,15 @@ type SpriteProps = {
   sprite: () => JSX.Element;
   size?: { width: number; height: number };
   className?: string;
+  scale?: number;
 };
 
 export const Sprite: React.FC<SpriteProps> = ({ 
   position, 
   sprite,
   size = { width: 32, height: 32 }, 
-  className = '' 
+  className = '',
+  scale = 2 // Facteur de zoom par défaut
 }) => {
   return (
     <div 
@@ -20,11 +22,14 @@ export const Sprite: React.FC<SpriteProps> = ({
       style={{ 
         left: `${position.x}%`, 
         top: `${position.y}%`,
-        width: `${size.width}px`,
-        height: `${size.height}px`,
+        width: `${size.width * scale}px`,
+        height: `${size.height * scale}px`,
+        transform: `translate(-${50/scale}%, -${50/scale}%)`,
       }}
     >
-      {sprite()}
+      <div style={{ transform: `scale(${scale})`, transformOrigin: 'top left' }}>
+        {sprite()}
+      </div>
     </div>
   );
 };

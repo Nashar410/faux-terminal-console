@@ -10,6 +10,8 @@ type GameScreenProps = {
 };
 
 export const GameScreen: React.FC<GameScreenProps> = ({ gameState, isNearPolice, isExploding }) => {
+  const SPRITE_SCALE = 2; // Facteur de zoom global
+
   return (
     <div className={`mt-8 border-2 border-terminal-text p-4 relative bg-black/50 h-[500px] w-full
                     ${isExploding ? 'screen-flash' : ''}`}>
@@ -18,12 +20,14 @@ export const GameScreen: React.FC<GameScreenProps> = ({ gameState, isNearPolice,
         position={{ x: gameState.playerX, y: gameState.playerY }}
         sprite={playerFrames[gameState.playerDirection][gameState.currentFrame]}
         className={isNearPolice ? 'danger-flash' : ''}
+        scale={SPRITE_SCALE}
       />
       
       {/* Police */}
       <Sprite 
         position={{ x: gameState.police.x, y: gameState.police.y }}
         sprite={policeFrames[gameState.police.frame]}
+        scale={SPRITE_SCALE}
       />
       
       {/* Building */}
@@ -31,6 +35,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({ gameState, isNearPolice,
         position={{ x: gameState.building.x, y: gameState.building.y }}
         sprite={sprites.building}
         size={{ width: 32, height: 64 }}
+        scale={SPRITE_SCALE}
         className={isExploding ? 'explosion' : ''}
       />
       
@@ -40,6 +45,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({ gameState, isNearPolice,
           position={{ x: gameState.firecracker.x, y: gameState.firecracker.y }}
           sprite={sprites.firecracker}
           size={{ width: 16, height: 16 }}
+          scale={SPRITE_SCALE}
         />
       )}
       
