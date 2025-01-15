@@ -15,6 +15,9 @@ export default defineConfig(({ mode }) => ({
         manualChunks: undefined,
       },
     },
+    assetsDir: 'assets',
+    sourcemap: false,
+    minify: 'terser',
   },
   plugins: [
     react(),
