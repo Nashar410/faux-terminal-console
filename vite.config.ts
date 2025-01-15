@@ -17,7 +17,7 @@ export default defineConfig(({ mode }) => ({
     },
     assetsDir: 'assets',
     sourcemap: false,
-    minify: 'terser',
+    minify: mode === 'production' ? 'terser' : false,
   },
   plugins: [
     react(),
