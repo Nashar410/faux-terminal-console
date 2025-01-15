@@ -32,3 +32,31 @@
 .animate-pulse {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
+
+@keyframes danger-flash {
+  0%, 100% { color: theme('colors.terminal.text'); }
+  50% { color: #ff0000; }
+}
+
+.danger-flash {
+  animation: danger-flash 0.5s ease-in-out infinite;
+}
+
+@keyframes screen-flash {
+  0%, 100% { background-color: theme('colors.terminal.bg'); }
+  50% { background-color: rgba(255, 0, 0, 0.2); }
+}
+
+.screen-flash {
+  animation: screen-flash 0.3s ease-in-out;
+}
+
+@keyframes explosion {
+  0% { transform: scale(1); filter: brightness(1); }
+  50% { transform: scale(1.1); filter: brightness(2); }
+  100% { transform: scale(1); filter: brightness(1); }
+}
+
+.explosion {
+  animation: explosion 0.5s ease-out;
+}

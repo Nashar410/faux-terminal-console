@@ -1,12 +1,16 @@
 import { useState, KeyboardEvent, useEffect } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { sprites, playerFrames, policeFrames } from '../assets/gameSprites';
+import { playSound } from '../assets/gameSounds';
 
 const Index = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [password, setPassword] = useState("");
   const [showFinalInput, setShowFinalInput] = useState(false);
   const [showGame, setShowGame] = useState(false);
+  const [isNearPolice, setIsNearPolice] = useState(false);
+  const [isTimeRunningOut, setIsTimeRunningOut] = useState(false);
+  const [isExploding, setIsExploding] = useState(false);
   const [gameState, setGameState] = useState({
     playerX: 10,
     playerY: 10,
@@ -37,6 +41,9 @@ const Index = () => {
 
   useEffect(() => {
     if (showGame && !gameState.gameOver) {
+      // Jouer le son de démarrage
+      playSound('start');
+
       // Player animation
       const playerAnimation = setInterval(() => {
         setGameState(prev => ({
@@ -69,12 +76,17 @@ const Index = () => {
         setGameState(prev => {
           if (prev.timeLeft <= 0) {
             clearInterval(timer);
+            playSound('siren');
             return {
               ...prev,
               gameOver: true,
               message: "Vous vous êtes fait arrêter !"
             };
           }
+          
+          // Activer l'alerte de temps si moins de 10 secondes
+          setIsTimeRunningOut(prev.timeLeft <= 10);
+          
           return { ...prev, timeLeft: prev.timeLeft - 1 };
         });
       }, 1000);
@@ -115,7 +127,12 @@ const Index = () => {
           const distance = (x1: number, y1: number, x2: number, y2: number) => 
             Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 
-          if (distance(newX, newY, prev.police.x, prev.police.y) < 10) {
+          // Vérifier la proximité avec le policier
+          const distanceToPolice = distance(newX, newY, prev.police.x, prev.police.y);
+          setIsNearPolice(distanceToPolice < 20);
+
+          if (distanceToPolice < 10) {
+            playSound('siren');
             return {
               ...prev,
               gameOver: true,
@@ -136,6 +153,9 @@ const Index = () => {
 
           if (prev.firecracker.collected && 
               distance(newX, newY, prev.building.x, prev.building.y) < 10) {
+            setIsExploding(true);
+            playSound('explosion');
+            setTimeout(() => setIsExploding(false), 500);
             return {
               ...prev,
               gameOver: true,
@@ -163,6 +183,7 @@ const Index = () => {
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       if (!showFinalInput && passwords[currentStep as keyof typeof passwords].value === password) {
+        playSound('start');
         toast({
           description: `Mot de passe ${currentStep} valide ! Indice : ${passwords[currentStep as keyof typeof passwords].hint}`,
           className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
@@ -176,6 +197,7 @@ const Index = () => {
         setPassword("");
       } else if (showFinalInput) {
         if (password === getFinalPassword()) {
+          playSound('start');
           toast({
             description: "Mot de passe final validé ! Préparez-vous au mini jeu...",
             className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
@@ -237,14 +259,15 @@ const Index = () => {
             </div>
           )
         ) : (
-          <div className="mt-8 border-2 border-terminal-text p-4 relative bg-black/50" style={{ height: '500px', width: '100%' }}>
-            <div className="absolute top-2 right-2 text-terminal-text">
+          <div className={`mt-8 border-2 border-terminal-text p-4 relative bg-black/50 ${isExploding ? 'screen-flash' : ''}`} 
+               style={{ height: '500px', width: '100%' }}>
+            <div className={`absolute top-2 right-2 text-terminal-text ${isTimeRunningOut ? 'danger-flash' : ''}`}>
               Temps restant: {gameState.timeLeft}s
             </div>
             
             {/* Player */}
             <div 
-              className="absolute"
+              className={`absolute ${isNearPolice ? 'danger-flash' : ''}`}
               style={{ 
                 left: `${gameState.playerX}%`, 
                 top: `${gameState.playerY}%`,
@@ -272,7 +295,7 @@ const Index = () => {
             
             {/* Building */}
             <div 
-              className="absolute"
+              className={isExploding ? 'absolute explosion' : 'absolute'}
               style={{ 
                 left: `${gameState.building.x}%`, 
                 top: `${gameState.building.y}%`,
