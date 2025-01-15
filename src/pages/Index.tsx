@@ -64,6 +64,16 @@ const Index = () => {
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
+      // Cheat code
+      if (password === 'aaaaa') {
+        toast({
+          description: "Mode triche activé ! Accès direct au mini-jeu...",
+          className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
+        });
+        setShowGame(true);
+        return;
+      }
+
       if (!showFinalInput && passwords[currentStep as keyof typeof passwords].value === password) {
         toast({
           description: `Mot de passe ${currentStep} valide ! Indice : ${passwords[currentStep as keyof typeof passwords].hint}`,

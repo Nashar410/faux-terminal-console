@@ -42,7 +42,27 @@ export const useGameState = () => {
         });
       }, 1000);
 
-      return () => clearInterval(timer);
+      // Animation du policier
+      const policeAnimation = setInterval(() => {
+        setGameState(prev => ({
+          ...prev,
+          police: { ...prev.police, frame: prev.police.frame === 0 ? 1 : 0 }
+        }));
+      }, 500);
+
+      // Animation du joueur
+      const playerAnimation = setInterval(() => {
+        setGameState(prev => ({
+          ...prev,
+          currentFrame: (prev.currentFrame + 1) % 2
+        }));
+      }, 200);
+
+      return () => {
+        clearInterval(timer);
+        clearInterval(policeAnimation);
+        clearInterval(playerAnimation);
+      };
     }
   }, [gameState.gameOver]);
 
