@@ -11,10 +11,10 @@ type SpriteProps = {
 
 export const Sprite: React.FC<SpriteProps> = ({ 
   position, 
-  sprite,
+  sprite: SpriteComponent,
   size = { width: 32, height: 32 }, 
   className = '',
-  scale = 2 // Facteur de zoom par défaut
+  scale = 2
 }) => {
   return (
     <div 
@@ -28,7 +28,7 @@ export const Sprite: React.FC<SpriteProps> = ({
       }}
     >
       <div style={{ transform: `scale(${scale})`, transformOrigin: 'top left' }}>
-        {sprite()}
+        <SpriteComponent />
       </div>
     </div>
   );
