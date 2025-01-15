@@ -11,11 +11,16 @@ type SpriteProps = {
 
 export const Sprite: React.FC<SpriteProps> = ({ 
   position, 
-  sprite,
+  sprite: SpriteComponent,
   size = { width: 32, height: 32 }, 
   className = '',
   scale = 2
 }) => {
+  if (typeof SpriteComponent !== 'function') {
+    console.error('Sprite component received invalid sprite:', SpriteComponent);
+    return null;
+  }
+
   return (
     <div 
       className={`absolute ${className}`}
@@ -28,7 +33,7 @@ export const Sprite: React.FC<SpriteProps> = ({
       }}
     >
       <div style={{ transform: `scale(${scale})`, transformOrigin: 'top left' }}>
-        {sprite()}
+        <SpriteComponent />
       </div>
     </div>
   );

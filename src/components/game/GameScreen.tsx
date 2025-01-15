@@ -12,8 +12,14 @@ type GameScreenProps = {
 export const GameScreen: React.FC<GameScreenProps> = ({ gameState, isNearPolice, isExploding }) => {
   const SPRITE_SCALE = 2;
 
+  // Pre-compute sprite functions to ensure they're valid
   const currentPlayerSprite = playerFrames[gameState.playerDirection][gameState.currentFrame];
   const currentPoliceSprite = policeFrames[gameState.police.frame];
+
+  if (!currentPlayerSprite || !currentPoliceSprite) {
+    console.error('Invalid sprite configuration');
+    return null;
+  }
 
   return (
     <div className={`mt-8 border-2 border-terminal-text p-4 relative bg-black/50 h-[500px] w-full
