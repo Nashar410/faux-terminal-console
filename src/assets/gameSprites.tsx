@@ -16,7 +16,6 @@ interface Sprites {
   building: SpriteFunction;
 }
 
-// SVG Components avec animations
 export const sprites: Sprites = {
   player: {
     idle: () => {

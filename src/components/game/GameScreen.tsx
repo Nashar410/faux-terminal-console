@@ -12,13 +12,16 @@ type GameScreenProps = {
 export const GameScreen: React.FC<GameScreenProps> = ({ gameState, isNearPolice, isExploding }) => {
   const SPRITE_SCALE = 2;
 
+  const currentPlayerSprite = playerFrames[gameState.playerDirection][gameState.currentFrame];
+  const currentPoliceSprite = policeFrames[gameState.police.frame];
+
   return (
     <div className={`mt-8 border-2 border-terminal-text p-4 relative bg-black/50 h-[500px] w-full
                     ${isExploding ? 'screen-flash' : ''}`}>
       {/* Player */}
       <Sprite 
         position={{ x: gameState.playerX, y: gameState.playerY }}
-        sprite={playerFrames[gameState.playerDirection][gameState.currentFrame]}
+        sprite={currentPlayerSprite}
         className={isNearPolice ? 'danger-flash' : ''}
         scale={SPRITE_SCALE}
       />
@@ -26,7 +29,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({ gameState, isNearPolice,
       {/* Police */}
       <Sprite 
         position={{ x: gameState.police.x, y: gameState.police.y }}
-        sprite={policeFrames[gameState.police.frame]}
+        sprite={currentPoliceSprite}
         scale={SPRITE_SCALE}
       />
       

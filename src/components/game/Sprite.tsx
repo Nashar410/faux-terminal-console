@@ -11,13 +11,11 @@ type SpriteProps = {
 
 export const Sprite: React.FC<SpriteProps> = ({ 
   position, 
-  sprite: SpriteComponent,
+  sprite,
   size = { width: 32, height: 32 }, 
   className = '',
   scale = 2
 }) => {
-  const SpriteToRender = SpriteComponent;
-  
   return (
     <div 
       className={`absolute ${className}`}
@@ -30,7 +28,7 @@ export const Sprite: React.FC<SpriteProps> = ({
       }}
     >
       <div style={{ transform: `scale(${scale})`, transformOrigin: 'top left' }}>
-        <SpriteToRender />
+        {sprite()}
       </div>
     </div>
   );
