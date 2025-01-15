@@ -21,21 +21,6 @@ export const useGameState = () => {
   const [isTimeRunningOut, setIsTimeRunningOut] = useState(false);
   const [isExploding, setIsExploding] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
-  const [hasPlayerMoved, setHasPlayerMoved] = useState(false);
-
-  // Effet pour démarrer le jeu après 5 secondes d'inactivité
-  useEffect(() => {
-    if (!hasStarted) {
-      const inactivityTimer = setTimeout(() => {
-        if (!hasPlayerMoved) {
-          playSound('start');
-          setHasStarted(true);
-        }
-      }, 5000);
-
-      return () => clearTimeout(inactivityTimer);
-    }
-  }, [hasStarted, hasPlayerMoved]);
 
   // Timer du jeu - ne démarre que lorsque hasStarted est true
   useEffect(() => {
@@ -82,9 +67,8 @@ export const useGameState = () => {
   }, [hasStarted, gameState.gameOver]);
 
   const movePlayer = (newX: number, newY: number, direction: 'left' | 'right' | 'idle') => {
-    // Démarrer le jeu au premier mouvement si ce n'est pas déjà fait
-    if (!hasStarted && !hasPlayerMoved) {
-      setHasPlayerMoved(true);
+    // Démarrer le jeu au premier mouvement
+    if (!hasStarted) {
       setHasStarted(true);
       playSound('start');
     }
