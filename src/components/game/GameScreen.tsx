@@ -10,7 +10,7 @@ type GameScreenProps = {
 };
 
 export const GameScreen: React.FC<GameScreenProps> = ({ gameState, isNearPolice, isExploding }) => {
-  const SPRITE_SCALE = 2; // Facteur de zoom global
+  const SPRITE_SCALE = 2;
 
   return (
     <div className={`mt-8 border-2 border-terminal-text p-4 relative bg-black/50 h-[500px] w-full

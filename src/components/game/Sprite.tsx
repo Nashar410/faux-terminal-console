@@ -16,6 +16,8 @@ export const Sprite: React.FC<SpriteProps> = ({
   className = '',
   scale = 2
 }) => {
+  const SpriteToRender = SpriteComponent;
+  
   return (
     <div 
       className={`absolute ${className}`}
@@ -28,7 +30,7 @@ export const Sprite: React.FC<SpriteProps> = ({
       }}
     >
       <div style={{ transform: `scale(${scale})`, transformOrigin: 'top left' }}>
-        <SpriteComponent />
+        <SpriteToRender />
       </div>
     </div>
   );
