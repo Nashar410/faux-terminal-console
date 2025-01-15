@@ -5,6 +5,7 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
+  base: '/terminal-secret/', // Ajoutez le nom de votre dépôt ici
   server: {
     host: "::",
     port: 8080,
