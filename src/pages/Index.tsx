@@ -1,6 +1,6 @@
 import { useState, KeyboardEvent, useEffect } from 'react';
 import { useToast } from "@/hooks/use-toast";
-import { sprites } from '../assets/gameSprites';
+import { sprites, playerFrames, policeFrames } from '../assets/gameSprites';
 
 const Index = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -10,8 +10,10 @@ const Index = () => {
   const [gameState, setGameState] = useState({
     playerX: 10,
     playerY: 10,
+    playerDirection: 'idle' as 'left' | 'right' | 'idle',
+    currentFrame: 0,
     firecracker: { x: 30, y: 30, collected: false },
-    police: { x: 50, y: 10 },
+    police: { x: 50, y: 10, frame: 0 },
     building: { x: 70, y: 10 },
     timeLeft: 30,
     gameOver: false,
@@ -35,6 +37,34 @@ const Index = () => {
 
   useEffect(() => {
     if (showGame && !gameState.gameOver) {
+      // Player animation
+      const playerAnimation = setInterval(() => {
+        setGameState(prev => ({
+          ...prev,
+          currentFrame: (prev.currentFrame + 1) % 2
+        }));
+      }, 200);
+
+      // Police animation
+      const policeAnimation = setInterval(() => {
+        setGameState(prev => ({
+          ...prev,
+          police: {
+            ...prev.police,
+            frame: (prev.police.frame + 1) % policeFrames.length
+          }
+        }));
+      }, 500);
+
+      return () => {
+        clearInterval(playerAnimation);
+        clearInterval(policeAnimation);
+      };
+    }
+  }, [showGame, gameState.gameOver]);
+
+  useEffect(() => {
+    if (showGame && !gameState.gameOver) {
       const timer = setInterval(() => {
         setGameState(prev => {
           if (prev.timeLeft <= 0) {
@@ -55,16 +85,19 @@ const Index = () => {
         setGameState(prev => {
           let newX = prev.playerX;
           let newY = prev.playerY;
+          let newDirection = prev.playerDirection;
           const step = 5;
 
           switch (e.key) {
             case 'ArrowLeft':
             case 'a':
               newX = Math.max(0, prev.playerX - step);
+              newDirection = 'left';
               break;
             case 'ArrowRight':
             case 'd':
               newX = Math.min(90, prev.playerX + step);
+              newDirection = 'right';
               break;
             case 'ArrowUp':
             case 'w':
@@ -74,13 +107,14 @@ const Index = () => {
             case 's':
               newY = Math.min(90, prev.playerY + step);
               break;
+            default:
+              newDirection = 'idle';
           }
 
           // Collision detection
           const distance = (x1: number, y1: number, x2: number, y2: number) => 
             Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 
-          // Police collision
           if (distance(newX, newY, prev.police.x, prev.police.y) < 10) {
             return {
               ...prev,
@@ -89,18 +123,17 @@ const Index = () => {
             };
           }
 
-          // Firecracker collection
           if (!prev.firecracker.collected && 
               distance(newX, newY, prev.firecracker.x, prev.firecracker.y) < 10) {
             return {
               ...prev,
               playerX: newX,
               playerY: newY,
+              playerDirection: newDirection,
               firecracker: { ...prev.firecracker, collected: true }
             };
           }
 
-          // Building collision with firecracker
           if (prev.firecracker.collected && 
               distance(newX, newY, prev.building.x, prev.building.y) < 10) {
             return {
@@ -113,7 +146,8 @@ const Index = () => {
           return {
             ...prev,
             playerX: newX,
-            playerY: newY
+            playerY: newY,
+            playerDirection: newDirection
           };
         });
       };
@@ -216,7 +250,7 @@ const Index = () => {
                 top: `${gameState.playerY}%`,
                 width: '32px',
                 height: '32px',
-                backgroundImage: `url(${sprites.player})`,
+                backgroundImage: `url(${playerFrames[gameState.playerDirection][gameState.currentFrame]})`,
                 backgroundSize: 'contain',
                 backgroundRepeat: 'no-repeat'
               }}
@@ -230,7 +264,7 @@ const Index = () => {
                 top: `${gameState.police.y}%`,
                 width: '32px',
                 height: '32px',
-                backgroundImage: `url(${sprites.police})`,
+                backgroundImage: `url(${policeFrames[gameState.police.frame]})`,
                 backgroundSize: 'contain',
                 backgroundRepeat: 'no-repeat'
               }}
