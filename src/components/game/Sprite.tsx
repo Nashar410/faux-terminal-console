@@ -8,7 +8,12 @@ type SpriteProps = {
   className?: string;
 };
 
-export const Sprite: React.FC<SpriteProps> = ({ position, sprite, size = { width: 32, height: 32 }, className = '' }) => {
+export const Sprite: React.FC<SpriteProps> = ({ 
+  position, 
+  sprite, 
+  size = { width: 32, height: 32 }, 
+  className = '' 
+}) => {
   return (
     <div 
       className={`absolute ${className}`}
@@ -19,7 +24,8 @@ export const Sprite: React.FC<SpriteProps> = ({ position, sprite, size = { width
         height: `${size.height}px`,
         backgroundImage: `url(${sprite})`,
         backgroundSize: 'contain',
-        backgroundRepeat: 'no-repeat'
+        backgroundRepeat: 'no-repeat',
+        imageRendering: 'pixelated'
       }}
     />
   );
