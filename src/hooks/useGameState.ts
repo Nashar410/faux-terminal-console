@@ -42,21 +42,21 @@ export const useGameState = () => {
         });
       }, 1000);
 
-      // Animation du policier
+      // Animation du policier (ralentie)
       const policeAnimation = setInterval(() => {
         setGameState(prev => ({
           ...prev,
           police: { ...prev.police, frame: prev.police.frame === 0 ? 1 : 0 }
         }));
-      }, 500);
+      }, 1000); // Ralenti à 1 seconde
 
-      // Animation du joueur
+      // Animation du joueur (ralentie)
       const playerAnimation = setInterval(() => {
         setGameState(prev => ({
           ...prev,
           currentFrame: (prev.currentFrame + 1) % 2
         }));
-      }, 200);
+      }, 500); // Ralenti à 0.5 seconde
 
       return () => {
         clearInterval(timer);

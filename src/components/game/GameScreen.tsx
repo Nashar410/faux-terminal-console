@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Sprite } from './Sprite';
 import { sprites, playerFrames, policeFrames } from '@/assets/gameSprites';
 import { GameState } from '@/types/game';
@@ -12,14 +12,16 @@ type GameScreenProps = {
 export const GameScreen: React.FC<GameScreenProps> = ({ gameState, isNearPolice, isExploding }) => {
   const SPRITE_SCALE = 2;
 
-  // Pre-compute sprite functions to ensure they're valid
-  const currentPlayerSprite = playerFrames[gameState.playerDirection][gameState.currentFrame];
-  const currentPoliceSprite = policeFrames[gameState.police.frame];
+  // Utiliser useMemo pour éviter des re-rendus inutiles
+  const currentPlayerSprite = useMemo(() => {
+    const direction = gameState.playerDirection;
+    const frame = gameState.currentFrame;
+    return playerFrames[direction]?.[frame] || playerFrames.idle[0];
+  }, [gameState.playerDirection, gameState.currentFrame]);
 
-  if (!currentPlayerSprite || !currentPoliceSprite) {
-    console.error('Invalid sprite configuration');
-    return null;
-  }
+  const currentPoliceSprite = useMemo(() => {
+    return policeFrames[gameState.police.frame] || policeFrames[0];
+  }, [gameState.police.frame]);
 
   return (
     <div className={`mt-8 border-2 border-terminal-text p-4 relative bg-black/50 h-[500px] w-full

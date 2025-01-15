@@ -16,8 +16,8 @@ export const Sprite: React.FC<SpriteProps> = ({
   className = '',
   scale = 2
 }) => {
+  // Vérification silencieuse du type de sprite
   if (typeof SpriteComponent !== 'function') {
-    console.error('Sprite component received invalid sprite:', SpriteComponent);
     return null;
   }
 
