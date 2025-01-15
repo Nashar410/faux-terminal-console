@@ -14,6 +14,12 @@ const Index = () => {
     4: { value: 'secret4', hint: 'AIGLE' },
   };
 
+  const getFinalPassword = () => {
+    return Object.values(passwords)
+      .map(p => p.hint)
+      .join('');
+  };
+
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       if (!showFinalInput && passwords[currentStep as keyof typeof passwords].value === password) {
@@ -31,12 +37,19 @@ const Index = () => {
         setPassword("");
       } else if (showFinalInput) {
         // Handle final password
-        toast({
-          variant: "destructive",
-          description: "Mot de passe final incorrect",
-          className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
-        });
-        setPassword("");
+        if (password === getFinalPassword()) {
+          toast({
+            description: "Mot de passe final validé ! Préparez-vous au mini jeu...",
+            className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
+          });
+        } else {
+          toast({
+            variant: "destructive",
+            description: "Mot de passe final incorrect",
+            className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
+          });
+          setPassword("");
+        }
       } else {
         // Incorrect password
         console.log("Mot de passe incorrect");
