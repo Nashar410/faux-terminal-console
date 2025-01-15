@@ -37,6 +37,7 @@ export const useGameState = () => {
     }
   }, [hasStarted, hasPlayerMoved]);
 
+  // Timer du jeu - ne démarre que lorsque hasStarted est true
   useEffect(() => {
     if (hasStarted && !gameState.gameOver) {
       const timer = setInterval(() => {
