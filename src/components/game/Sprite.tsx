@@ -3,14 +3,14 @@ import { Position } from '@/types/game';
 
 type SpriteProps = {
   position: Position;
-  sprite: string;
+  sprite: () => JSX.Element;
   size?: { width: number; height: number };
   className?: string;
 };
 
 export const Sprite: React.FC<SpriteProps> = ({ 
   position, 
-  sprite, 
+  sprite,
   size = { width: 32, height: 32 }, 
   className = '' 
 }) => {
@@ -22,11 +22,9 @@ export const Sprite: React.FC<SpriteProps> = ({
         top: `${position.y}%`,
         width: `${size.width}px`,
         height: `${size.height}px`,
-        backgroundImage: `url(${sprite})`,
-        backgroundSize: 'contain',
-        backgroundRepeat: 'no-repeat',
-        imageRendering: 'pixelated'
       }}
-    />
+    >
+      {sprite()}
+    </div>
   );
 };

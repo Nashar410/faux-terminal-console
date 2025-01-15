@@ -1,19 +1,64 @@
-// Pixel art sprites encoded as base64 data URIs
+import React from 'react';
+
+// SVG Components
 export const sprites = {
   player: {
-    idle: `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAA7AAAAOwBeShxvQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAGASURBVFiF7ZY9TsNAEIXfzK4dO04cAgUKJAoKJE7AEbgBZ+EYHIkbUFJwAwoKBBJIKU2cxPauZ4aNghKUSBaWnIT9pNXOz+6bNzs7awDYRkTknHPOWmvBzExEFBFxzjkiIiYiZmYWEWEiYmNMICJBURShtVYDEakAKBGpiEhFRCpmrgJABUAZQFlESiJSIqKSc67knCsZY0rW2pK1tmStLRpjCsaYgjEmb63Na2vzSqm8UipvjMkppXJKKauUskQUEFHAzAEzB0QUiEhARD4z+8zsM7PHzAqAEhEFQEFEFDN7AOCcUyLiRMQ55wQAi4gVEcvMFhFLRBYRQ0QGEQ0iGmbWzKyZWRORQkSBiAIR8UTEI6KVWc/zVgA8Zl4B8Jk5JyI5Zs4xsw/AA+ABUMysmFkxswKgENEA0IhoABhm1sysRUQjokFEncMBcA5gAcAAmAPQzKwBKGbWIqIRUSGiISKDiAYRDTNrETHMbBDRMLMWEcPMBhENM2sRMYhoZvgPwDcAPwIqPgAYH6aSAAAAAElFTkSuQmCC`,
-    walkLeft: `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAA7AAAAOwBeShxvQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAGASURBVFiF7ZY9TsNAEIXfzK4dO04cAgUKJAoKJE7AEbgBZ+EYHIkbUFJwAwoKBBJIKU2cxPauZ4aNghKUSBaWnIT9pNXOz+6bNzs7awDYRkTknHPOWmvBzExEFBFxzjkiIiYiZmYWEWEiYmNMICJBURShtVYDEakAKBGpiEhFRCpmrgJABUAZQFlESiJSIqKSc67knCsZY0rW2pK1tmStLRpjCsaYgjEmb63Na2vzSqm8UipvjMkppXJKKauUskQUEFHAzAEzB0QUiEhARD4z+8zsM7PHzAqAEhEFQEFEFDN7AOCcUyLiRMQ55wQAi4gVEcvMFhFLRBYRQ0QGEQ0iGmbWzKyZWRORQkSBiAIR8UTEI6KVWc/zVgA8Zl4B8Jk5JyI5Zs4xsw/AA+ABUMysmFkxswKgENEA0IhoABhm1sysRUQjokFEncMBcA5gAcAAmAPQzKwBKGbWIqIRUSGiISKDiAYRDTNrETHMbBDRMLMWEcPMBhENM2sRMYhoZvgPwDcAPwIqPgAYH6aSAAAAAElFTkSuQmCC`,
-    walkRight: `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAA7AAAAOwBeShxvQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAGASURBVFiF7ZY9TsNAEIXfzK4dO04cAgUKJAoKJE7AEbgBZ+EYHIkbUFJwAwoKBBJIKU2cxPauZ4aNghKUSBaWnIT9pNXOz+6bNzs7awDYRkTknHPOWmvBzExEFBFxzjkiIiYiZmYWEWEiYmNMICJBURShtVYDEakAKBGpiEhFRCpmrgJABUAZQFlESiJSIqKSc67knCsZY0rW2pK1tmStLRpjCsaYgjEmb63Na2vzSqm8UipvjMkppXJKKauUskQUEFHAzAEzB0QUiEhARD4z+8zsM7PHzAqAEhEFQEFEFDN7AOCcUyLiRMQ55wQAi4gVEcvMFhFLRBYRQ0QGEQ0iGmbWzKyZWRORQkSBiAIR8UTEI6KVWc/zVgA8Zl4B8Jk5JyI5Zs4xsw/AA+ABUMysmFkxswKgENEA0IhoABhm1sysRUQjokFEncMBcA5gAcAAmAPQzKwBKGbWIqIRUSGiISKDiAYRDTNrETHMbBDRMLMWEcPMBhENM2sRMYhoZvgPwDcAPwIqPgAYH6aSAAAAAElFTkSuQmCC`
+    idle: () => (
+      <svg width="32" height="32" viewBox="0 0 32 32">
+        <rect x="8" y="8" width="16" height="16" fill="#8E9196" rx="2" />
+        <rect x="12" y="12" width="8" height="4" fill="#403E43" />
+      </svg>
+    ),
+    walkLeft: () => (
+      <svg width="32" height="32" viewBox="0 0 32 32">
+        <rect x="8" y="8" width="16" height="16" fill="#8E9196" rx="2" />
+        <rect x="12" y="12" width="8" height="4" fill="#403E43" />
+        <rect x="6" y="16" width="4" height="4" fill="#8E9196" />
+      </svg>
+    ),
+    walkRight: () => (
+      <svg width="32" height="32" viewBox="0 0 32 32">
+        <rect x="8" y="8" width="16" height="16" fill="#8E9196" rx="2" />
+        <rect x="12" y="12" width="8" height="4" fill="#403E43" />
+        <rect x="22" y="16" width="4" height="4" fill="#8E9196" />
+      </svg>
+    )
   },
   
   police: {
-    idle1: `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAA7AAAAOwBeShxvQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAHPSURBVFiF7ZY9bhNBFMf/b2Z21rveNSFSUBwpDR0SouUGHIkrcQeOwDE4AjegpaGhoaBAQrIUKXa8H7Mz89JgKYoUEmNkI1H+0pNG8+Z97Py0bwbYxTYiIs45F1trwcxMRBQRcc45IiJmImYiYhFhImJjTCAiQVEUobVWAxGpACgRqYhIRUSqzFwFgAqAMoAyEZWIqEREJedcyTlXMsaUrLUla23JWls0xhSMMQVjTN5am9fW5pVSeaVU3hiTU0pZpVRARIFzLmDmgJkDIgqIyGdmn5l9ZvaYWQFQIqIAKBBRkZk9AHDOKRFxIuKccwLAImJFxDKzRUQiYojIIKJBRMPMmpk1M2tEFIgoEFEgIp6IeES0Nus4zgrAY+YVgM/MOSLKMXOOmX0AHgAPgGJmxcyKmRUAhYgGgEZEA8Aws2ZmLSIaEQ0i6hwOgHMAcwAGwAyAZmYNQDGzFhGNiAoRDSIaRDTMrEXEMLNBRMPMWkQMMxtENMysp/gPwDcAPwIqPgAYH6aSAAAAAElFTkSuQmCC`,
-    idle2: `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAA7AAAAOwBeShxvQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAHPSURBVFiF7ZY9bhNBFMf/b2Z21rveNSFSUBwpDR0SouUGHIkrcQeOwDE4AjegpaGhoaBAQrIUKXa8H7Mz89JgKYoUEmNkI1H+0pNG8+Z97Py0bwbYxTYiIs45F1trwcxMRBQRcc45IiJmImYiYhFhImJjTCAiQVEUobVWAxGpACgRqYhIRUSqzFwFgAqAMoAyEZWIqEREJedcyTlXMsaUrLUla23JWls0xhSMMQVjTN5am9fW5pVSeaVU3hiTU0pZpVRARIFzLmDmgJkDIgqIyGdmn5l9ZvaYWQFQIqIAKBBRkZk9AHDOKRFxIuKccwLAImJFxDKzRUQiYojIIKJBRMPMmpk1M2tEFIgoEFEgIp6IeES0Nus4zgrAY+YVgM/MOSLKMXOOmX0AHgAPgGJmxcyKmRUAhYgGgEZEA8Aws2ZmLSIaEQ0i6hwOgHMAcwAGwAyAZmYNQDGzFhGNiAoRDSIaRDTMrEXEMLNBRMPMWkQMMxtENMysp/gPwDcAPwIqPgAYH6aSAAAAAElFTkSuQmCC`
+    idle1: () => (
+      <svg width="32" height="32" viewBox="0 0 32 32">
+        <rect x="8" y="8" width="16" height="16" fill="#1A1F2C" rx="2" />
+        <rect x="12" y="12" width="8" height="4" fill="#ea384c" />
+      </svg>
+    ),
+    idle2: () => (
+      <svg width="32" height="32" viewBox="0 0 32 32">
+        <rect x="8" y="8" width="16" height="16" fill="#1A1F2C" rx="2" />
+        <rect x="12" y="12" width="8" height="4" fill="#ea384c" />
+        <rect x="20" y="16" width="4" height="4" fill="#ea384c" />
+      </svg>
+    )
   },
   
-  firecracker: `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAAbwAAAG8B8aLcQwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAB6SURBVDiN1ZOxDYAwDAQvygBUDMEo2YshmCYjUFAxAB0SBUKysZ0CpHzld7J8/50Ai4gws0BEwjmnzrkws1BKiZzzISJ7Simdc0Zr7Ygx7r33HWPcW2v7nHNfStlqrVtrbe29b2aG9x7MLMwMZgYzg5mBmWFm+Evf4QYWwDYs5h8bagAAAABJRU5ErkJggg==`,
+  firecracker: () => (
+    <svg width="16" height="16" viewBox="0 0 16 16">
+      <rect x="4" y="4" width="8" height="8" fill="#ea384c" rx="1" />
+      <rect x="6" y="2" width="4" height="2" fill="#8E9196" />
+    </svg>
+  ),
   
-  building: `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAwCAYAAABwrHhvAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAA7AAAAOwBeShxvQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAGiSURBVFiF7ZexTsMwEIa/s5M0aQMtQmIAiYEBIcEj8Ai8F8/CI/AIDA0DA0JiQEKFtE3i+jywQECVNsR1QeJfbJ/vv7OvZzsQCAQCgUAgEAhsHPE+KKXkZDJ5nM/nD1rrB2NMZK0FQEQQEYwxGGPQWqO1RilFGIZorVFKobVGRBARnHM451BKYYzBWouIICKICM45RARrLc45jDEYYzDGoJRCKYVSCq01WmuUUmit0VoTRRFRFBFFEWEYEoYhcRwTxzFJkpAkCWmakmUZeZ6TZRlFUVAUBWVZUlUVdV1T1zVN09A0DW3b0rYtXdfRdR3WWpxzOOcwxmCMwRjzZ8u+C+ec+xjzPM+Zpil5npPnOUVRUBQFZVlSVRV1XdM0DW3b0nUd1lqstVhrsdZireV0Ov0K4P0Kzs5vxPXlhUyn0+FwOLwbj8f3o9HobjgcTvr9/l4URbt7vd5u0k12er0ecRwTxzFpmhLHMUmSkCQJaZqSpilZlpFlGUVRUBQFZVlSVRVVVVFVFXVdU9c1TdPQNA1t29K27Z8W/gF4A34CKj4AGKdKJQoAAAAASUVORK5CYII=`
+  building: () => (
+    <svg width="32" height="64" viewBox="0 0 32 64">
+      <rect x="2" y="4" width="28" height="56" fill="#403E43" rx="2" />
+      <rect x="6" y="8" width="6" height="6" fill="#1A1F2C" />
+      <rect x="20" y="8" width="6" height="6" fill="#1A1F2C" />
+      <rect x="6" y="20" width="6" height="6" fill="#1A1F2C" />
+      <rect x="20" y="20" width="6" height="6" fill="#1A1F2C" />
+      <rect x="6" y="32" width="6" height="6" fill="#1A1F2C" />
+      <rect x="20" y="32" width="6" height="6" fill="#1A1F2C" />
+    </svg>
+  )
 };
 
 // Animation frames for player movement
