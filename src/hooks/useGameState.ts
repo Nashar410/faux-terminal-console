@@ -16,10 +16,7 @@ const INITIAL_STATE: GameState = {
 };
 
 export const useGameState = () => {
-  const [gameState, setGameState] = useState<GameState>({
-    ...INITIAL_STATE,
-    timeLeft: 30
-  });
+  const [gameState, setGameState] = useState<GameState>(INITIAL_STATE);
   const [isNearPolice, setIsNearPolice] = useState(false);
   const [isTimeRunningOut, setIsTimeRunningOut] = useState(false);
   const [isExploding, setIsExploding] = useState(false);
