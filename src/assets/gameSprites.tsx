@@ -30,8 +30,14 @@ export const sprites: Sprites = {
 
       return (
         <svg width="32" height="32" viewBox="0 0 32 32">
-          <rect x="8" y="8" width="16" height="16" fill="#8E9196" rx="2" />
-          <rect x="12" y="12" width="8" height="4" fill={isBlinking ? "#8E9196" : "#403E43"} />
+          {/* Corps */}
+          <circle cx="16" cy="12" r="6" fill="#FFD7BA" /> {/* Tête */}
+          <rect x="12" y="18" width="8" height="12" fill="#4B5563" /> {/* Corps */}
+          <rect x="10" y="18" width="2" height="8" fill="#4B5563" /> {/* Bras gauche */}
+          <rect x="20" y="18" width="2" height="8" fill="#4B5563" /> {/* Bras droit */}
+          {/* Yeux */}
+          <circle cx="14" cy="11" r="1" fill={isBlinking ? "#FFD7BA" : "#000"} />
+          <circle cx="18" cy="11" r="1" fill={isBlinking ? "#FFD7BA" : "#000"} />
         </svg>
       );
     },
@@ -47,9 +53,12 @@ export const sprites: Sprites = {
 
       return (
         <svg width="32" height="32" viewBox="0 0 32 32">
-          <rect x="8" y="8" width="16" height="16" fill="#8E9196" rx="2" />
-          <rect x="12" y="12" width="8" height="4" fill={isBlinking ? "#8E9196" : "#403E43"} />
-          <rect x="6" y="16" width="4" height="4" fill="#8E9196" />
+          <circle cx="16" cy="12" r="6" fill="#FFD7BA" />
+          <rect x="12" y="18" width="8" height="12" fill="#4B5563" />
+          <rect x="8" y="18" width="4" height="8" fill="#4B5563" /> {/* Bras gauche étendu */}
+          <rect x="20" y="18" width="2" height="8" fill="#4B5563" />
+          <circle cx="14" cy="11" r="1" fill={isBlinking ? "#FFD7BA" : "#000"} />
+          <circle cx="18" cy="11" r="1" fill={isBlinking ? "#FFD7BA" : "#000"} />
         </svg>
       );
     },
@@ -65,9 +74,12 @@ export const sprites: Sprites = {
 
       return (
         <svg width="32" height="32" viewBox="0 0 32 32">
-          <rect x="8" y="8" width="16" height="16" fill="#8E9196" rx="2" />
-          <rect x="12" y="12" width="8" height="4" fill={isBlinking ? "#8E9196" : "#403E43"} />
-          <rect x="22" y="16" width="4" height="4" fill="#8E9196" />
+          <circle cx="16" cy="12" r="6" fill="#FFD7BA" />
+          <rect x="12" y="18" width="8" height="12" fill="#4B5563" />
+          <rect x="10" y="18" width="2" height="8" fill="#4B5563" />
+          <rect x="20" y="18" width="4" height="8" fill="#4B5563" /> {/* Bras droit étendu */}
+          <circle cx="14" cy="11" r="1" fill={isBlinking ? "#FFD7BA" : "#000"} />
+          <circle cx="18" cy="11" r="1" fill={isBlinking ? "#FFD7BA" : "#000"} />
         </svg>
       );
     }
@@ -86,8 +98,14 @@ export const sprites: Sprites = {
 
       return (
         <svg width="32" height="32" viewBox="0 0 32 32">
-          <rect x="8" y="8" width="16" height="16" fill="#1A1F2C" rx="2" />
-          <rect x="12" y="12" width="8" height="4" fill={isBlinking ? "#1A1F2C" : "#ea384c"} />
+          <circle cx="16" cy="12" r="6" fill="#FFD7BA" /> {/* Tête */}
+          <rect x="12" y="18" width="8" height="12" fill="#1E3A8A" /> {/* Corps en bleu */}
+          <rect x="10" y="18" width="2" height="8" fill="#1E3A8A" />
+          <rect x="20" y="18" width="2" height="8" fill="#1E3A8A" />
+          <rect x="14" y="6" width="4" height="2" fill="#1E3A8A" /> {/* Casquette */}
+          <circle cx="14" cy="11" r="1" fill={isBlinking ? "#FFD7BA" : "#000"} />
+          <circle cx="18" cy="11" r="1" fill={isBlinking ? "#FFD7BA" : "#000"} />
+          <rect x="12" y="20" width="8" height="2" fill="#FDE047" /> {/* Badge */}
         </svg>
       );
     },
@@ -103,9 +121,14 @@ export const sprites: Sprites = {
 
       return (
         <svg width="32" height="32" viewBox="0 0 32 32">
-          <rect x="8" y="8" width="16" height="16" fill="#1A1F2C" rx="2" />
-          <rect x="12" y="12" width="8" height="4" fill={isBlinking ? "#1A1F2C" : "#ea384c"} />
-          <rect x="20" y="16" width="4" height="4" fill="#ea384c" />
+          <circle cx="16" cy="12" r="6" fill="#FFD7BA" />
+          <rect x="12" y="18" width="8" height="12" fill="#1E3A8A" />
+          <rect x="10" y="18" width="2" height="8" fill="#1E3A8A" />
+          <rect x="20" y="18" width="4" height="8" fill="#1E3A8A" /> {/* Bras droit étendu */}
+          <rect x="14" y="6" width="4" height="2" fill="#1E3A8A" />
+          <circle cx="14" cy="11" r="1" fill={isBlinking ? "#FFD7BA" : "#000"} />
+          <circle cx="18" cy="11" r="1" fill={isBlinking ? "#FFD7BA" : "#000"} />
+          <rect x="12" y="20" width="8" height="2" fill="#FDE047" />
         </svg>
       );
     }
@@ -123,10 +146,15 @@ export const sprites: Sprites = {
 
     return (
       <svg width="16" height="16" viewBox="0 0 16 16">
-        <rect x="4" y="4" width="8" height="8" fill="#ea384c" rx="1" />
-        <rect x="6" y="2" width="4" height="2" fill={isSparking ? "#ea384c" : "#8E9196"} />
+        <rect x="6" y="4" width="4" height="8" fill="#DC2626" /> {/* Corps du pétard */}
+        <rect x="5" y="4" width="6" height="2" fill="#7F1D1D" /> {/* Haut du pétard */}
+        <rect x="7" y="2" width="2" height="2" fill="#BLACK" /> {/* Mèche */}
         {isSparking && (
-          <rect x="7" y="0" width="2" height="2" fill="#ea384c" />
+          <>
+            <circle cx="8" cy="1" r="1" fill="#FDE047" /> {/* Étincelle */}
+            <circle cx="7" cy="2" r="1" fill="#FDE047" />
+            <circle cx="9" cy="2" r="1" fill="#FDE047" />
+          </>
         )}
       </svg>
     );
