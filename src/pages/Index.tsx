@@ -1,5 +1,6 @@
 import { useState, KeyboardEvent, useEffect } from 'react';
 import { useToast } from "@/hooks/use-toast";
+import { sprites } from '../assets/gameSprites';
 
 const Index = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -209,28 +210,60 @@ const Index = () => {
             
             {/* Player */}
             <div 
-              className="absolute w-6 h-6 bg-terminal-text flex items-center justify-center text-black font-bold"
-              style={{ left: `${gameState.playerX}%`, top: `${gameState.playerY}%` }}
-            >P</div>
+              className="absolute"
+              style={{ 
+                left: `${gameState.playerX}%`, 
+                top: `${gameState.playerY}%`,
+                width: '32px',
+                height: '32px',
+                backgroundImage: `url(${sprites.player})`,
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat'
+              }}
+            />
             
             {/* Police */}
             <div 
-              className="absolute w-8 h-8 text-terminal-text"
-              style={{ left: `${gameState.police.x}%`, top: `${gameState.police.y}%` }}
-            >👮</div>
+              className="absolute"
+              style={{ 
+                left: `${gameState.police.x}%`, 
+                top: `${gameState.police.y}%`,
+                width: '32px',
+                height: '32px',
+                backgroundImage: `url(${sprites.police})`,
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat'
+              }}
+            />
             
             {/* Building */}
             <div 
-              className="absolute w-12 h-24 text-terminal-text"
-              style={{ left: `${gameState.building.x}%`, top: `${gameState.building.y}%` }}
-            >🏢</div>
+              className="absolute"
+              style={{ 
+                left: `${gameState.building.x}%`, 
+                top: `${gameState.building.y}%`,
+                width: '32px',
+                height: '64px',
+                backgroundImage: `url(${sprites.building})`,
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat'
+              }}
+            />
             
             {/* Firecracker */}
             {!gameState.firecracker.collected && (
               <div 
-                className="absolute w-6 h-6 text-terminal-text"
-                style={{ left: `${gameState.firecracker.x}%`, top: `${gameState.firecracker.y}%` }}
-              >🧨</div>
+                className="absolute"
+                style={{ 
+                  left: `${gameState.firecracker.x}%`, 
+                  top: `${gameState.firecracker.y}%`,
+                  width: '16px',
+                  height: '16px',
+                  backgroundImage: `url(${sprites.firecracker})`,
+                  backgroundSize: 'contain',
+                  backgroundRepeat: 'no-repeat'
+                }}
+              />
             )}
             
             {gameState.gameOver && (
