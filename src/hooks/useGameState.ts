@@ -16,15 +16,23 @@ const INITIAL_STATE: GameState = {
 };
 
 export const useGameState = () => {
-  const [gameState, setGameState] = useState<GameState>(INITIAL_STATE);
+  const [gameState, setGameState] = useState<GameState>({
+    ...INITIAL_STATE,
+    timeLeft: 30 // On réinitialise explicitement le temps
+  });
   const [isNearPolice, setIsNearPolice] = useState(false);
   const [isTimeRunningOut, setIsTimeRunningOut] = useState(false);
   const [isExploding, setIsExploding] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
 
   useEffect(() => {
-    if (!gameState.gameOver) {
-      playSound('start');
+    // On joue le son de démarrage une seule fois au montage
+    playSound('start');
+    setHasStarted(true);
+  }, []);
 
+  useEffect(() => {
+    if (hasStarted && !gameState.gameOver) {
       const timer = setInterval(() => {
         setGameState(prev => {
           if (prev.timeLeft <= 0) {
@@ -48,7 +56,7 @@ export const useGameState = () => {
           ...prev,
           police: { ...prev.police, frame: prev.police.frame === 0 ? 1 : 0 }
         }));
-      }, 1000); // Ralenti à 1 seconde
+      }, 1000);
 
       // Animation du joueur (ralentie)
       const playerAnimation = setInterval(() => {
@@ -56,7 +64,7 @@ export const useGameState = () => {
           ...prev,
           currentFrame: (prev.currentFrame + 1) % 2
         }));
-      }, 500); // Ralenti à 0.5 seconde
+      }, 500);
 
       return () => {
         clearInterval(timer);
@@ -64,7 +72,7 @@ export const useGameState = () => {
         clearInterval(playerAnimation);
       };
     }
-  }, [gameState.gameOver]);
+  }, [hasStarted, gameState.gameOver]);
 
   const movePlayer = (newX: number, newY: number, direction: 'left' | 'right' | 'idle') => {
     const distance = (x1: number, y1: number, x2: number, y2: number) => 
