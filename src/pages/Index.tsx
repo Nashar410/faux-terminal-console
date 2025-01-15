@@ -48,7 +48,7 @@ const Index = () => {
         });
       }, 1000);
 
-      const handleKeyDown = (e: KeyboardEvent) => {
+      const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
         if (gameState.gameOver) return;
 
         setGameState(prev => {
@@ -117,10 +117,10 @@ const Index = () => {
         });
       };
 
-      window.addEventListener('keydown', handleKeyDown);
+      window.addEventListener('keydown', handleKeyDown as unknown as EventListener);
       return () => {
         clearInterval(timer);
-        window.removeEventListener('keydown', handleKeyDown);
+        window.removeEventListener('keydown', handleKeyDown as unknown as EventListener);
       };
     }
   }, [showGame, gameState.gameOver]);
@@ -155,7 +155,6 @@ const Index = () => {
           setPassword("");
         }
       } else {
-        console.log("Mot de passe incorrect");
         toast({
           variant: "destructive",
           description: "Mot de passe incorrect",
@@ -203,40 +202,42 @@ const Index = () => {
             </div>
           )
         ) : (
-          <div className="mt-8 border border-terminal-text p-4 relative" style={{ height: '400px' }}>
+          <div className="mt-8 border-2 border-terminal-text p-4 relative bg-black/50" style={{ height: '500px', width: '100%' }}>
             <div className="absolute top-2 right-2 text-terminal-text">
               Temps restant: {gameState.timeLeft}s
             </div>
             
             {/* Player */}
             <div 
-              className="absolute w-4 h-4 bg-terminal-text"
+              className="absolute w-6 h-6 bg-terminal-text flex items-center justify-center text-black font-bold"
               style={{ left: `${gameState.playerX}%`, top: `${gameState.playerY}%` }}
             >P</div>
             
             {/* Police */}
             <div 
-              className="absolute w-4 h-4 text-terminal-text"
+              className="absolute w-8 h-8 text-terminal-text"
               style={{ left: `${gameState.police.x}%`, top: `${gameState.police.y}%` }}
             >👮</div>
             
             {/* Building */}
             <div 
-              className="absolute w-8 h-16 text-terminal-text"
+              className="absolute w-12 h-24 text-terminal-text"
               style={{ left: `${gameState.building.x}%`, top: `${gameState.building.y}%` }}
             >🏢</div>
             
             {/* Firecracker */}
             {!gameState.firecracker.collected && (
               <div 
-                className="absolute w-4 h-4 text-terminal-text"
+                className="absolute w-6 h-6 text-terminal-text"
                 style={{ left: `${gameState.firecracker.x}%`, top: `${gameState.firecracker.y}%` }}
               >🧨</div>
             )}
             
             {gameState.gameOver && (
-              <div className="absolute inset-0 flex items-center justify-center bg-terminal-bg bg-opacity-90">
-                <div className="text-terminal-text text-xl">{gameState.message}</div>
+              <div className="absolute inset-0 flex items-center justify-center bg-black/90">
+                <div className="text-terminal-text text-2xl animate-pulse">
+                  {gameState.message}
+                </div>
               </div>
             )}
             
