@@ -18,18 +18,27 @@ const INITIAL_STATE: GameState = {
 export const useGameState = () => {
   const [gameState, setGameState] = useState<GameState>({
     ...INITIAL_STATE,
-    timeLeft: 30 // On réinitialise explicitement le temps
+    timeLeft: 30
   });
   const [isNearPolice, setIsNearPolice] = useState(false);
   const [isTimeRunningOut, setIsTimeRunningOut] = useState(false);
   const [isExploding, setIsExploding] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
+  const [hasPlayerMoved, setHasPlayerMoved] = useState(false);
 
+  // Effet pour démarrer le jeu après 5 secondes d'inactivité
   useEffect(() => {
-    // On joue le son de démarrage une seule fois au montage
-    playSound('start');
-    setHasStarted(true);
-  }, []);
+    if (!hasStarted) {
+      const inactivityTimer = setTimeout(() => {
+        if (!hasPlayerMoved) {
+          playSound('start');
+          setHasStarted(true);
+        }
+      }, 5000);
+
+      return () => clearTimeout(inactivityTimer);
+    }
+  }, [hasStarted, hasPlayerMoved]);
 
   useEffect(() => {
     if (hasStarted && !gameState.gameOver) {
@@ -75,6 +84,13 @@ export const useGameState = () => {
   }, [hasStarted, gameState.gameOver]);
 
   const movePlayer = (newX: number, newY: number, direction: 'left' | 'right' | 'idle') => {
+    // Démarrer le jeu au premier mouvement si ce n'est pas déjà fait
+    if (!hasStarted && !hasPlayerMoved) {
+      setHasPlayerMoved(true);
+      setHasStarted(true);
+      playSound('start');
+    }
+
     const distance = (x1: number, y1: number, x2: number, y2: number) => 
       Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 
