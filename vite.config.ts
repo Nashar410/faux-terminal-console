@@ -10,6 +10,7 @@ export default defineConfig(({ mode }) => ({
     port: 8080,
   },
   build: {
+    outDir: 'dist',
     rollupOptions: {
       input: {
         main: path.resolve(__dirname, 'index.html'),
