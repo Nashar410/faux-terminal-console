@@ -4,8 +4,6 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 
 export default defineConfig(({ mode }) => ({
-  // Pour GitHub Pages ou autre hébergement avec un sous-chemin.
-  base: '/faux-terminal-console/',
 
   server: {
     // "host: '::'" permet d'exposer le serveur en IPv4 et IPv6.  
