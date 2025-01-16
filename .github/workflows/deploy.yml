@@ -1,35 +1,35 @@
-name: Deploy to GitHub Pages
+name: Deploy on GitHub Pages
 
 on:
   push:
-    branches: [ main ]
-  workflow_dispatch:
-
-permissions:
-  contents: write
+    branches: [ "main" ]  # ou la branche que vous utilisez
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      # 1) Récupération du code source
+      - name: Check out
         uses: actions/checkout@v3
 
-      - name: Install Node.js
+      # 2) Configuration du Node
+      - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 16
 
-      - name: Install Dependencies
-        run: npm install
+      # 3) Installation des dépendances
+      - name: Install dependencies
+        run: npm ci
 
+      # 4) Construction du projet
       - name: Build
         run: npm run build
 
-      - name: Deploy to GitHub Pages
+      # 5) Déploiement sur GitHub Pages
+      - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
-          force_orphan: true
