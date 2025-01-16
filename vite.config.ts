@@ -4,7 +4,7 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 
 export default defineConfig(({ mode }) => ({
-  base: '/8e6db5e3-89ea-467c-b314-da008089c2d9/',
+  base: '/faux-terminal-console/',
   server: {
     host: "::",
     port: 8080,
