@@ -8,7 +8,16 @@ const Index = () => {
   const [password, setPassword] = useState("");
   const [showFinalInput, setShowFinalInput] = useState(false);
   const [showGame, setShowGame] = useState(false);
-  const { gameState, isNearPolice, isTimeRunningOut, isExploding, movePlayer } = useGameState();
+  const { 
+    gameState, 
+    isNearPolice, 
+    isTimeRunningOut, 
+    isExploding, 
+    movePlayer,
+    showPoliceDialog,
+    setShowPoliceDialog,
+    handlePoliceConfirm
+  } = useGameState();
 
   const { toast } = useToast();
 
@@ -153,6 +162,9 @@ const Index = () => {
             gameState={gameState}
             isNearPolice={isNearPolice}
             isExploding={isExploding}
+            showPoliceDialog={showPoliceDialog}
+            setShowPoliceDialog={setShowPoliceDialog}
+            handlePoliceConfirm={handlePoliceConfirm}
           />
         )}
       </div>
