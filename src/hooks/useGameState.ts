@@ -8,12 +8,16 @@ const INITIAL_STATE: GameState = {
   playerDirection: 'idle',
   currentFrame: 0,
   firecracker: { x: 30, y: 30, collected: false },
-  police: { x: 50, y: 10, frame: 0 },
+  police: { x: 50, y: 10, frame: 0, movingDown: true },
   building: { x: 70, y: 10 },
   timeLeft: 30,
   gameOver: false,
   message: ""
 };
+
+const MIN_POLICE_Y = 10;
+const MAX_POLICE_Y = 50;
+const POLICE_SPEED = 0.5;
 
 export const useGameState = () => {
   const [gameState, setGameState] = useState<GameState>(INITIAL_STATE);
@@ -21,8 +25,9 @@ export const useGameState = () => {
   const [isTimeRunningOut, setIsTimeRunningOut] = useState(false);
   const [isExploding, setIsExploding] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
+  const [showPoliceDialog, setShowPoliceDialog] = useState(false);
 
-  // Timer du jeu - ne démarre que lorsque hasStarted est true
+  // Timer du jeu et animation du policier
   useEffect(() => {
     if (hasStarted && !gameState.gameOver) {
       const timer = setInterval(() => {
@@ -42,15 +47,35 @@ export const useGameState = () => {
         });
       }, 1000);
 
-      // Animation du policier (ralentie)
+      // Animation du policier
       const policeAnimation = setInterval(() => {
-        setGameState(prev => ({
-          ...prev,
-          police: { ...prev.police, frame: prev.police.frame === 0 ? 1 : 0 }
-        }));
-      }, 1000);
+        setGameState(prev => {
+          let newY = prev.police.y;
+          if (prev.police.movingDown) {
+            newY = Math.min(MAX_POLICE_Y, prev.police.y + POLICE_SPEED);
+            if (newY >= MAX_POLICE_Y) {
+              return {
+                ...prev,
+                police: { ...prev.police, y: newY, movingDown: false, frame: prev.police.frame === 0 ? 1 : 0 }
+              };
+            }
+          } else {
+            newY = Math.max(MIN_POLICE_Y, prev.police.y - POLICE_SPEED);
+            if (newY <= MIN_POLICE_Y) {
+              return {
+                ...prev,
+                police: { ...prev.police, y: newY, movingDown: true, frame: prev.police.frame === 0 ? 1 : 0 }
+              };
+            }
+          }
+          return {
+            ...prev,
+            police: { ...prev.police, y: newY, frame: prev.police.frame === 0 ? 1 : 0 }
+          };
+        });
+      }, 50);
 
-      // Animation du joueur (ralentie)
+      // Animation du joueur
       const playerAnimation = setInterval(() => {
         setGameState(prev => ({
           ...prev,
@@ -67,7 +92,6 @@ export const useGameState = () => {
   }, [hasStarted, gameState.gameOver]);
 
   const movePlayer = (newX: number, newY: number, direction: 'left' | 'right' | 'idle') => {
-    // Démarrer le jeu au premier mouvement
     if (!hasStarted) {
       setHasStarted(true);
       playSound('start');
@@ -81,12 +105,11 @@ export const useGameState = () => {
       setIsNearPolice(distanceToPolice < 20);
 
       if (distanceToPolice < 10) {
-        playSound('siren');
-        return {
-          ...prev,
-          gameOver: true,
-          message: "Vous vous faites arrêter !"
-        };
+        if (!showPoliceDialog) {
+          setShowPoliceDialog(true);
+          return prev;
+        }
+        return prev;
       }
 
       if (!prev.firecracker.collected && 
@@ -121,11 +144,24 @@ export const useGameState = () => {
     });
   };
 
+  const handlePoliceConfirm = () => {
+    setShowPoliceDialog(false);
+    playSound('siren');
+    setGameState(prev => ({
+      ...prev,
+      gameOver: true,
+      message: "Vous vous faites arrêter !"
+    }));
+  };
+
   return {
     gameState,
     isNearPolice,
     isTimeRunningOut,
     isExploding,
-    movePlayer
+    movePlayer,
+    showPoliceDialog,
+    setShowPoliceDialog,
+    handlePoliceConfirm
   };
 };

@@ -2,17 +2,27 @@ import React, { useMemo } from 'react';
 import { Sprite } from './Sprite';
 import { sprites, playerFrames, policeFrames } from '@/assets/gameSprites';
 import { GameState } from '@/types/game';
+import { PoliceDialog } from './PoliceDialog';
 
 type GameScreenProps = {
   gameState: GameState;
   isNearPolice: boolean;
   isExploding: boolean;
+  showPoliceDialog: boolean;
+  setShowPoliceDialog: (show: boolean) => void;
+  handlePoliceConfirm: () => void;
 };
 
-export const GameScreen: React.FC<GameScreenProps> = ({ gameState, isNearPolice, isExploding }) => {
+export const GameScreen: React.FC<GameScreenProps> = ({ 
+  gameState, 
+  isNearPolice, 
+  isExploding,
+  showPoliceDialog,
+  setShowPoliceDialog,
+  handlePoliceConfirm
+}) => {
   const SPRITE_SCALE = 2;
 
-  // Utiliser useMemo pour éviter des re-rendus inutiles
   const currentPlayerSprite = useMemo(() => {
     const direction = gameState.playerDirection;
     const frame = gameState.currentFrame;
@@ -25,7 +35,6 @@ export const GameScreen: React.FC<GameScreenProps> = ({ gameState, isNearPolice,
 
   return (
     <div className="relative">
-      {/* Timer et Inventaire */}
       <div className="flex justify-between mb-4 text-terminal-text">
         <div className="text-xl font-mono">
           Temps restant: {gameState.timeLeft}s
@@ -42,7 +51,6 @@ export const GameScreen: React.FC<GameScreenProps> = ({ gameState, isNearPolice,
 
       <div className={`border-2 border-terminal-text p-4 relative bg-black/50 h-[500px] w-full
                     ${isExploding ? 'screen-flash' : ''}`}>
-        {/* Player */}
         <Sprite 
           position={{ x: gameState.playerX, y: gameState.playerY }}
           sprite={currentPlayerSprite}
@@ -50,14 +58,12 @@ export const GameScreen: React.FC<GameScreenProps> = ({ gameState, isNearPolice,
           scale={SPRITE_SCALE}
         />
         
-        {/* Police */}
         <Sprite 
           position={{ x: gameState.police.x, y: gameState.police.y }}
           sprite={currentPoliceSprite}
           scale={SPRITE_SCALE}
         />
         
-        {/* Building */}
         <Sprite 
           position={{ x: gameState.building.x, y: gameState.building.y }}
           sprite={sprites.building}
@@ -66,7 +72,6 @@ export const GameScreen: React.FC<GameScreenProps> = ({ gameState, isNearPolice,
           className={isExploding ? 'explosion' : ''}
         />
         
-        {/* Firecracker */}
         {!gameState.firecracker.collected && (
           <Sprite 
             position={{ x: gameState.firecracker.x, y: gameState.firecracker.y }}
@@ -87,6 +92,12 @@ export const GameScreen: React.FC<GameScreenProps> = ({ gameState, isNearPolice,
         <div className="absolute bottom-2 left-2 text-terminal-text text-sm">
           Utilisez les flèches ou WASD pour vous déplacer
         </div>
+
+        <PoliceDialog
+          open={showPoliceDialog}
+          onOpenChange={setShowPoliceDialog}
+          onConfirm={handlePoliceConfirm}
+        />
       </div>
     </div>
   );
