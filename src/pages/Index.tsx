@@ -16,7 +16,10 @@ const Index = () => {
     movePlayer,
     showPoliceDialog,
     setShowPoliceDialog,
-    handlePoliceConfirm
+    handlePoliceConfirm,
+    showFirecrackerDialog,
+    setShowFirecrackerDialog,
+    handleFirecrackerConfirm
   } = useGameState();
 
   const { toast } = useToast();
@@ -165,6 +168,9 @@ const Index = () => {
             showPoliceDialog={showPoliceDialog}
             setShowPoliceDialog={setShowPoliceDialog}
             handlePoliceConfirm={handlePoliceConfirm}
+            showFirecrackerDialog={showFirecrackerDialog}
+            setShowFirecrackerDialog={setShowFirecrackerDialog}
+            handleFirecrackerConfirm={handleFirecrackerConfirm}
           />
         )}
       </div>

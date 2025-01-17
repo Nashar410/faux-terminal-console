@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { GameState } from '@/types/game';
 import { playSound } from '@/assets/gameSounds';
+import { useToast } from '@/hooks/use-toast';
 
 const INITIAL_STATE: GameState = {
   playerX: 10,
@@ -26,8 +27,9 @@ export const useGameState = () => {
   const [isExploding, setIsExploding] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
   const [showPoliceDialog, setShowPoliceDialog] = useState(false);
+  const [showFirecrackerDialog, setShowFirecrackerDialog] = useState(false);
+  const { toast } = useToast();
 
-  // Timer du jeu et animation du policier
   useEffect(() => {
     if (hasStarted && !gameState.gameOver) {
       const timer = setInterval(() => {
@@ -114,13 +116,11 @@ export const useGameState = () => {
 
       if (!prev.firecracker.collected && 
           distance(newX, newY, prev.firecracker.x, prev.firecracker.y) < 10) {
-        return {
-          ...prev,
-          playerX: newX,
-          playerY: newY,
-          playerDirection: direction,
-          firecracker: { ...prev.firecracker, collected: true }
-        };
+        if (!showFirecrackerDialog) {
+          setShowFirecrackerDialog(true);
+          return prev;
+        }
+        return prev;
       }
 
       if (prev.firecracker.collected && 
@@ -154,6 +154,18 @@ export const useGameState = () => {
     }));
   };
 
+  const handleFirecrackerConfirm = () => {
+    setShowFirecrackerDialog(false);
+    setGameState(prev => ({
+      ...prev,
+      firecracker: { ...prev.firecracker, collected: true }
+    }));
+    toast({
+      description: "Vous avez ramassé le pétard",
+      className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
+    });
+  };
+
   return {
     gameState,
     isNearPolice,
@@ -162,6 +174,9 @@ export const useGameState = () => {
     movePlayer,
     showPoliceDialog,
     setShowPoliceDialog,
-    handlePoliceConfirm
+    handlePoliceConfirm,
+    showFirecrackerDialog,
+    setShowFirecrackerDialog,
+    handleFirecrackerConfirm
   };
 };
