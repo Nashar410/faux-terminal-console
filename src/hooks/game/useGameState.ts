@@ -96,7 +96,7 @@ export const useGameState = () => {
       setGameState(prev => ({
         ...prev,
         gameOver: true,
-        message: "Vous vous êtes fait arrêter avec le pétard...",
+        message: "Vous vous êtes fait arrêter avec la bombe...",
         endingMessage: decodeBase64(strings.game.endings["3"]) // "tous"
       }));
     }
