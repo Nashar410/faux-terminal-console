@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 import { GameState } from '@/types/game';
+import {decodeBase64} from "@/utils/encoding.ts";
+import strings from "@/data/strings.json";
 
 export const useGameTimer = (
   gameState: GameState,
@@ -16,7 +18,7 @@ export const useGameTimer = (
             ...prev,
             gameOver: true,
             message: "Le temps est écoulé !",
-            endingMessage: 'ouest'
+            endingMessage: decodeBase64(strings.game.endings["3"])
           };
         }
         return {

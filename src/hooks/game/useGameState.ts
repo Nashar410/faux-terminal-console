@@ -63,7 +63,7 @@ export const useGameState = () => {
       ...prev,
       gameOver: true,
       message: "Vous vous êtes rendu aux forces de l'ordre...",
-      endingMessage: decodeBase64(strings.game.endings["1"]) // "libérons"
+      endingMessage: decodeBase64(strings.game.endings["1"])
     }));
     playSound('siren');
   };
@@ -86,7 +86,7 @@ export const useGameState = () => {
         ...prev,
         gameOver: true,
         message: "Vous avez fait exploser le bâtiment !",
-        endingMessage: decodeBase64(strings.game.endings["2"]) // "nous"
+        endingMessage: decodeBase64(strings.game.endings["2"])
       }));
     }, 1000);
   };
@@ -97,7 +97,7 @@ export const useGameState = () => {
         ...prev,
         gameOver: true,
         message: "Vous vous êtes fait arrêter avec la bombe...",
-        endingMessage: decodeBase64(strings.game.endings["3"]) // "tous"
+        endingMessage: decodeBase64(strings.game.endings["3"])
       }));
     }
   }, [showArrestDialog]);
