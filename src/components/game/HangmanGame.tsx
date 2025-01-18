@@ -8,35 +8,36 @@ type HangmanGameProps = {
 };
 
 export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
-  // Constantes configurables
   const WORD_TO_GUESS = "DETERMINISME";
-  const MAX_ERRORS = 6;
+  const MAX_ERRORS = 3;
   const TOTAL_CREDITS = 600;
   const WRONG_GUESS_COST = 200;
   
-  // Calcul du coût par lettre correcte (dynamique selon le mot)
   const COST_PER_CORRECT_LETTER = Math.ceil(
     TOTAL_CREDITS / 
     new Set(WORD_TO_GUESS.split('')).size // Nombre de lettres uniques
-  );
+  ) + 1; // +1 pour rendre la victoire plus difficile
   
-  const [guessedLetters, setGuessedLetters] = useState<Set<string>>(new Set());
+  const [guessedLetters, setGuessedLetters] = useState<Set<string>>(() => {
+    // Révéler la première et dernière lettre, ainsi que toutes les occurrences de la première lettre
+    const firstLetter = WORD_TO_GUESS[0];
+    const lastLetter = WORD_TO_GUESS[WORD_TO_GUESS.length - 1];
+    return new Set([firstLetter, lastLetter]);
+  });
+  
   const [errors, setErrors] = useState<number>(0);
   const [currentLetter, setCurrentLetter] = useState<string>("");
   const [gameStatus, setGameStatus] = useState<'playing' | 'won' | 'lost'>('playing');
   const [credits, setCredits] = useState<number>(600);
 
-  // Convertit le mot en tableau de lettres masquées ou révélées
-  const displayWord = WORD_TO_GUESS.split('').map(letter => 
-    guessedLetters.has(letter) ? letter : '_'
+  const displayWord = WORD_TO_GUESS.split('').map((letter, index) => 
+    guessedLetters.has(letter) || index === 0 || index === WORD_TO_GUESS.length - 1 ? letter : '_'
   ).join(' ');
 
-  // Vérifie si toutes les lettres ont été trouvées
   const checkWin = useCallback(() => {
     return WORD_TO_GUESS.split('').every(letter => guessedLetters.has(letter));
   }, [guessedLetters]);
 
-  // Gère la soumission d'une lettre
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (gameStatus !== 'playing' || !currentLetter) return;
@@ -47,7 +48,6 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
       setGuessedLetters(newGuessedLetters);
       
       if (!WORD_TO_GUESS.includes(letter)) {
-        // Mauvaise lettre : -200 crédits
         const newCredits = credits - WRONG_GUESS_COST;
         const newErrors = errors + 1;
         
@@ -59,7 +59,6 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
           onComplete(false);
         }
       } else {
-        // Bonne lettre : coût calculé dynamiquement
         const newCredits = credits - COST_PER_CORRECT_LETTER;
         setCredits(newCredits);
         
@@ -75,13 +74,16 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
     setCurrentLetter("");
   };
 
-  // Gère l'entrée clavier
   const handleKeyPress = useCallback((e: KeyboardEvent) => {
     if (gameStatus !== 'playing') return;
     
     const key = e.key.toUpperCase();
     if (/^[A-Z]$/.test(key)) {
       setCurrentLetter(key);
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      const form = document.querySelector('form');
+      if (form) form.requestSubmit();
     }
   }, [gameStatus]);
 
@@ -90,7 +92,6 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
     return () => window.removeEventListener('keypress', handleKeyPress);
   }, [handleKeyPress]);
 
-  // Génère la représentation ASCII des crédits
   const creditsGauge = Array(Math.ceil(credits / 100))
     .fill('$')
     .join('');
@@ -111,10 +112,6 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
         <div className="text-center">
           {creditsGauge || '-'}
         </div>
-      </div>
-      
-      <div className="text-xl">
-        Erreurs: {errors}/{MAX_ERRORS}
       </div>
 
       {gameStatus === 'playing' && (
@@ -144,7 +141,7 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
       
       {gameStatus === 'lost' && (
         <div className="text-2xl text-red-500">
-          Perdu ! Le mot était : {WORD_TO_GUESS}
+          Perdu !
         </div>
       )}
     </div>
