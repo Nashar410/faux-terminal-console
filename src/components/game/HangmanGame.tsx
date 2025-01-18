@@ -1,116 +1,35 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Input } from "@/components/ui/input";
+import React, { useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { useToast } from "@/hooks/use-toast";
+import { LetterInput } from './hangman/LetterInput';
+import { StatusDisplay } from './hangman/StatusDisplay';
+import { useHangmanGame } from './hangman/useHangmanGame';
+import type { HangmanProps } from './hangman/types';
 
-type HangmanGameProps = {
-  onComplete: (success: boolean) => void;
-};
-
-export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
-  const { toast } = useToast();
-  const WORD_TO_GUESS = "DETERMINISME";
-  const MAX_ERRORS = 3;
-  const TOTAL_CREDITS = 600;
-  const WRONG_GUESS_COST = 200;
-  
-  const [guessedLetters, setGuessedLetters] = useState<Set<string>>(() => {
-    const firstLetter = WORD_TO_GUESS[0];
-    return new Set([firstLetter]);
-  });
-  
-  const hiddenUniqueLetters = new Set(WORD_TO_GUESS.slice(1).split('')).size;
-  const COST_PER_CORRECT_LETTER = Math.floor(
-    (TOTAL_CREDITS - WRONG_GUESS_COST - 1) /
-    hiddenUniqueLetters
-  );
-  
-  const [errors, setErrors] = useState<number>(0);
-  const [currentLetter, setCurrentLetter] = useState<string>("");
-  const [gameStatus, setGameStatus] = useState<'playing' | 'won' | 'lost'>('playing');
-  const [credits, setCredits] = useState<number>(TOTAL_CREDITS);
-
-  const getDisplayWord = useCallback(() => {
-    return WORD_TO_GUESS.split('').map(letter => 
-      guessedLetters.has(letter) ? letter : '_'
-    ).join(' ');
-  }, [guessedLetters]);
-
-  const isWordComplete = useCallback(() => {
-    // Count visible letters (non-underscore characters)
-    const visibleLetters = WORD_TO_GUESS.split('').filter(letter => 
-      guessedLetters.has(letter)
-    ).length;
-    
-    console.log('Visible letters:', visibleLetters, 'Word length:', WORD_TO_GUESS.length);
-    return visibleLetters === WORD_TO_GUESS.length;
-  }, [guessedLetters, WORD_TO_GUESS]);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (gameStatus !== 'playing' || !currentLetter) return;
-
-    const letter = currentLetter.toUpperCase();
-    if (!guessedLetters.has(letter)) {
-      const newGuessedLetters = new Set(guessedLetters).add(letter);
-      setGuessedLetters(newGuessedLetters);
-      
-      if (!WORD_TO_GUESS.includes(letter)) {
-        const newErrors = errors + 1;
-        const newCredits = credits - WRONG_GUESS_COST;
-        
-        setErrors(newErrors);
-        setCredits(newCredits);
-        
-        if (newErrors >= MAX_ERRORS || newCredits <= 0) {
-          setGameStatus('lost');
-          onComplete(false);
-        }
-      } else {
-        const newCredits = credits - COST_PER_CORRECT_LETTER;
-        setCredits(newCredits);
-        console.log('Correct letter, new credits:', newCredits);
-        
-        if (newCredits <= 0) {
-          setGameStatus('lost');
-          onComplete(false);
-        }
-      }
-    }
-    setCurrentLetter("");
-  };
-
-  const handleValidateWord = () => {
-    setGameStatus('won');
-    toast({
-      description: "Indice n°3 débloqué : Le mot de passe est lié au déterminisme...",
-      className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
-    });
-    onComplete(true);
-  };
-
-  const handleKeyPress = useCallback((e: KeyboardEvent) => {
-    if (gameStatus !== 'playing' || isWordComplete()) return;
-    
-    const key = e.key.toUpperCase();
-    if (/^[A-Z]$/.test(key)) {
-      setCurrentLetter(key);
-    } else if (e.key === 'Enter') {
-      e.preventDefault();
-      const form = document.querySelector('form');
-      if (form) form.requestSubmit();
-    }
-  }, [gameStatus, isWordComplete]);
+export const HangmanGame: React.FC<HangmanProps> = ({ onComplete }) => {
+  const {
+    guessedLetters,
+    errors,
+    gameStatus,
+    credits,
+    getDisplayWord,
+    isWordComplete,
+    handleGuess,
+    handleValidateWord
+  } = useHangmanGame(onComplete);
 
   useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (gameStatus !== 'playing' || isWordComplete()) return;
+      
+      const key = e.key.toUpperCase();
+      if (/^[A-Z]$/.test(key)) {
+        handleGuess(key);
+      }
+    };
+
     window.addEventListener('keypress', handleKeyPress);
     return () => window.removeEventListener('keypress', handleKeyPress);
-  }, [handleKeyPress]);
-
-  const creditsGauge = Array(Math.max(0, MAX_ERRORS - errors))
-    .fill('$')
-    .join('');
+  }, [gameStatus, isWordComplete, handleGuess]);
 
   return (
     <div className="flex flex-col items-center justify-center space-y-8 p-8 bg-terminal-bg text-terminal-text font-mono border-2 border-terminal-text">
@@ -120,33 +39,10 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
         {getDisplayWord()}
       </div>
       
-      <div className="w-full max-w-xs space-y-2">
-        <div className="text-xl text-center">
-          Crédits: {credits}
-        </div>
-        <Progress value={(credits / TOTAL_CREDITS) * 100} className="h-2" />
-        <div className="text-center">
-          {creditsGauge || '-'}
-        </div>
-      </div>
+      <StatusDisplay credits={credits} errors={errors} />
 
       {gameStatus === 'playing' && !isWordComplete() && (
-        <form onSubmit={handleSubmit} className="flex gap-4">
-          <Input
-            type="text"
-            value={currentLetter}
-            onChange={(e) => setCurrentLetter(e.target.value.slice(-1).toUpperCase())}
-            maxLength={1}
-            className="w-16 text-center bg-terminal-bg text-terminal-text border-terminal-text"
-            placeholder="?"
-          />
-          <Button 
-            type="submit"
-            className="bg-terminal-text text-terminal-bg hover:bg-terminal-text/80"
-          >
-            Valider
-          </Button>
-        </form>
+        <LetterInput onSubmit={handleGuess} />
       )}
 
       {gameStatus === 'playing' && isWordComplete() && (
