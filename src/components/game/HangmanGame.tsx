@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { LetterInput } from './hangman/LetterInput';
 import { StatusDisplay } from './hangman/StatusDisplay';
 import { useHangmanGame } from './hangman/useHangmanGame';
 import type { HangmanProps } from './hangman/types';
@@ -14,7 +13,8 @@ export const HangmanGame: React.FC<HangmanProps> = ({ onComplete }) => {
     getDisplayWord,
     isWordComplete,
     handleGuess,
-    handleValidateWord
+    handleValidateWord,
+    getIncorrectLetters
   } = useHangmanGame(onComplete);
 
   useEffect(() => {
@@ -41,10 +41,6 @@ export const HangmanGame: React.FC<HangmanProps> = ({ onComplete }) => {
       
       <StatusDisplay credits={credits} errors={errors} />
 
-      {gameStatus === 'playing' && !isWordComplete() && (
-        <LetterInput onSubmit={handleGuess} />
-      )}
-
       {gameStatus === 'playing' && isWordComplete() && (
         <Button 
           onClick={handleValidateWord}
@@ -65,6 +61,10 @@ export const HangmanGame: React.FC<HangmanProps> = ({ onComplete }) => {
           Perdu !
         </div>
       )}
+
+      <div className="text-sm mt-4">
+        Lettres incorrectes : {getIncorrectLetters().join(' ')}
+      </div>
     </div>
   );
 };

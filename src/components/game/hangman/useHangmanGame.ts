@@ -33,6 +33,10 @@ export const useHangmanGame = (onComplete: (success: boolean) => void) => {
     return visibleLetters === WORD_TO_GUESS.length;
   }, [guessedLetters]);
 
+  const getIncorrectLetters = useCallback(() => {
+    return Array.from(guessedLetters).filter(letter => !WORD_TO_GUESS.includes(letter));
+  }, [guessedLetters]);
+
   const handleGuess = (letter: string) => {
     if (gameStatus !== 'playing') return;
 
@@ -80,6 +84,7 @@ export const useHangmanGame = (onComplete: (success: boolean) => void) => {
     getDisplayWord,
     isWordComplete,
     handleGuess,
-    handleValidateWord
+    handleValidateWord,
+    getIncorrectLetters
   };
 };
