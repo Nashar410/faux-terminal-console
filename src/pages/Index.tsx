@@ -7,6 +7,7 @@ import { BuridanGame } from '@/components/game/BuridanGame';
 import { PlaceholderGame } from '@/components/game/PlaceholderGame';
 import { GameScreen } from '@/components/game/GameScreen';
 import { useGameProgress } from '@/hooks/useGameProgress';
+import { useGameState } from '@/hooks/useGameState';
 import strings from '@/data/strings.json';
 
 const Index = () => {
@@ -19,31 +20,30 @@ const Index = () => {
     goToScreen
   } = useGameProgress();
 
+  const {
+    gameState,
+    isNearPolice,
+    isExploding,
+    movePlayer,
+    showPoliceDialog,
+    setShowPoliceDialog,
+    handlePoliceConfirm,
+    showFirecrackerDialog,
+    setShowFirecrackerDialog,
+    handleFirecrackerConfirm,
+    showArrestDialog,
+    setShowArrestDialog,
+    showBuildingDialog,
+    setShowBuildingDialog,
+    startGame: startFinalGame
+  } = useGameState();
+
   const [finalPasswords, setFinalPasswords] = useState({
     determinisme: "",
     dieu: "",
     mechCola: "",
     choix: ""
   });
-
-  const passwords = {
-    1: { 
-      value: 'YkBzMWwxYw==',
-      hint: 'ZMOpdGVybWluaXNtZQ=='
-    },
-    2: { 
-      value: '92:87',
-      hint: 'ZGlldQ=='
-    },
-    3: { 
-      value: btoa(unescape(encodeURIComponent('49crédits'))),
-      hint: 'TWVjaC1Db2xh'
-    },
-    4: { 
-      value: 'OHVyMWRAbg==',
-      hint: 'Y2hvaXg='
-    }
-  };
 
   const renderCurrentScreen = () => {
     switch (gameProgress.currentScreen) {
