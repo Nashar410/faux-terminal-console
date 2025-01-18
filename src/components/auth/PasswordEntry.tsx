@@ -8,6 +8,7 @@ type PasswordEntryProps = {
   setCurrentStep: (step: number) => void;
   setShowFinalInput: (show: boolean) => void;
   setShowGame: (show: boolean) => void;
+  setShowDragDropGame: (show: boolean) => void;
   passwords: Record<number, { value: string; hint: string }>;
 };
 
@@ -16,6 +17,7 @@ export const PasswordEntry = ({
   setCurrentStep, 
   setShowFinalInput,
   setShowGame,
+  setShowDragDropGame,
   passwords 
 }: PasswordEntryProps) => {
   const [password, setPassword] = useState("");
@@ -37,15 +39,11 @@ export const PasswordEntry = ({
 
       const currentPassword = passwords[currentStep];
       const decodedPassword = decodeBase64(currentPassword.value);
-      const decodedHint = decodeBase64(currentPassword.hint);
       
       if (cleanedPassword.toLowerCase() === decodedPassword.toLowerCase()) {
-        toast({
-          description: `Mot de passe ${currentStep} valide ! Indice : ${decodedHint}`,
-          className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
-        });
-
-        if (currentStep === 4) {
+        if (currentStep === 1) {
+          setShowDragDropGame(true);
+        } else if (currentStep === 4) {
           setShowFinalInput(true);
         } else {
           setCurrentStep(currentStep + 1);

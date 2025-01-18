@@ -13,7 +13,7 @@ const Index = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [showFinalInput, setShowFinalInput] = useState(false);
   const [showGame, setShowGame] = useState(false);
-  const [showDragDropGame, setShowDragDropGame] = useState(true);
+  const [showDragDropGame, setShowDragDropGame] = useState(false);
   const [finalPasswords, setFinalPasswords] = useState({
     determinisme: "",
     dieu: "",
@@ -30,7 +30,7 @@ const Index = () => {
   };
 
   const handleDragDropComplete = () => {
-    setShowDragDropGame(false);
+    setCurrentStep(2);
   };
   
   const passwords = {
@@ -74,6 +74,7 @@ const Index = () => {
                 setCurrentStep={setCurrentStep}
                 setShowFinalInput={setShowFinalInput}
                 setShowGame={handleGameStart}
+                setShowDragDropGame={setShowDragDropGame}
                 passwords={passwords}
               />
             )
