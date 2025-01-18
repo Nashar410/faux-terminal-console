@@ -4,8 +4,10 @@ import { useGameState } from '@/hooks/useGameState';
 import { PasswordEntry } from '@/components/auth/PasswordEntry';
 import { FinalPasswordForm } from '@/components/auth/FinalPasswordForm';
 import { usePlayerMovement } from '@/hooks/usePlayerMovement';
+import { LoadingScreen } from '@/components/LoadingScreen';
 
 const Index = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [currentStep, setCurrentStep] = useState(1);
   const [showFinalInput, setShowFinalInput] = useState(false);
   const [showGame, setShowGame] = useState(false);
@@ -17,8 +19,6 @@ const Index = () => {
   });
   
   const gameState = useGameState();
-
-  // Ajout du hook de mouvement du joueur
   usePlayerMovement(gameState.gameState, showGame, gameState.movePlayer);
   
   const handleGameStart = () => {
@@ -44,6 +44,10 @@ const Index = () => {
       hint: 'Y2hvaXg='
     }
   };
+
+  if (isLoading) {
+    return <LoadingScreen onLoadingComplete={() => setIsLoading(false)} />;
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
