@@ -3,18 +3,18 @@ import { GameState } from '@/types/game';
 import { playSound } from '@/assets/gameSounds';
 
 const INITIAL_STATE: GameState = {
-  playerX: 50,
-  playerY: 80,
+  playerX: 12,
+  playerY: 50,
   playerDirection: 'idle',
   currentFrame: 0,
   firecracker: {
-    x: 20,
-    y: 50,
+    x: 24,
+    y: 20,
     collected: false
   },
   police: {
-    x: 80,
-    y: 20,
+    x: 48,
+    y: 40,
     frame: 0,
     movingDown: true
   },
