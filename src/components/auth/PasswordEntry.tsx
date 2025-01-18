@@ -45,6 +45,8 @@ export const PasswordEntry = ({
       if (cleanedPassword.toLowerCase() === decodedPassword.toLowerCase()) {
         if (currentStep === 1) {
           setShowDragDropGame(true);
+        } else if (currentStep === 2) {
+          setShowBuridanGame(true);
         } else if (currentStep === 4) {
           setShowFinalInput(true);
         } else {

@@ -24,7 +24,6 @@ const DragDropGame = ({ onComplete }: DragDropGameProps) => {
   const { toast } = useToast();
 
   const checkCompletion = () => {
-    // Ne vérifie que si tous les mots ont été placés
     if ((columns.positive.length + columns.negative.length) === words.length) {
       const allCorrect = [...columns.positive, ...columns.negative].every(wordId => {
         const word = words.find(w => w.id === wordId);
@@ -38,14 +37,15 @@ const DragDropGame = ({ onComplete }: DragDropGameProps) => {
           description: decodeBase64(strings.game.dragDrop.success),
           className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
         });
-        onComplete();
+        setTimeout(() => {
+          onComplete();
+        }, 1500);
       } else {
         toast({
           variant: "destructive",
           description: decodeBase64(strings.game.dragDrop.error),
           className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
         });
-        // Reset columns to allow retry
         setColumns({
           unassigned: strings.game.dragDrop.words.map(w => w.id),
           positive: [],
