@@ -2,7 +2,9 @@ import { useEffect } from 'react';
 import { GameState } from '@/types/game';
 import { playSound } from '@/assets/gameSounds';
 
-const COLLISION_THRESHOLD = 15;
+const POLICE_THRESHOLD = 15;
+const FIRECRACKER_THRESHOLD = 8; // Réduit de 15 à 8 pour une hitbox plus précise
+const BUILDING_THRESHOLD = 15;
 
 export const useCollisions = (
   gameState: GameState,
@@ -36,7 +38,7 @@ export const useCollisions = (
       );
 
       // Gestion des collisions avec le policier
-      if (policeDistance < COLLISION_THRESHOLD) {
+      if (policeDistance < POLICE_THRESHOLD) {
         setIsNearPolice(true);
         if (gameState.firecracker.collected) {
           playSound('siren');
@@ -50,12 +52,14 @@ export const useCollisions = (
       }
 
       // Gestion des collisions avec le pétard
-      if (!gameState.firecracker.collected && firecrackerDistance < COLLISION_THRESHOLD) {
+      if (!gameState.firecracker.collected && firecrackerDistance < FIRECRACKER_THRESHOLD) {
         setShowFirecrackerDialog(true);
+      } else {
+        setShowFirecrackerDialog(false); // Ferme la boîte de dialogue si on s'éloigne
       }
 
       // Gestion des collisions avec le bâtiment
-      if (gameState.firecracker.collected && buildingDistance < COLLISION_THRESHOLD) {
+      if (gameState.firecracker.collected && buildingDistance < BUILDING_THRESHOLD) {
         setShowBuildingDialog(true);
         handleBuildingExplosion();
       }
