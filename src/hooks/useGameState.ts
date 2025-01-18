@@ -30,6 +30,7 @@ export const useGameState = () => {
   const [showFirecrackerDialog, setShowFirecrackerDialog] = useState(false);
   const [showArrestDialog, setShowArrestDialog] = useState(false);
   const { toast } = useToast();
+  const [showBuildingDialog, setShowBuildingDialog] = useState(false);
 
   const startGame = () => {
     setGameState(INITIAL_STATE);
@@ -109,6 +110,7 @@ export const useGameState = () => {
 
     setGameState(prev => {
       const distanceToPolice = distance(newX, newY, prev.police.x, prev.police.y);
+      const distanceToBuilding = distance(newX, newY, prev.building.x, prev.building.y);
       setIsNearPolice(distanceToPolice < 20);
 
       if (distanceToPolice < 10) {
@@ -138,16 +140,22 @@ export const useGameState = () => {
         return prev;
       }
 
-      if (prev.firecracker.collected && 
-          distance(newX, newY, prev.building.x, prev.building.y) < 10) {
-        setIsExploding(true);
-        playSound('explosion');
-        setTimeout(() => setIsExploding(false), 500);
-        return {
-          ...prev,
-          gameOver: true,
-          message: "Boom, vous avez tout fait exploser… défaite !"
-        };
+      if (distanceToBuilding < 10) {
+        if (prev.firecracker.collected) {
+          setIsExploding(true);
+          playSound('explosion');
+          setTimeout(() => setIsExploding(false), 500);
+          return {
+            ...prev,
+            gameOver: true,
+            message: "Boom, vous avez tout fait exploser… défaite !"
+          };
+        } else if (!showBuildingDialog) {
+          setShowBuildingDialog(true);
+          setTimeout(() => setShowBuildingDialog(false), 5000);
+          return prev;
+        }
+        return prev;
       }
 
       return {
@@ -195,6 +203,8 @@ export const useGameState = () => {
     handleFirecrackerConfirm,
     showArrestDialog,
     setShowArrestDialog,
+    showBuildingDialog,
+    setShowBuildingDialog,
     startGame
   };
 };
