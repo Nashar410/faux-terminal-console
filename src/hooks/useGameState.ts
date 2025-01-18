@@ -112,7 +112,6 @@ export const useGameState = () => {
   const movePlayer = (newX: number, newY: number, direction: 'left' | 'right' | 'idle') => {
     if (!hasStarted) {
       startGame();
-      return;
     }
 
     if (gameState.gameOver) return;
