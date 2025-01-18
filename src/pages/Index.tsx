@@ -27,20 +27,20 @@ const Index = () => {
 
   const passwords = {
     1: { 
-      value: 'YkBzMWwxYw==',
-      hint: 'ZMOpdGVybWluaXNtZQ=='
+      value: strings.passwords["1"],
+      hint: strings.finalForm.hints.determinisme
     },
     2: { 
-      value: '92:87',
-      hint: 'ZGlldQ=='
+      value: strings.passwords["2"],
+      hint: strings.finalForm.hints.dieu
     },
     3: { 
-      value: btoa(unescape(encodeURIComponent('49crédits'))),
-      hint: 'TWVjaC1Db2xh'
+      value: strings.passwords["3"],
+      hint: strings.finalForm.hints.mechCola
     },
     4: { 
-      value: 'OHVyMWRAbg==',
-      hint: 'Y2hvaXg='
+      value: strings.passwords["4"],
+      hint: strings.finalForm.hints.choix
     }
   };
 
