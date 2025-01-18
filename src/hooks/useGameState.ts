@@ -16,7 +16,8 @@ const INITIAL_STATE: GameState = {
   building: { x: 70, y: 10 },
   timeLeft: 30,
   gameOver: false,
-  message: ""
+  message: "",
+  endingMessage: undefined
 };
 
 export const useGameState = () => {
@@ -38,7 +39,6 @@ export const useGameState = () => {
     showFirecrackerCollectedToast
   } = useCollisions();
 
-  // Effet pour mettre à jour l'état du jeu avec les nouvelles valeurs
   useEffect(() => {
     if (hasStarted && !gameState.gameOver) {
       setGameState(prev => ({
@@ -50,13 +50,13 @@ export const useGameState = () => {
     }
   }, [hasStarted, timeLeft, police, currentFrame, gameState.gameOver]);
 
-  // Effet pour vérifier la fin du temps
   useEffect(() => {
     if (hasStarted && timeLeft <= 0 && !gameState.gameOver) {
       setGameState(prev => ({
         ...prev,
         gameOver: true,
-        message: "Temps écoulé !"
+        message: "Temps écoulé !",
+        endingMessage: "ouest"
       }));
     }
   }, [hasStarted, timeLeft, gameState.gameOver]);
@@ -88,7 +88,8 @@ export const useGameState = () => {
           setGameState(prev => ({
             ...prev,
             gameOver: true,
-            message: "Vous vous êtes fait arrêter avec le pétard !"
+            message: "Vous vous êtes fait arrêter avec le pétard !",
+            endingMessage: "sud"
           }));
         }, 2000);
         return;
@@ -110,7 +111,8 @@ export const useGameState = () => {
         setGameState(prev => ({
           ...prev,
           gameOver: true,
-          message: "Boom, vous avez tout fait exploser… défaite !"
+          message: "Boom, vous avez tout fait exploser…",
+          endingMessage: "est"
         }));
       } else if (!showBuildingDialog) {
         setShowBuildingDialog(true);
@@ -134,7 +136,8 @@ export const useGameState = () => {
     setGameState(prev => ({
       ...prev,
       gameOver: true,
-      message: "Vous vous êtes dénoncé aux policiers !"
+      message: "Vous vous êtes dénoncé aux policiers !",
+      endingMessage: "nord"
     }));
   };
 

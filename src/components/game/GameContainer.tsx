@@ -66,7 +66,7 @@ export const GameContainer: React.FC<GameContainerProps> = ({
         />
       );
     
-    case 'finalGame':
+    case 'agir':
       return (
         <GameScreen
           gameState={gameState}

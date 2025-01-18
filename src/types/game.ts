@@ -26,6 +26,7 @@ export type GameState = {
   timeLeft: number;
   gameOver: boolean;
   message: string;
+  endingMessage?: 'nord' | 'sud' | 'est' | 'ouest';
 };
 
 export type GameScreen = 
@@ -39,7 +40,7 @@ export type GameScreen =
   | 'password4'
   | 'minigame4'
   | 'finalPassword'
-  | 'finalGame';
+  | 'agir';
 
 // Alias GameScreenType to GameScreen for backward compatibility
 export type GameScreenType = GameScreen;

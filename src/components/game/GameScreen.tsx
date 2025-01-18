@@ -50,6 +50,12 @@ export const GameScreen: React.FC<GameScreenProps> = ({
           isExploding={isExploding}
         />
 
+        {gameState.gameOver && gameState.endingMessage && (
+          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-terminal-text text-xl">
+            {gameState.endingMessage}
+          </div>
+        )}
+
         <PoliceDialog
           open={showPoliceDialog}
           onOpenChange={setShowPoliceDialog}

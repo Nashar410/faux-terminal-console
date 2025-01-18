@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { GameState } from '@/types/game';
 
 export const usePlayerMovement = (
