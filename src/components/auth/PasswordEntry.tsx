@@ -22,6 +22,7 @@ export const PasswordEntry = ({
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
+      e.preventDefault();
       const cleanedPassword = password.replace(/\s+/g, '');
       
       if (cleanedPassword.toLowerCase() === 'aaaaa123!') {
@@ -69,7 +70,7 @@ export const PasswordEntry = ({
         onKeyDown={handleKeyPress}
         placeholder={`Entrez le mot de passe n°${currentStep}...`}
         className="w-full bg-terminal-bg text-terminal-text font-mono border border-terminal-text 
-                 focus:outline-none focus:ring-1 focus:ring-terminal-text px-4 py-2"
+                 focus:outline-none focus:ring-2 focus:ring-terminal-text px-4 py-2"
         autoFocus
       />
     </div>

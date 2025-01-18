@@ -53,43 +53,66 @@ export const FinalPasswordForm = ({
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, nextFieldId: string | null) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (nextFieldId) {
+        const nextField = document.getElementById(nextFieldId);
+        nextField?.focus();
+      } else {
+        const form = e.currentTarget.form;
+        if (form) form.requestSubmit();
+      }
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit} className="mt-8 space-y-4">
       <input
+        id="determinisme"
         type="text"
         value={finalPasswords.determinisme}
         onChange={(e) => setFinalPasswords({ ...finalPasswords, determinisme: e.target.value })}
+        onKeyDown={(e) => handleKeyDown(e, 'dieu')}
         placeholder="Premier indice..."
         className="w-full bg-terminal-bg text-terminal-text font-mono border border-terminal-text 
-                 focus:outline-none focus:ring-1 focus:ring-terminal-text px-4 py-2"
+                 focus:outline-none focus:ring-2 focus:ring-terminal-text px-4 py-2"
+        autoFocus
       />
       <input
+        id="dieu"
         type="text"
         value={finalPasswords.dieu}
         onChange={(e) => setFinalPasswords({ ...finalPasswords, dieu: e.target.value })}
+        onKeyDown={(e) => handleKeyDown(e, 'mechCola')}
         placeholder="Deuxième indice..."
         className="w-full bg-terminal-bg text-terminal-text font-mono border border-terminal-text 
-                 focus:outline-none focus:ring-1 focus:ring-terminal-text px-4 py-2"
+                 focus:outline-none focus:ring-2 focus:ring-terminal-text px-4 py-2"
       />
       <input
+        id="mechCola"
         type="text"
         value={finalPasswords.mechCola}
         onChange={(e) => setFinalPasswords({ ...finalPasswords, mechCola: e.target.value })}
+        onKeyDown={(e) => handleKeyDown(e, 'choix')}
         placeholder="Troisième indice..."
         className="w-full bg-terminal-bg text-terminal-text font-mono border border-terminal-text 
-                 focus:outline-none focus:ring-1 focus:ring-terminal-text px-4 py-2"
+                 focus:outline-none focus:ring-2 focus:ring-terminal-text px-4 py-2"
       />
       <input
+        id="choix"
         type="text"
         value={finalPasswords.choix}
         onChange={(e) => setFinalPasswords({ ...finalPasswords, choix: e.target.value })}
+        onKeyDown={(e) => handleKeyDown(e, null)}
         placeholder="Quatrième indice..."
         className="w-full bg-terminal-bg text-terminal-text font-mono border border-terminal-text 
-                 focus:outline-none focus:ring-1 focus:ring-terminal-text px-4 py-2"
+                 focus:outline-none focus:ring-2 focus:ring-terminal-text px-4 py-2"
       />
       <button
         type="submit"
-        className="w-full bg-terminal-text text-terminal-bg font-mono py-2 hover:bg-opacity-90 transition-opacity"
+        className="w-full bg-terminal-text text-terminal-bg font-mono py-2 hover:bg-opacity-90 
+                 transition-opacity focus:outline-none focus:ring-2 focus:ring-terminal-text"
       >
         Valider
       </button>
