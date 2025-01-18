@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { DragDropContext } from 'react-beautiful-dnd';
 import { useToast } from "@/hooks/use-toast";
 import { decodeBase64 } from '@/utils/encoding';
+import { DroppableColumn } from './dragdrop/DroppableColumn';
 import strings from '@/data/strings.json';
-
-type Word = {
-  id: string;
-  content: string;
-  correctColumn: 'positive' | 'negative';
-};
+import { Word } from '@/types/game';
 
 type DragDropGameProps = {
   onComplete: () => void;
@@ -24,7 +20,6 @@ const shuffleArray = <T,>(array: T[]): T[] => {
 };
 
 const DragDropGame = ({ onComplete }: DragDropGameProps) => {
-  // Initialiser les mots en les mélangeant
   const [words] = useState<Word[]>(() => shuffleArray(strings.game.dragDrop.words as Word[]));
   const [columns, setColumns] = useState({
     unassigned: shuffleArray(strings.game.dragDrop.words.map(w => w.id)),
@@ -32,6 +27,10 @@ const DragDropGame = ({ onComplete }: DragDropGameProps) => {
     negative: []
   });
   const { toast } = useToast();
+
+  const getWordsForColumn = (columnId: keyof typeof columns) => {
+    return columns[columnId].map(id => words.find(w => w.id === id)!);
+  };
 
   const checkCompletion = () => {
     if ((columns.positive.length + columns.negative.length) === words.length) {
@@ -61,7 +60,6 @@ const DragDropGame = ({ onComplete }: DragDropGameProps) => {
           description: decodeBase64(strings.game.dragDrop.error),
           className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
         });
-        // Réinitialiser avec un nouvel ordre aléatoire
         setColumns({
           unassigned: shuffleArray(strings.game.dragDrop.words.map(w => w.id)),
           positive: [],
@@ -96,99 +94,22 @@ const DragDropGame = ({ onComplete }: DragDropGameProps) => {
     <div className="mt-8 font-mono text-terminal-text">
       <DragDropContext onDragEnd={onDragEnd}>
         <div className="flex flex-col space-y-8">
-          <Droppable droppableId="unassigned" direction="horizontal">
-            {(provided) => (
-              <div
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-                className="min-h-[100px] p-4 border border-terminal-text flex flex-wrap gap-4"
-              >
-                {columns.unassigned.map((wordId, index) => {
-                  const word = words.find(w => w.id === wordId);
-                  return (
-                    <Draggable key={wordId} draggableId={wordId} index={index}>
-                      {(provided) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          className="px-4 py-2 border border-terminal-text cursor-move"
-                        >
-                          {word?.content}
-                        </div>
-                      )}
-                    </Draggable>
-                  );
-                })}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
+          <DroppableColumn
+            id="unassigned"
+            words={getWordsForColumn('unassigned')}
+          />
 
           <div className="grid grid-cols-2 gap-8">
-            <Droppable droppableId="positive">
-              {(provided) => (
-                <div
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                  className="min-h-[200px] p-4 border border-terminal-text"
-                >
-                  <h2 className="mb-4 text-center border-b border-terminal-text">Positif</h2>
-                  <div className="flex flex-wrap gap-4">
-                    {columns.positive.map((wordId, index) => {
-                      const word = words.find(w => w.id === wordId);
-                      return (
-                        <Draggable key={wordId} draggableId={wordId} index={index}>
-                          {(provided) => (
-                            <div
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
-                              className="px-4 py-2 border border-terminal-text cursor-move"
-                            >
-                              {word?.content}
-                            </div>
-                          )}
-                        </Draggable>
-                      );
-                    })}
-                  </div>
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-
-            <Droppable droppableId="negative">
-              {(provided) => (
-                <div
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                  className="min-h-[200px] p-4 border border-terminal-text"
-                >
-                  <h2 className="mb-4 text-center border-b border-terminal-text">Négatif</h2>
-                  <div className="flex flex-wrap gap-4">
-                    {columns.negative.map((wordId, index) => {
-                      const word = words.find(w => w.id === wordId);
-                      return (
-                        <Draggable key={wordId} draggableId={wordId} index={index}>
-                          {(provided) => (
-                            <div
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
-                              className="px-4 py-2 border border-terminal-text cursor-move"
-                            >
-                              {word?.content}
-                            </div>
-                          )}
-                        </Draggable>
-                      );
-                    })}
-                  </div>
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
+            <DroppableColumn
+              id="positive"
+              title="Positif"
+              words={getWordsForColumn('positive')}
+            />
+            <DroppableColumn
+              id="negative"
+              title="Négatif"
+              words={getWordsForColumn('negative')}
+            />
           </div>
         </div>
       </DragDropContext>
