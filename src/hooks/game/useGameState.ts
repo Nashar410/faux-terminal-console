@@ -3,13 +3,6 @@ import { GameState } from '@/types/game';
 import { playSound } from '@/assets/gameSounds';
 import { decodeBase64 } from '@/utils/encoding';
 import strings from '@/data/strings.json';
-import {
-  INITIAL_PLAYER_POSITION,
-  INITIAL_POLICE_POSITION,
-  INITIAL_FIRECRACKER_POSITION,
-  INITIAL_BUILDING_POSITION,
-  GAME_DURATION
-} from '@/constants/gameConstants';
 
 const createInitialState = (): GameState => ({
   playerX: INITIAL_PLAYER_POSITION.x,
@@ -46,18 +39,6 @@ export const useGameState = () => {
   const [showArrestDialog, setShowArrestDialog] = useState(false);
   const [showBuildingDialog, setShowBuildingDialog] = useState(false);
 
-  const movePlayer = (newX: number, newY: number, direction: 'left' | 'right' | 'idle') => {
-    if (!gameState.gameOver) {
-      setGameState(prev => ({
-        ...prev,
-        playerX: newX,
-        playerY: newY,
-        playerDirection: direction,
-        currentFrame: (prev.currentFrame + 1) % 2
-      }));
-    }
-  };
-
   const handlePoliceConfirm = () => {
     setGameState(prev => ({
       ...prev,
@@ -91,7 +72,6 @@ export const useGameState = () => {
     }, 1000);
   };
 
-  // Effet pour gérer l'arrestation
   useEffect(() => {
     if (showArrestDialog) {
       setGameState(prev => ({
