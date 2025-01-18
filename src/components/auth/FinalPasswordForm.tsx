@@ -40,7 +40,6 @@ const InputWithCheck = memo(({
   placeholder: string;
   isValid: boolean;
 }) => {
-  console.log('Rendering input for:', id, 'with value:', value, 'isValid:', isValid);
   return (
     <div className="relative">
       <input
@@ -76,37 +75,31 @@ export const FinalPasswordForm = ({
     choix: false
   });
 
-  console.log('Component rendered with passwords:', finalPasswords);
-
   const cleanAndValidate = useCallback((input: string, target: string) => {
-    console.log('Validating input:', input, 'against target:', decodeBase64(target));
     return input.toLowerCase().trim() === decodeBase64(target).toLowerCase().trim();
   }, []);
 
   const validatePasswords = useCallback(() => {
-    console.log('Running password validation');
-    setValidPasswords({
+    const newValidPasswords = {
       determinisme: cleanAndValidate(finalPasswords.determinisme, strings.finalForm.hints.determinisme),
       dieu: cleanAndValidate(finalPasswords.dieu, strings.finalForm.hints.dieu),
       mechCola: cleanAndValidate(finalPasswords.mechCola, strings.finalForm.hints.mechCola),
       choix: cleanAndValidate(finalPasswords.choix, strings.finalForm.hints.choix)
-    });
+    };
+    setValidPasswords(newValidPasswords);
+    return Object.values(newValidPasswords).every(valid => valid);
   }, [finalPasswords, cleanAndValidate]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted');
-    validatePasswords();
     
-    if (Object.values(validPasswords).every(valid => valid)) {
-      console.log('All passwords valid, triggering success');
+    if (validatePasswords()) {
       toast({
         description: decodeBase64(strings.console.finalPasswordValid),
         className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
       });
       onSuccess();
     } else {
-      console.log('Invalid passwords, resetting form');
       toast({
         variant: "destructive",
         description: decodeBase64(strings.console.finalPasswordInvalid),
@@ -128,7 +121,6 @@ export const FinalPasswordForm = ({
   };
 
   const handleChange = useCallback((field: keyof PasswordState, value: string) => {
-    console.log('handleChange called for field:', field, 'with value:', value);
     setFinalPasswords({
       ...finalPasswords,
       [field]: value
