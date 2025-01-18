@@ -13,12 +13,14 @@ interface FirecrackerDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onConfirm: () => void;
+  movePlayerAway: () => void;
 }
 
 export const FirecrackerDialog: React.FC<FirecrackerDialogProps> = ({
   open,
   onOpenChange,
   onConfirm,
+  movePlayerAway,
 }) => {
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
@@ -26,16 +28,22 @@ export const FirecrackerDialog: React.FC<FirecrackerDialogProps> = ({
       
       if (e.key === 'Escape') {
         onOpenChange(false);
+        movePlayerAway();
       }
     };
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [open, onOpenChange]);
+  }, [open, onOpenChange, movePlayerAway]);
 
   const handleConfirm = () => {
     onConfirm();
-    onOpenChange(false);  // Ferme la fenêtre après confirmation
+    onOpenChange(false);
+  };
+
+  const handleCancel = () => {
+    onOpenChange(false);
+    movePlayerAway();
   };
 
   return (
@@ -47,14 +55,14 @@ export const FirecrackerDialog: React.FC<FirecrackerDialogProps> = ({
         </DialogDescription>
         <DialogFooter className="flex gap-4 justify-center">
           <Button
-            onClick={handleConfirm}  // Utilise le nouveau handler
+            onClick={handleConfirm}
             className="bg-terminal-text text-terminal-bg hover:bg-terminal-glow focus:ring-2 focus:ring-terminal-text focus:outline-none"
             autoFocus
           >
             OUI
           </Button>
           <Button
-            onClick={() => onOpenChange(false)}
+            onClick={handleCancel}
             className="bg-terminal-text text-terminal-bg hover:bg-terminal-glow focus:ring-2 focus:ring-terminal-text focus:outline-none"
           >
             NON

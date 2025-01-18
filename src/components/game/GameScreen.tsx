@@ -61,7 +61,23 @@ export const GameScreen: React.FC<GameScreenProps> = ({
     setShowBuildingDialog,
     handleBuildingExplosion
   );
-  usePlayerMovement(gameState, true, movePlayer);
+  usePlayerMovement(gameState, !gameState.gameOver, movePlayer);
+
+  const movePlayerAway = () => {
+    const offset = 20;
+    const newX = gameState.playerX > 50 ? gameState.playerX - offset : gameState.playerX + offset;
+    movePlayer(newX, gameState.playerY, 'idle');
+  };
+
+  if (gameState.gameOver) {
+    return (
+      <div className="relative flex items-center justify-center h-[500px] bg-black text-terminal-text">
+        <div className="text-2xl animate-pulse">
+          {gameState.message}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative">
@@ -75,22 +91,18 @@ export const GameScreen: React.FC<GameScreenProps> = ({
           isExploding={isExploding}
         />
 
-        {gameState.gameOver && gameState.endingMessage && (
-          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-terminal-text text-xl">
-            {gameState.endingMessage}
-          </div>
-        )}
-
         <PoliceDialog
           open={showPoliceDialog}
           onOpenChange={setShowPoliceDialog}
           onConfirm={handlePoliceConfirm}
+          movePlayerAway={movePlayerAway}
         />
 
         <FirecrackerDialog
           open={showFirecrackerDialog}
           onOpenChange={setShowFirecrackerDialog}
           onConfirm={handleFirecrackerConfirm}
+          movePlayerAway={movePlayerAway}
         />
 
         <ArrestDialog
