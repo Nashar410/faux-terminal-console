@@ -20,6 +20,13 @@ type FinalPasswordFormProps = {
   onSuccess: () => void;
 };
 
+type PasswordState = {
+  determinisme: string;
+  dieu: string;
+  mechCola: string;
+  choix: string;
+};
+
 const InputWithCheck = memo(({ 
   id, 
   value, 
@@ -120,9 +127,9 @@ export const FinalPasswordForm = ({
     }
   };
 
-  const handleChange = useCallback((field: keyof typeof finalPasswords, value: string) => {
+  const handleChange = useCallback((field: keyof PasswordState, value: string) => {
     console.log('handleChange called for field:', field, 'with value:', value);
-    setFinalPasswords(prev => ({ ...prev, [field]: value }));
+    setFinalPasswords((prev: PasswordState) => ({ ...prev, [field]: value }));
   }, [setFinalPasswords]);
 
   return (
