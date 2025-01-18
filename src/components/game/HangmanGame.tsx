@@ -31,21 +31,24 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
   const [gameStatus, setGameStatus] = useState<'playing' | 'won' | 'lost'>('playing');
   const [credits, setCredits] = useState<number>(TOTAL_CREDITS);
 
-  const displayWord = WORD_TO_GUESS.split('').map((letter, index) => 
-    guessedLetters.has(letter) ? letter : '_'
-  ).join(' ');
+  const getDisplayWord = useCallback(() => {
+    return WORD_TO_GUESS.split('').map(letter => 
+      guessedLetters.has(letter) ? letter : '_'
+    ).join(' ');
+  }, [guessedLetters]);
 
   const checkWin = useCallback(() => {
     console.log('Checking win condition:');
     console.log('Word to guess:', WORD_TO_GUESS);
     console.log('Current guessed letters:', Array.from(guessedLetters));
     
-    const hasWon = !displayWord.includes('_');
-    console.log('Display word:', displayWord);
+    const currentDisplay = getDisplayWord();
+    const hasWon = !currentDisplay.includes('_');
+    console.log('Display word:', currentDisplay);
     console.log('Has won:', hasWon);
     
     return hasWon;
-  }, [guessedLetters, displayWord]);
+  }, [guessedLetters, getDisplayWord]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -73,7 +76,8 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
         setCredits(newCredits);
         console.log('Correct letter, new credits:', newCredits);
         
-        if (checkWin()) {
+        // Check win condition immediately after updating guessed letters
+        if (!getDisplayWord().includes('_')) {
           console.log('Win condition met!');
           if (newCredits > 0) {
             console.log('Game won with positive credits:', newCredits);
@@ -125,7 +129,7 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
       <h2 className="text-2xl">Le Pendu</h2>
       
       <div className="text-4xl tracking-wider mb-8">
-        {displayWord}
+        {getDisplayWord()}
       </div>
       
       <div className="w-full max-w-xs space-y-2">
