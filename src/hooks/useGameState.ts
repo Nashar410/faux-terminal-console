@@ -38,72 +38,84 @@ export const useGameState = () => {
     playSound('start');
   };
 
+  // Timer effect
   useEffect(() => {
-    if (hasStarted && !gameState.gameOver) {
-      const timer = setInterval(() => {
-        setGameState(prev => {
-          if (prev.timeLeft <= 0) {
-            clearInterval(timer);
-            playSound('siren');
-            return {
-              ...prev,
-              gameOver: true,
-              message: "Vous vous êtes fait arrêter !"
-            };
-          }
-          
-          setIsTimeRunningOut(prev.timeLeft <= 10);
-          return { ...prev, timeLeft: prev.timeLeft - 1 };
-        });
-      }, 1000);
+    if (!hasStarted || gameState.gameOver) return;
 
-      const policeAnimation = setInterval(() => {
-        setGameState(prev => {
-          let newY = prev.police.y;
-          if (prev.police.movingDown) {
-            newY = Math.min(MAX_POLICE_Y, prev.police.y + POLICE_SPEED);
-            if (newY >= MAX_POLICE_Y) {
-              return {
-                ...prev,
-                police: { ...prev.police, y: newY, movingDown: false, frame: prev.police.frame === 0 ? 1 : 0 }
-              };
-            }
-          } else {
-            newY = Math.max(MIN_POLICE_Y, prev.police.y - POLICE_SPEED);
-            if (newY <= MIN_POLICE_Y) {
-              return {
-                ...prev,
-                police: { ...prev.police, y: newY, movingDown: true, frame: prev.police.frame === 0 ? 1 : 0 }
-              };
-            }
-          }
+    const timer = setInterval(() => {
+      setGameState(prev => {
+        if (prev.timeLeft <= 0) {
+          clearInterval(timer);
+          playSound('siren');
           return {
             ...prev,
-            police: { ...prev.police, y: newY, frame: prev.police.frame === 0 ? 1 : 0 }
+            gameOver: true,
+            message: "Vous vous êtes fait arrêter !"
           };
-        });
-      }, 50);
+        }
+        
+        setIsTimeRunningOut(prev.timeLeft <= 10);
+        return { ...prev, timeLeft: prev.timeLeft - 1 };
+      });
+    }, 1000);
 
-      const playerAnimation = setInterval(() => {
-        setGameState(prev => ({
+    return () => clearInterval(timer);
+  }, [hasStarted, gameState.gameOver]);
+
+  // Police movement effect
+  useEffect(() => {
+    if (!hasStarted || gameState.gameOver) return;
+
+    const policeAnimation = setInterval(() => {
+      setGameState(prev => {
+        let newY = prev.police.y;
+        if (prev.police.movingDown) {
+          newY = Math.min(MAX_POLICE_Y, prev.police.y + POLICE_SPEED);
+          if (newY >= MAX_POLICE_Y) {
+            return {
+              ...prev,
+              police: { ...prev.police, y: newY, movingDown: false, frame: prev.police.frame === 0 ? 1 : 0 }
+            };
+          }
+        } else {
+          newY = Math.max(MIN_POLICE_Y, prev.police.y - POLICE_SPEED);
+          if (newY <= MIN_POLICE_Y) {
+            return {
+              ...prev,
+              police: { ...prev.police, y: newY, movingDown: true, frame: prev.police.frame === 0 ? 1 : 0 }
+            };
+          }
+        }
+        return {
           ...prev,
-          currentFrame: (prev.currentFrame + 1) % 2
-        }));
-      }, 500);
+          police: { ...prev.police, y: newY, frame: prev.police.frame === 0 ? 1 : 0 }
+        };
+      });
+    }, 50);
 
-      return () => {
-        clearInterval(timer);
-        clearInterval(policeAnimation);
-        clearInterval(playerAnimation);
-      };
-    }
+    return () => clearInterval(policeAnimation);
+  }, [hasStarted, gameState.gameOver]);
+
+  // Player animation effect
+  useEffect(() => {
+    if (!hasStarted || gameState.gameOver) return;
+
+    const playerAnimation = setInterval(() => {
+      setGameState(prev => ({
+        ...prev,
+        currentFrame: (prev.currentFrame + 1) % 2
+      }));
+    }, 500);
+
+    return () => clearInterval(playerAnimation);
   }, [hasStarted, gameState.gameOver]);
 
   const movePlayer = (newX: number, newY: number, direction: 'left' | 'right' | 'idle') => {
     if (!hasStarted) {
-      setHasStarted(true);
-      playSound('start');
+      startGame();
     }
+
+    if (gameState.gameOver) return;
 
     const distance = (x1: number, y1: number, x2: number, y2: number) => 
       Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
