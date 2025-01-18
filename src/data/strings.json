@@ -20,16 +20,10 @@
     "finalPasswordValid": "TW90IGRlIHBhc3NlIGZpbmFsIHZhbGlkw6kgISBQcsOpcGFyZXotdm91cyBhdSBtaW5pIGpldS4uLg==",
     "finalPasswordInvalid": "TW90IGRlIHBhc3NlIGZpbmFsIGluY29ycmVjdA=="
   },
-  "finalForm": {
-    "placeholders": {
-      "first": "Premier indice...",
-      "second": "Deuxième indice...",
-      "third": "Troisième indice...",
-      "fourth": "Quatrième indice..."
-    },
-    "submit": "Valider"
-  },
   "game": {
+    "dragDrop": {
+      "success": "QnJhdm8gISBJbmRpY2UgOiBMZSBtb3QgZGUgcGFzc2UgZXN0IGxpw6kgYXUgZMOpdGVybWluaXNtZS4uLg=="
+    },
     "timeRemaining": "Temps restant",
     "inventory": "Inventaire",
     "controls": "Utilisez les flèches ou WASD pour vous déplacer",
@@ -46,5 +40,14 @@
         "message": "Vous ne voyez que peur et désolation"
       }
     }
+  },
+  "finalForm": {
+    "placeholders": {
+      "first": "Premier indice...",
+      "second": "Deuxième indice...",
+      "third": "Troisième indice...",
+      "fourth": "Quatrième indice..."
+    },
+    "submit": "Valider"
   }
 }

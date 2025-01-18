@@ -5,6 +5,7 @@ import { PasswordEntry } from '@/components/auth/PasswordEntry';
 import { FinalPasswordForm } from '@/components/auth/FinalPasswordForm';
 import { usePlayerMovement } from '@/hooks/usePlayerMovement';
 import { LoadingScreen } from '@/components/LoadingScreen';
+import DragDropGame from '@/components/game/DragDropGame';
 import strings from '@/data/strings.json';
 
 const Index = () => {
@@ -12,6 +13,7 @@ const Index = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [showFinalInput, setShowFinalInput] = useState(false);
   const [showGame, setShowGame] = useState(false);
+  const [showDragDropGame, setShowDragDropGame] = useState(true);
   const [finalPasswords, setFinalPasswords] = useState({
     determinisme: "",
     dieu: "",
@@ -25,6 +27,10 @@ const Index = () => {
   const handleGameStart = () => {
     setShowGame(true);
     gameState.startGame();
+  };
+
+  const handleDragDropComplete = () => {
+    setShowDragDropGame(false);
   };
   
   const passwords = {
@@ -60,13 +66,17 @@ const Index = () => {
         
         {!showGame ? (
           !showFinalInput ? (
-            <PasswordEntry
-              currentStep={currentStep}
-              setCurrentStep={setCurrentStep}
-              setShowFinalInput={setShowFinalInput}
-              setShowGame={handleGameStart}
-              passwords={passwords}
-            />
+            showDragDropGame ? (
+              <DragDropGame onComplete={handleDragDropComplete} />
+            ) : (
+              <PasswordEntry
+                currentStep={currentStep}
+                setCurrentStep={setCurrentStep}
+                setShowFinalInput={setShowFinalInput}
+                setShowGame={handleGameStart}
+                passwords={passwords}
+              />
+            )
           ) : (
             <FinalPasswordForm
               finalPasswords={finalPasswords}
