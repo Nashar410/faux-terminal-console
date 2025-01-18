@@ -5,6 +5,7 @@ import { PasswordEntry } from '@/components/auth/PasswordEntry';
 import { FinalPasswordForm } from '@/components/auth/FinalPasswordForm';
 import { usePlayerMovement } from '@/hooks/usePlayerMovement';
 import { LoadingScreen } from '@/components/LoadingScreen';
+import strings from '@/data/strings.json';
 
 const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -53,7 +54,7 @@ const Index = () => {
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="max-w-2xl w-full">
         <div className="typing-animation inline-block mb-4">
-          <span>Bienvenue sur ma console secrète</span>
+          <span>{strings.console.welcome}</span>
           <span className="terminal-cursor"></span>
         </div>
         

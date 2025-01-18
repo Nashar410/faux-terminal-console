@@ -4,6 +4,7 @@ import {
   DialogContent,
   DialogDescription,
 } from "@/components/ui/dialog";
+import strings from '@/data/strings.json';
 
 interface ArrestDialogProps {
   open: boolean;
@@ -18,7 +19,7 @@ export const ArrestDialog: React.FC<ArrestDialogProps> = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="bg-terminal-bg border-terminal-text text-terminal-text">
         <DialogDescription className="text-terminal-text text-lg">
-          Policier : Vous détenez un pétard, c'est illégal. Vous êtes arrêté !
+          {strings.game.dialogs.police.arrest}
         </DialogDescription>
       </DialogContent>
     </Dialog>

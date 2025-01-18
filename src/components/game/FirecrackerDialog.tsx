@@ -7,6 +7,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import strings from '@/data/strings.json';
 
 interface FirecrackerDialogProps {
   open: boolean;
@@ -35,9 +36,9 @@ export const FirecrackerDialog: React.FC<FirecrackerDialogProps> = ({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="bg-terminal-bg border-terminal-text text-terminal-text">
-        <DialogTitle className="text-terminal-text">Pétard trouvé</DialogTitle>
+        <DialogTitle className="text-terminal-text">{strings.game.dialogs.firecracker.title}</DialogTitle>
         <DialogDescription className="text-terminal-text text-lg">
-          Voulez-vous prendre le pétard ? (OUI / NON)
+          {strings.game.dialogs.firecracker.question}
         </DialogDescription>
         <DialogFooter className="flex gap-4 justify-center">
           <Button

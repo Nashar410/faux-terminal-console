@@ -1,0 +1,50 @@
+{
+  "loadingScreen": {
+    "messages": [
+      "Initialisation du système...",
+      "Activation du mode furtif...",
+      "Chargement des modules de sécurité...",
+      "Scan des réseaux environnants...",
+      "Cryptage des communications...",
+      "Établissement des connexions sécurisées...",
+      "Vérification de l'intégrité du système...",
+      "Mode intraçable activé",
+      "Démarrage de la console secrète..."
+    ]
+  },
+  "console": {
+    "welcome": "Bienvenue sur ma console secrète",
+    "passwordPrompt": "Entrez le mot de passe n°",
+    "invalidPassword": "TW90IGRlIHBhc3NlIGluY29ycmVjdA==",
+    "cheatMode": "TW9kZSB0cmljaGUgYWN0aXbDqSAhIEFjY8OocyBkaXJlY3QgYXUgbWluaS1qZXUuLi4=",
+    "finalPasswordValid": "TW90IGRlIHBhc3NlIGZpbmFsIHZhbGlkw6kgISBQcsOpcGFyZXotdm91cyBhdSBtaW5pIGpldS4uLg==",
+    "finalPasswordInvalid": "TW90IGRlIHBhc3NlIGZpbmFsIGluY29ycmVjdA=="
+  },
+  "finalForm": {
+    "placeholders": {
+      "first": "Premier indice...",
+      "second": "Deuxième indice...",
+      "third": "Troisième indice...",
+      "fourth": "Quatrième indice..."
+    },
+    "submit": "Valider"
+  },
+  "game": {
+    "timeRemaining": "Temps restant",
+    "inventory": "Inventaire",
+    "controls": "Utilisez les flèches ou WASD pour vous déplacer",
+    "dialogs": {
+      "police": {
+        "question": "Vous voulez vous dénoncer aux policiers ? (OUI / NON)",
+        "arrest": "Policier : Vous détenez un pétard, c'est illégal. Vous êtes arrêté !"
+      },
+      "firecracker": {
+        "title": "Pétard trouvé",
+        "question": "Voulez-vous prendre le pétard ? (OUI / NON)"
+      },
+      "building": {
+        "message": "Vous ne voyez que peur et désolation"
+      }
+    }
+  }
+}

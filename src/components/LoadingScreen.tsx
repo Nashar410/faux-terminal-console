@@ -1,16 +1,5 @@
 import { useState, useEffect } from 'react';
-
-const LOADING_MESSAGES = [
-  "Initialisation du système...",
-  "Activation du mode furtif...",
-  "Chargement des modules de sécurité...",
-  "Scan des réseaux environnants...",
-  "Cryptage des communications...",
-  "Établissement des connexions sécurisées...",
-  "Vérification de l'intégrité du système...",
-  "Mode intraçable activé",
-  "Démarrage de la console secrète..."
-];
+import strings from '@/data/strings.json';
 
 interface LoadingScreenProps {
   onLoadingComplete: () => void;
@@ -21,7 +10,7 @@ export const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    if (currentIndex >= LOADING_MESSAGES.length) {
+    if (currentIndex >= strings.loadingScreen.messages.length) {
       const timer = setTimeout(() => {
         onLoadingComplete();
       }, 1000);
@@ -29,9 +18,9 @@ export const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
     }
 
     const timer = setTimeout(() => {
-      setDisplayedMessages(prev => [...prev, LOADING_MESSAGES[currentIndex]]);
+      setDisplayedMessages(prev => [...prev, strings.loadingScreen.messages[currentIndex]]);
       setCurrentIndex(prev => prev + 1);
-    }, Math.random() * 300 + 400); // Temps aléatoire entre 400ms et 700ms
+    }, Math.random() * 300 + 400);
 
     return () => clearTimeout(timer);
   }, [currentIndex, onLoadingComplete]);

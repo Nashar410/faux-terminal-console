@@ -1,6 +1,7 @@
 import React from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { decodeBase64 } from '@/utils/encoding';
+import strings from '@/data/strings.json';
 
 type FinalPasswordFormProps = {
   finalPasswords: {
@@ -34,14 +35,14 @@ export const FinalPasswordForm = ({
       finalPasswords.choix.toLowerCase() === 'choix'
     ) {
       toast({
-        description: decodeBase64('TW90IGRlIHBhc3NlIGZpbmFsIHZhbGlkw6kgISBQcsOpcGFyZXotdm91cyBhdSBtaW5pIGpldS4uLg=='),
+        description: decodeBase64(strings.console.finalPasswordValid),
         className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
       });
       onSuccess();
     } else {
       toast({
         variant: "destructive",
-        description: decodeBase64('TW90IGRlIHBhc3NlIGZpbmFsIGluY29ycmVjdA=='),
+        description: decodeBase64(strings.console.finalPasswordInvalid),
         className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
       });
       setFinalPasswords({
@@ -74,7 +75,7 @@ export const FinalPasswordForm = ({
         value={finalPasswords.determinisme}
         onChange={(e) => setFinalPasswords({ ...finalPasswords, determinisme: e.target.value })}
         onKeyDown={(e) => handleKeyDown(e, 'dieu')}
-        placeholder="Premier indice..."
+        placeholder={strings.finalForm.placeholders.first}
         className="w-full bg-terminal-bg text-terminal-text font-mono border border-terminal-text 
                  focus:outline-none focus:ring-2 focus:ring-terminal-text px-4 py-2"
         autoFocus
@@ -85,7 +86,7 @@ export const FinalPasswordForm = ({
         value={finalPasswords.dieu}
         onChange={(e) => setFinalPasswords({ ...finalPasswords, dieu: e.target.value })}
         onKeyDown={(e) => handleKeyDown(e, 'mechCola')}
-        placeholder="Deuxième indice..."
+        placeholder={strings.finalForm.placeholders.second}
         className="w-full bg-terminal-bg text-terminal-text font-mono border border-terminal-text 
                  focus:outline-none focus:ring-2 focus:ring-terminal-text px-4 py-2"
       />
@@ -95,7 +96,7 @@ export const FinalPasswordForm = ({
         value={finalPasswords.mechCola}
         onChange={(e) => setFinalPasswords({ ...finalPasswords, mechCola: e.target.value })}
         onKeyDown={(e) => handleKeyDown(e, 'choix')}
-        placeholder="Troisième indice..."
+        placeholder={strings.finalForm.placeholders.third}
         className="w-full bg-terminal-bg text-terminal-text font-mono border border-terminal-text 
                  focus:outline-none focus:ring-2 focus:ring-terminal-text px-4 py-2"
       />
@@ -105,7 +106,7 @@ export const FinalPasswordForm = ({
         value={finalPasswords.choix}
         onChange={(e) => setFinalPasswords({ ...finalPasswords, choix: e.target.value })}
         onKeyDown={(e) => handleKeyDown(e, null)}
-        placeholder="Quatrième indice..."
+        placeholder={strings.finalForm.placeholders.fourth}
         className="w-full bg-terminal-bg text-terminal-text font-mono border border-terminal-text 
                  focus:outline-none focus:ring-2 focus:ring-terminal-text px-4 py-2"
       />
@@ -114,7 +115,7 @@ export const FinalPasswordForm = ({
         className="w-full bg-terminal-text text-terminal-bg font-mono py-2 hover:bg-opacity-90 
                  transition-opacity focus:outline-none focus:ring-2 focus:ring-terminal-text"
       >
-        Valider
+        {strings.finalForm.submit}
       </button>
     </form>
   );

@@ -1,6 +1,7 @@
 import React, { useState, KeyboardEvent } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { decodeBase64 } from '@/utils/encoding';
+import strings from '@/data/strings.json';
 
 type PasswordEntryProps = {
   currentStep: number;
@@ -27,7 +28,7 @@ export const PasswordEntry = ({
       
       if (cleanedPassword.toLowerCase() === 'aaaaa123!') {
         toast({
-          description: decodeBase64('TW9kZSB0cmljaGUgYWN0aXbDqSAhIEFjY8OocyBkaXJlY3QgYXUgbWluaS1qZXUuLi4='),
+          description: decodeBase64(strings.console.cheatMode),
           className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
         });
         setShowGame(true);
@@ -53,7 +54,7 @@ export const PasswordEntry = ({
       } else {
         toast({
           variant: "destructive",
-          description: decodeBase64('TW90IGRlIHBhc3NlIGluY29ycmVjdA=='),
+          description: decodeBase64(strings.console.invalidPassword),
           className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
         });
         setPassword("");
@@ -68,7 +69,7 @@ export const PasswordEntry = ({
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         onKeyDown={handleKeyPress}
-        placeholder={`Entrez le mot de passe n°${currentStep}...`}
+        placeholder={`${strings.console.passwordPrompt}${currentStep}...`}
         className="w-full bg-terminal-bg text-terminal-text font-mono border border-terminal-text 
                  focus:outline-none focus:ring-2 focus:ring-terminal-text px-4 py-2"
         autoFocus
