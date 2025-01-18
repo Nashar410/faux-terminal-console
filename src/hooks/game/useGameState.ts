@@ -1,35 +1,42 @@
 import { useState } from 'react';
 import { GameState } from '@/types/game';
 import { playSound } from '@/assets/gameSounds';
+import {
+  INITIAL_PLAYER_POSITION,
+  INITIAL_POLICE_POSITION,
+  INITIAL_FIRECRACKER_POSITION,
+  INITIAL_BUILDING_POSITION,
+  GAME_DURATION
+} from '@/constants/gameConstants';
 
-const INITIAL_STATE: GameState = {
-  playerX: 15,  // Premier quart (0-25%)
-  playerY: 80,
+const createInitialState = (): GameState => ({
+  playerX: INITIAL_PLAYER_POSITION.x,
+  playerY: INITIAL_PLAYER_POSITION.y,
   playerDirection: 'idle',
   currentFrame: 0,
   firecracker: {
-    x: 40,  // Deuxième quart (25-50%)
-    y: 50,
+    x: INITIAL_FIRECRACKER_POSITION.x,
+    y: INITIAL_FIRECRACKER_POSITION.y,
     collected: false
   },
   police: {
-    x: 65,  // Troisième quart (50-75%)
-    y: 20,
+    x: INITIAL_POLICE_POSITION.x,
+    y: INITIAL_POLICE_POSITION.y,
     frame: 0,
     movingDown: true
   },
   building: {
-    x: 90,  // Dernier quart (75-100%)
-    y: 80
+    x: INITIAL_BUILDING_POSITION.x,
+    y: INITIAL_BUILDING_POSITION.y
   },
-  timeLeft: 30,
+  timeLeft: GAME_DURATION,
   gameOver: false,
   message: '',
   endingMessage: undefined
-};
+});
 
 export const useGameState = () => {
-  const [gameState, setGameState] = useState<GameState>(INITIAL_STATE);
+  const [gameState, setGameState] = useState<GameState>(createInitialState());
   const [isNearPolice, setIsNearPolice] = useState(false);
   const [isExploding, setIsExploding] = useState(false);
   const [showPoliceDialog, setShowPoliceDialog] = useState(false);
@@ -53,7 +60,7 @@ export const useGameState = () => {
     setGameState(prev => ({
       ...prev,
       gameOver: true,
-      message: "Vous vous êtes rendu...",
+      message: "Vous vous êtes rendu aux forces de l'ordre...",
       endingMessage: 'nord'
     }));
     playSound('siren');

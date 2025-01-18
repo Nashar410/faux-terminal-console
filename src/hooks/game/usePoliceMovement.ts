@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { GameState } from '@/types/game';
+import { POLICE_MOVEMENT_SPEED, POLICE_MOVEMENT_INTERVAL } from '@/constants/gameConstants';
 
 export const usePoliceMovement = (
   gameState: GameState,
@@ -12,8 +13,8 @@ export const usePoliceMovement = (
     const moveInterval = setInterval(() => {
       setGameState((prev: GameState): GameState => {
         const newY = prev.police.movingDown
-          ? prev.police.y + 1.5
-          : prev.police.y - 1.5;
+          ? prev.police.y + POLICE_MOVEMENT_SPEED
+          : prev.police.y - POLICE_MOVEMENT_SPEED;
 
         const shouldChangeDirection =
           (prev.police.movingDown && newY >= 80) ||
@@ -29,7 +30,7 @@ export const usePoliceMovement = (
           }
         };
       });
-    }, 50);
+    }, POLICE_MOVEMENT_INTERVAL);
 
     return () => clearInterval(moveInterval);
   }, [gameState.gameOver, setGameState, isPaused]);

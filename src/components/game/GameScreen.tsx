@@ -1,9 +1,7 @@
 import React from 'react';
 import { GameState } from '@/types/game';
-import { PoliceDialog } from './PoliceDialog';
-import { FirecrackerDialog } from './FirecrackerDialog';
-import { ArrestDialog } from './ArrestDialog';
-import { BuildingDialog } from './BuildingDialog';
+import { GameOver } from './GameOver';
+import { DialogManager } from './dialogs/DialogManager';
 import { GameOverlay } from './screen/GameOverlay';
 import { GameSprites } from './screen/GameSprites';
 import { useGameTimer } from '@/hooks/game/useGameTimer';
@@ -31,7 +29,7 @@ type GameScreenProps = {
   handleBuildingExplosion: () => void;
 };
 
-export const GameScreen: React.FC<GameScreenProps> = ({ 
+export const GameScreen: React.FC<GameScreenProps> = ({
   gameState,
   setGameState,
   isNearPolice,
@@ -65,18 +63,8 @@ export const GameScreen: React.FC<GameScreenProps> = ({
   );
   usePlayerMovement(gameState, !gameState.gameOver && !isPaused, movePlayer);
 
-  const movePlayerAway = () => {
-    movePlayer(12, 50, 'idle');
-  };
-
   if (gameState.gameOver) {
-    return (
-      <div className="relative flex items-center justify-center h-[500px] bg-black text-terminal-text">
-        <div className="text-2xl animate-pulse">
-          {gameState.message}
-        </div>
-      </div>
-    );
+    return <GameOver message={gameState.message} />;
   }
 
   return (
@@ -91,28 +79,18 @@ export const GameScreen: React.FC<GameScreenProps> = ({
           isExploding={isExploding}
         />
 
-        <PoliceDialog
-          open={showPoliceDialog}
-          onOpenChange={setShowPoliceDialog}
-          onConfirm={handlePoliceConfirm}
-          movePlayerAway={movePlayerAway}
-        />
-
-        <FirecrackerDialog
-          open={showFirecrackerDialog}
-          onOpenChange={setShowFirecrackerDialog}
-          onConfirm={handleFirecrackerConfirm}
-          movePlayerAway={movePlayerAway}
-        />
-
-        <ArrestDialog
-          open={showArrestDialog}
-          onOpenChange={setShowArrestDialog}
-        />
-
-        <BuildingDialog
-          open={showBuildingDialog}
-          onOpenChange={setShowBuildingDialog}
+        <DialogManager
+          showPoliceDialog={showPoliceDialog}
+          setShowPoliceDialog={setShowPoliceDialog}
+          showFirecrackerDialog={showFirecrackerDialog}
+          setShowFirecrackerDialog={setShowFirecrackerDialog}
+          showArrestDialog={showArrestDialog}
+          setShowArrestDialog={setShowArrestDialog}
+          showBuildingDialog={showBuildingDialog}
+          setShowBuildingDialog={setShowBuildingDialog}
+          handlePoliceConfirm={handlePoliceConfirm}
+          handleFirecrackerConfirm={handleFirecrackerConfirm}
+          movePlayer={movePlayer}
         />
       </div>
     </div>

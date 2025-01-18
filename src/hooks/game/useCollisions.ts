@@ -1,8 +1,7 @@
 import { useEffect } from 'react';
 import { GameState } from '@/types/game';
 import { playSound } from '@/assets/gameSounds';
-
-const COLLISION_THRESHOLD = 8;
+import { COLLISION_THRESHOLD } from '@/constants/gameConstants';
 
 export const useCollisions = (
   gameState: GameState,
@@ -31,7 +30,6 @@ export const useCollisions = (
       Math.pow(gameState.playerY - gameState.building.y, 2)
     );
 
-    // Collision avec le policier
     if (distanceToPolice < COLLISION_THRESHOLD) {
       setIsNearPolice(true);
       if (gameState.firecracker.collected) {
@@ -44,12 +42,10 @@ export const useCollisions = (
       setIsNearPolice(false);
     }
 
-    // Collision avec le pétard
     if (!gameState.firecracker.collected && distanceToFirecracker < COLLISION_THRESHOLD) {
       setShowFirecrackerDialog(true);
     }
 
-    // Collision avec le bâtiment
     if (gameState.firecracker.collected && distanceToBuilding < COLLISION_THRESHOLD) {
       setShowBuildingDialog(true);
       handleBuildingExplosion();
