@@ -3,7 +3,7 @@ import { GameState } from '@/types/game';
 
 export const usePoliceMovement = (
   gameState: GameState,
-  setGameState: (state: GameState) => void
+  setGameState: React.Dispatch<React.SetStateAction<GameState>>
 ) => {
   useEffect(() => {
     if (gameState.gameOver) return;
