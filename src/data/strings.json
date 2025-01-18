@@ -13,17 +13,17 @@
     ]
   },
   "console": {
-    "welcome": "TGUgY2hvYyBlc3QgaW7DqXZpdGFibGUuIEF1Y3VuIHJldG91ciBlbiBhcnJpw6hyZS4",
+    "welcome": "TGUgY2hvYyBlc3QgaW7DqXZpdGFibGUuIEF1Y3VuIHJldG91ciBlbiBhcnJpw6hyZS4=",
     "passwordPrompt": "Entrez le mot de passe n°",
     "invalidPassword": "TW90IGRlIHBhc3NlIGluY29ycmVjdA==",
     "cheatMode": "TW9kZSB0cmljaGUgYWN0aXbDqSAhIEFjY8OocyBkaXJlY3QgYXUgbWluaS1qZXUuLi4=",
-    "finalPasswordValid": "TW90IGRlIHBhc3NlIGZpbmFsIHZhbGlkw6kgISBDb21wbMOpdGV6IHZvdHJlIHTDomNoZS4",
-    "finalPasswordInvalid": "TW90IGRlIHBhc3NlIGZpbmFsIGluY29ycmVjdC4"
+    "finalPasswordValid": "TW90IGRlIHBhc3NlIGZpbmFsIHZhbGlkw6kgISBDb21wbMOpdGV6IHZvdHJlIHTDomNoZS4=",
+    "finalPasswordInvalid": "TW90IGRlIHBhc3NlIGZpbmFsIGluY29ycmVjdC4="
   },
   "game": {
     "dragDrop": {
-      "success": "SW5kaWNlIDog",
-      "error": "TGUgZMOpc29yZHJlIGVzdCBkYW5nZXJldXguIFJlcGxhY2V6IGNlcyBtb3RzIGF2YW50IHF1ZSB0b3V0IHPigJllZmZvbmRyZS4",
+      "success": "QnJhdm8gISBJbmRpY2UgOiA=",
+      "error": "TGUgZMOpc29yZHJlIGVzdCBkYW5nZXJldXguIFJlcGxhY2V6IGNlcyBtb3RzIGF2YW50IHF1ZSB0b3V0IHPigJllZmZvbmRyZS4=",
       "words": [
         { "id": "word-0", "content": "fusion", "correctColumn": "positive" },
         { "id": "word-1", "content": "pression", "correctColumn": "negative" },
@@ -39,10 +39,10 @@
       "timeLimit": 10,
       "labels": {
         "donkey": "ÂNE",
-        "water": "U2FsYWlyZQ",
-        "food": "Qm9uaGV1cg"
+        "water": "U2FsYWlyZQ==",
+        "food": "Qm9uaGV1cg=="
       },
-      "success": "QnJhdm8gISBWb3VzIGF2ZXogY2hvaXNpIHZvdHJlIGNhbXAgw6AgdGVtcHMuIEVzcMOpcm9ucyBxdWUgYyfDqXRhaXQgbGUgYm9uLg",
+      "success": "QnJhdm8gISBWb3VzIGF2ZXogY2hvaXNpIHZvdHJlIGNhbXAgw6AgdGVtcHMuIEVzcMOpcm9ucyBxdWUgYyfDqXRhaXQgbGUgYm9uLg==",
       "failure": "VHJvcCB0YXJkIDogbOKAmcOibmUgZXN0IHBlcmR1IGRhbnMgc29uIGRpbGVtbWUsIGV0IHZvdXMgYXVzc2ku"
     },
     "dialogs": {
@@ -68,16 +68,16 @@
     },
     "submit": "Valider",
     "hints": {
-      "determinisme": "QnLDqGNoZQ",
-      "dieu": "MDEvMDIvODIwNQ",
-      "mechCola": "MjI6MzA",
+      "determinisme": "QnLDqGNoZQ==",
+      "dieu": "MDEvMDIvODIwNQ==",
+      "mechCola": "MjI6MzA=",
       "choix": "bGliw6lyb25zLWxlLW1vbmRlLWVuc2VtYmxl"
     }
   },
   "passwords": {
-    "1": "YkBzMWwxYw",
-    "2": "OTI6ODc",
-    "3": "NDljcsOpZGl0cw",
-    "4": "OHVyMWRAbg"
+    "1": "YkBzMWwxYw==",
+    "2": "OTI6ODc=",
+    "3": "NDljcsOpZGl0cw==",
+    "4": "OHVyMWRAbg=="
   }
 }
