@@ -27,7 +27,6 @@ const Index = () => {
     gameState,
     isNearPolice,
     isExploding,
-    movePlayer,
     showPoliceDialog,
     setShowPoliceDialog,
     handlePoliceConfirm,
@@ -69,7 +68,6 @@ const Index = () => {
 
   useEffect(() => {
     const handleDebugKeyPress = (event: KeyboardEvent) => {
-      // Detect Ctrl+Alt+T
       if (event.ctrlKey && event.altKey && event.key === 't') {
         const screens: GameScreenType[] = [
           'loading',
