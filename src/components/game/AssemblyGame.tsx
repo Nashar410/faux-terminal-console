@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useToast } from "@/hooks/use-toast";
-import { decodeBase64 } from '@/utils/encoding';
+import { Button } from "@/components/ui/button";
 
 type Component = {
   id: string;
@@ -26,13 +26,10 @@ export const AssemblyGame: React.FC<AssemblyGameProps> = ({ onComplete }) => {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Mélanger les composants au chargement
     setAvailableComponents([...initialComponents].sort(() => Math.random() - 0.5));
   }, []);
 
   const checkAssembly = () => {
-    if (assemblyZone.length !== correctOrder.length) return;
-    
     const isCorrect = assemblyZone.every((component, index) => 
       component.id === correctOrder[index]
     );
@@ -58,7 +55,7 @@ export const AssemblyGame: React.FC<AssemblyGameProps> = ({ onComplete }) => {
   };
 
   const onDragEnd = (result: any) => {
-    const { source, destination, draggableId } = result;
+    const { source, destination } = result;
 
     if (!destination) return;
 
@@ -66,14 +63,12 @@ export const AssemblyGame: React.FC<AssemblyGameProps> = ({ onComplete }) => {
       ? availableComponents[source.index]
       : assemblyZone[source.index];
 
-    // Retirer le composant de sa source
     if (source.droppableId === 'available') {
       setAvailableComponents(prev => prev.filter((_, index) => index !== source.index));
     } else {
       setAssemblyZone(prev => prev.filter((_, index) => index !== source.index));
     }
 
-    // Ajouter le composant à sa destination
     if (destination.droppableId === 'available') {
       setAvailableComponents(prev => {
         const newItems = [...prev];
@@ -86,11 +81,6 @@ export const AssemblyGame: React.FC<AssemblyGameProps> = ({ onComplete }) => {
         newItems.splice(destination.index, 0, component);
         return newItems;
       });
-    }
-
-    // Vérifier l'assemblage si la zone d'assemblage est pleine
-    if (destination.droppableId === 'assembly' && assemblyZone.length === 2) {
-      setTimeout(checkAssembly, 100);
     }
   };
 
@@ -166,6 +156,17 @@ export const AssemblyGame: React.FC<AssemblyGameProps> = ({ onComplete }) => {
                 )}
               </Droppable>
             </div>
+
+            {assemblyZone.length === 3 && (
+              <div className="flex justify-center">
+                <Button 
+                  onClick={checkAssembly}
+                  className="bg-terminal-text text-terminal-bg hover:bg-terminal-text/80"
+                >
+                  Valider la construction
+                </Button>
+              </div>
+            )}
           </div>
         </DragDropContext>
 
@@ -177,30 +178,23 @@ export const AssemblyGame: React.FC<AssemblyGameProps> = ({ onComplete }) => {
             fill="none"
             strokeWidth="2"
           >
-            {/* Base du pétard - visible quand le premier composant est correct */}
-            <g style={{ display: assemblyZone[0]?.id === correctOrder[0] ? 'block' : 'none' }}>
+            {/* Base du pétard - visible quand le premier composant est placé */}
+            <g style={{ display: assemblyZone.length >= 1 ? 'block' : 'none' }}>
               <rect x="35" y="150" width="30" height="40" />
               <line x1="40" y1="150" x2="40" y2="190" />
               <line x1="50" y1="150" x2="50" y2="190" />
               <line x1="60" y1="150" x2="60" y2="190" />
             </g>
 
-            {/* Corps du pétard - visible quand les deux premiers composants sont corrects */}
-            <g style={{ 
-              display: assemblyZone[0]?.id === correctOrder[0] && 
-                       assemblyZone[1]?.id === correctOrder[1] ? 'block' : 'none' 
-            }}>
+            {/* Corps du pétard - visible quand deux composants sont placés */}
+            <g style={{ display: assemblyZone.length >= 2 ? 'block' : 'none' }}>
               <rect x="30" y="70" width="40" height="80" />
               <path d="M30,110 Q50,120 70,110" />
               <path d="M30,90 Q50,100 70,90" />
             </g>
 
-            {/* Mèche du pétard - visible quand tous les composants sont corrects */}
-            <g style={{ 
-              display: assemblyZone[0]?.id === correctOrder[0] && 
-                       assemblyZone[1]?.id === correctOrder[1] &&
-                       assemblyZone[2]?.id === correctOrder[2] ? 'block' : 'none' 
-            }}>
+            {/* Mèche du pétard - visible quand tous les composants sont placés */}
+            <g style={{ display: assemblyZone.length === 3 ? 'block' : 'none' }}>
               <path d="M50,70 Q30,50 50,30 Q70,10 50,0" />
               <circle cx="50" cy="0" r="3" fill="currentColor" />
             </g>
@@ -209,5 +203,4 @@ export const AssemblyGame: React.FC<AssemblyGameProps> = ({ onComplete }) => {
       </div>
     </div>
   );
-
 };
