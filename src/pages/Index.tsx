@@ -29,6 +29,8 @@ const Index = () => {
     handleFirecrackerConfirm,
     showArrestDialog,
     setShowArrestDialog,
+    showBuildingDialog,
+    setShowBuildingDialog,
     startGame
   } = useGameState();
 
@@ -258,6 +260,8 @@ const Index = () => {
             handleFirecrackerConfirm={handleFirecrackerConfirm}
             showArrestDialog={showArrestDialog}
             setShowArrestDialog={setShowArrestDialog}
+            showBuildingDialog={showBuildingDialog}
+            setShowBuildingDialog={setShowBuildingDialog}
           />
         )}
       </div>
