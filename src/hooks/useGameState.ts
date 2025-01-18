@@ -28,6 +28,11 @@ export const useGameState = () => {
   const [showArrestDialog, setShowArrestDialog] = useState(false);
   const [showBuildingDialog, setShowBuildingDialog] = useState(false);
 
+  // Démarrer automatiquement le jeu lors du montage du composant
+  useEffect(() => {
+    startGame();
+  }, []);
+
   const { timeLeft, isTimeRunningOut } = useGameTimer(hasStarted, gameState.gameOver);
   const police = usePoliceMovement(hasStarted, gameState.gameOver);
   const { currentFrame, playerDirection, setPlayerDirection } = usePlayerAnimation(hasStarted, gameState.gameOver);
@@ -45,10 +50,11 @@ export const useGameState = () => {
         ...prev,
         timeLeft,
         police,
-        currentFrame
+        currentFrame,
+        playerDirection: playerDirection || prev.playerDirection
       }));
     }
-  }, [hasStarted, timeLeft, police, currentFrame, gameState.gameOver]);
+  }, [hasStarted, timeLeft, police, currentFrame, playerDirection, gameState.gameOver]);
 
   useEffect(() => {
     if (hasStarted && timeLeft <= 0 && !gameState.gameOver) {
@@ -68,10 +74,6 @@ export const useGameState = () => {
   };
 
   const movePlayer = (newX: number, newY: number, direction: 'left' | 'right' | 'idle') => {
-    if (!hasStarted) {
-      startGame();
-    }
-
     if (gameState.gameOver) return;
 
     const collisions = checkCollisions(
