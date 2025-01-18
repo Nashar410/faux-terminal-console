@@ -50,7 +50,7 @@ export const useGameProgress = () => {
         goToScreen('minigame4');
         break;
       case 'finalPassword':
-        goToScreen('finalGame');
+        goToScreen('agir');
         break;
     }
   };

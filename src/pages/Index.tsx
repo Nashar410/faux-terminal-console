@@ -58,7 +58,7 @@ const Index = () => {
           'password4',
           'minigame4',
           'finalPassword',
-          'finalGame'
+          'agir'
         ];
 
         const screenChoice = prompt(
@@ -73,7 +73,7 @@ const Index = () => {
           7: Password 4
           8: Jeu d'assemblage du pétard
           9: Final Password
-          10: Final Game`
+          10: Agir`
         );
 
         const screenIndex = parseInt(screenChoice || '0', 10);
