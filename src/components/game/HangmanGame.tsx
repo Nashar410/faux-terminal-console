@@ -30,7 +30,6 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
   const [currentLetter, setCurrentLetter] = useState<string>("");
   const [gameStatus, setGameStatus] = useState<'playing' | 'won' | 'lost'>('playing');
   const [credits, setCredits] = useState<number>(TOTAL_CREDITS);
-  const [allLettersFound, setAllLettersFound] = useState<boolean>(false);
 
   const getDisplayWord = useCallback(() => {
     return WORD_TO_GUESS.split('').map(letter => 
@@ -38,10 +37,15 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
     ).join(' ');
   }, [guessedLetters]);
 
-  const checkAllLettersFound = useCallback(() => {
-    const displayWord = getDisplayWord();
-    return !displayWord.includes('_');
-  }, [getDisplayWord]);
+  const isWordComplete = useCallback(() => {
+    // Count visible letters (non-underscore characters)
+    const visibleLetters = WORD_TO_GUESS.split('').filter(letter => 
+      guessedLetters.has(letter)
+    ).length;
+    
+    console.log('Visible letters:', visibleLetters, 'Word length:', WORD_TO_GUESS.length);
+    return visibleLetters === WORD_TO_GUESS.length;
+  }, [guessedLetters, WORD_TO_GUESS]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -71,12 +75,6 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
         if (newCredits <= 0) {
           setGameStatus('lost');
           onComplete(false);
-        } else {
-          // Check if all letters are found
-          const areAllLettersFound = checkAllLettersFound();
-          if (areAllLettersFound) {
-            setAllLettersFound(true);
-          }
         }
       }
     }
@@ -93,7 +91,7 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
   };
 
   const handleKeyPress = useCallback((e: KeyboardEvent) => {
-    if (gameStatus !== 'playing' || allLettersFound) return;
+    if (gameStatus !== 'playing' || isWordComplete()) return;
     
     const key = e.key.toUpperCase();
     if (/^[A-Z]$/.test(key)) {
@@ -103,7 +101,7 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
       const form = document.querySelector('form');
       if (form) form.requestSubmit();
     }
-  }, [gameStatus, allLettersFound]);
+  }, [gameStatus, isWordComplete]);
 
   useEffect(() => {
     window.addEventListener('keypress', handleKeyPress);
@@ -132,7 +130,7 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
         </div>
       </div>
 
-      {gameStatus === 'playing' && !allLettersFound && (
+      {gameStatus === 'playing' && !isWordComplete() && (
         <form onSubmit={handleSubmit} className="flex gap-4">
           <Input
             type="text"
@@ -151,7 +149,7 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
         </form>
       )}
 
-      {gameStatus === 'playing' && allLettersFound && (
+      {gameStatus === 'playing' && isWordComplete() && (
         <Button 
           onClick={handleValidateWord}
           className="bg-terminal-text text-terminal-bg hover:bg-terminal-text/80"
