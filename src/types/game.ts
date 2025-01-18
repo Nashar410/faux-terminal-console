@@ -41,8 +41,18 @@ export type GameScreen =
   | 'finalPassword'
   | 'finalGame';
 
+// Alias GameScreenType to GameScreen for backward compatibility
+export type GameScreenType = GameScreen;
+
 export type GameProgress = {
   currentScreen: GameScreen;
   hints: string[];
   completedGames: GameScreen[];
+};
+
+// Add the Word type for the drag and drop game
+export type Word = {
+  id: string;
+  content: string;
+  correctColumn: 'positive' | 'negative';
 };
