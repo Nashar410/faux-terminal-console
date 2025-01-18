@@ -36,8 +36,16 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
   ).join(' ');
 
   const checkWin = useCallback(() => {
-    const hasWon = WORD_TO_GUESS.split('').every(letter => guessedLetters.has(letter));
-    console.log('checkWin called, result:', hasWon);
+    console.log('Checking win condition:');
+    console.log('Word to guess:', WORD_TO_GUESS);
+    console.log('Current guessed letters:', Array.from(guessedLetters));
+    
+    const missingLetters = WORD_TO_GUESS.split('').filter(letter => !guessedLetters.has(letter));
+    console.log('Missing letters:', missingLetters);
+    
+    const hasWon = missingLetters.length === 0;
+    console.log('Has won:', hasWon);
+    
     return hasWon;
   }, [guessedLetters]);
 
