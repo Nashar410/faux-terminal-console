@@ -48,7 +48,7 @@ export const BuridanGame: React.FC<BuridanGameProps> = ({ onComplete }) => {
     setGameOver(true);
     setHasWon(won);
     toast({
-      title: won ?  decodeBase64(strings.finalForm.hints.mechCola)  : "Vous avez échoué",
+      title: won ?  decodeBase64(strings.finalForm.hints.dieu)  : "Vous avez échoué",
       description: won ? decodeBase64(strings.game.buridan.success) : decodeBase64(strings.game.buridan.failure),
       className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
     });

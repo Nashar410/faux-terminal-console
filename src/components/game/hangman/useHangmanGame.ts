@@ -8,6 +8,8 @@ import {
   TOTAL_CREDITS,
   MAX_ERRORS 
 } from './constants';
+import {decodeBase64} from "@/utils/encoding.ts";
+import strings from "@/data/strings.json";
 
 export const useHangmanGame = (onComplete: (success: boolean) => void) => {
   const { toast } = useToast();
@@ -70,7 +72,7 @@ export const useHangmanGame = (onComplete: (success: boolean) => void) => {
   const handleValidateWord = () => {
     setGameStatus('won');
     toast({
-      description: "Indice n°3 débloqué : Le mot de passe est lié au déterminisme...",
+      title: decodeBase64(strings.finalForm.hints.choix),
       className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
     });
     onComplete(true);

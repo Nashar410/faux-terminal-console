@@ -28,7 +28,7 @@ export const AssemblyGame: React.FC<AssemblyGameProps> = ({ onComplete }) => {
 
     if (isCorrect) {
       toast({
-        title: decodeBase64(strings.finalForm.hints.choix),
+        title: decodeBase64(strings.finalForm.hints.mechCola),
         description: "La réaction explosive est parfaite",
         className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
       });
