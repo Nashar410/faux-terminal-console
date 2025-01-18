@@ -11,12 +11,12 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
   // Constantes configurables
   const WORD_TO_GUESS = "DETERMINISME";
   const MAX_ERRORS = 6;
-  const MONEY_LOSS_PER_ERROR = 33;
-  const TOTAL_COST_FOR_CORRECT_LETTERS = 30; // 30% au total pour toutes les lettres justes
+  const TOTAL_CREDITS = 600;
+  const WRONG_GUESS_COST = 200;
   
-  // Calcul du coût par lettre correcte
+  // Calcul du coût par lettre correcte (dynamique selon le mot)
   const COST_PER_CORRECT_LETTER = Math.ceil(
-    TOTAL_COST_FOR_CORRECT_LETTERS / 
+    TOTAL_CREDITS / 
     new Set(WORD_TO_GUESS.split('')).size // Nombre de lettres uniques
   );
   
@@ -24,7 +24,7 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
   const [errors, setErrors] = useState<number>(0);
   const [currentLetter, setCurrentLetter] = useState<string>("");
   const [gameStatus, setGameStatus] = useState<'playing' | 'won' | 'lost'>('playing');
-  const [moneyLeft, setMoneyLeft] = useState<number>(100);
+  const [credits, setCredits] = useState<number>(600);
 
   // Convertit le mot en tableau de lettres masquées ou révélées
   const displayWord = WORD_TO_GUESS.split('').map(letter => 
@@ -47,22 +47,23 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
       setGuessedLetters(newGuessedLetters);
       
       if (!WORD_TO_GUESS.includes(letter)) {
+        // Mauvaise lettre : -200 crédits
+        const newCredits = credits - WRONG_GUESS_COST;
         const newErrors = errors + 1;
-        const newMoneyLeft = moneyLeft - MONEY_LOSS_PER_ERROR;
         
         setErrors(newErrors);
-        setMoneyLeft(newMoneyLeft);
+        setCredits(newCredits);
         
-        if (newErrors >= MAX_ERRORS || newMoneyLeft <= 0) {
+        if (newErrors >= MAX_ERRORS || newCredits <= 0) {
           setGameStatus('lost');
           onComplete(false);
         }
       } else {
-        // Lettre correcte : on déduit le coût par lettre
-        const newMoneyLeft = moneyLeft - COST_PER_CORRECT_LETTER;
-        setMoneyLeft(newMoneyLeft);
+        // Bonne lettre : coût calculé dynamiquement
+        const newCredits = credits - COST_PER_CORRECT_LETTER;
+        setCredits(newCredits);
         
-        if (newMoneyLeft <= 0) {
+        if (newCredits <= 0) {
           setGameStatus('lost');
           onComplete(false);
         } else if (checkWin()) {
@@ -89,8 +90,8 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
     return () => window.removeEventListener('keypress', handleKeyPress);
   }, [handleKeyPress]);
 
-  // Génère la représentation ASCII de la jauge d'argent
-  const moneyGauge = Array(Math.ceil(moneyLeft / 25))
+  // Génère la représentation ASCII des crédits
+  const creditsGauge = Array(Math.ceil(credits / 100))
     .fill('$')
     .join('');
 
@@ -104,11 +105,11 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
       
       <div className="w-full max-w-xs space-y-2">
         <div className="text-xl text-center">
-          Argent: {moneyLeft}%
+          Crédits: {credits}
         </div>
-        <Progress value={moneyLeft} className="h-2" />
+        <Progress value={(credits / TOTAL_CREDITS) * 100} className="h-2" />
         <div className="text-center">
-          {moneyGauge || '-'}
+          {creditsGauge || '-'}
         </div>
       </div>
       
@@ -137,7 +138,7 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
 
       {gameStatus === 'won' && (
         <div className="text-2xl text-green-500">
-          Bravo ! Vous avez deviné le mot... Mais il ne vous reste que {moneyLeft}% !
+          Bravo ! Vous avez deviné le mot... Mais il ne vous reste que {credits} crédits !
         </div>
       )}
       
