@@ -33,7 +33,7 @@ export const GameOverlay: React.FC<GameOverlayProps> = ({ gameState, timeLeft })
       )}
 
       <div className="absolute bottom-2 left-2 text-terminal-text text-sm">
-        Utilisez les flèches ou WASD pour vous déplacer
+        Utilisez les flèches pour vous déplacer
       </div>
     </>
   );
