@@ -10,24 +10,14 @@ type Word = {
   correctColumn: 'positive' | 'negative';
 };
 
-const initialWords: Word[] = [
-  { id: 'word-1', content: 'esclavagiste', correctColumn: 'negative' },
-  { id: 'word-2', content: 'manager', correctColumn: 'positive' },
-  { id: 'word-3', content: 'opprésariat', correctColumn: 'negative' },
-  { id: 'word-4', content: 'salarié libre', correctColumn: 'positive' },
-  { id: 'word-5', content: 'selfmade man', correctColumn: 'positive' },
-  { id: 'word-6', content: 'changement', correctColumn: 'positive' },
-  { id: 'word-7', content: 'confiance en soi', correctColumn: 'positive' },
-];
-
 type DragDropGameProps = {
   onComplete: () => void;
 };
 
 const DragDropGame = ({ onComplete }: DragDropGameProps) => {
-  const [words, setWords] = useState<Word[]>(initialWords);
+  const [words, setWords] = useState<Word[]>(strings.game.dragDrop.words);
   const [columns, setColumns] = useState({
-    unassigned: initialWords.map(w => w.id),
+    unassigned: strings.game.dragDrop.words.map(w => w.id),
     positive: [],
     negative: []
   });

@@ -22,7 +22,16 @@
   },
   "game": {
     "dragDrop": {
-      "success": "QnJhdm8gISBJbmRpY2UgOiBMZSBtb3QgZGUgcGFzc2UgZXN0IGxpw6kgYXUgZMOpdGVybWluaXNtZS4uLg=="
+      "success": "QnJhdm8gISBJbmRpY2UgOiBMZSBtb3QgZGUgcGFzc2UgZXN0IGxpw6kgYXUgZMOpdGVybWluaXNtZS4uLg==",
+      "words": [
+        { "id": "word-1", "content": "esclavagiste", "correctColumn": "negative" },
+        { "id": "word-2", "content": "manager", "correctColumn": "positive" },
+        { "id": "word-3", "content": "opprésariat", "correctColumn": "negative" },
+        { "id": "word-4", "content": "salarié libre", "correctColumn": "positive" },
+        { "id": "word-5", "content": "selfmade man", "correctColumn": "positive" },
+        { "id": "word-6", "content": "changement", "correctColumn": "positive" },
+        { "id": "word-7", "content": "confiance en soi", "correctColumn": "positive" }
+      ]
     },
     "timeRemaining": "Temps restant",
     "inventory": "Inventaire",
