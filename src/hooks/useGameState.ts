@@ -33,8 +33,8 @@ export const useGameState = () => {
   const { toast } = useToast();
 
   const startGame = () => {
-    setGameState(INITIAL_STATE);
     setHasStarted(true);
+    setGameState(INITIAL_STATE);
     playSound('start');
   };
 
@@ -45,7 +45,6 @@ export const useGameState = () => {
     const timer = setInterval(() => {
       setGameState(prev => {
         if (prev.timeLeft <= 0) {
-          clearInterval(timer);
           playSound('siren');
           return {
             ...prev,
@@ -113,6 +112,7 @@ export const useGameState = () => {
   const movePlayer = (newX: number, newY: number, direction: 'left' | 'right' | 'idle') => {
     if (!hasStarted) {
       startGame();
+      return; // Ajout d'un return pour éviter le mouvement immédiat
     }
 
     if (gameState.gameOver) return;
