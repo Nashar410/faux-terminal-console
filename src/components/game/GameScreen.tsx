@@ -13,7 +13,9 @@ import { usePlayerMovement } from '@/hooks/usePlayerMovement';
 
 type GameScreenProps = {
   gameState: GameState;
+  setGameState: (state: GameState) => void;
   isNearPolice: boolean;
+  setIsNearPolice: (near: boolean) => void;
   isExploding: boolean;
   showPoliceDialog: boolean;
   setShowPoliceDialog: (show: boolean) => void;
@@ -25,11 +27,15 @@ type GameScreenProps = {
   setShowArrestDialog: (show: boolean) => void;
   showBuildingDialog: boolean;
   setShowBuildingDialog: (show: boolean) => void;
+  movePlayer: (newX: number, newY: number, direction: 'left' | 'right' | 'idle') => void;
+  handleBuildingExplosion: () => void;
 };
 
 export const GameScreen: React.FC<GameScreenProps> = ({ 
   gameState,
+  setGameState,
   isNearPolice,
+  setIsNearPolice,
   isExploding,
   showPoliceDialog,
   setShowPoliceDialog,
@@ -40,9 +46,10 @@ export const GameScreen: React.FC<GameScreenProps> = ({
   showArrestDialog,
   setShowArrestDialog,
   showBuildingDialog,
-  setShowBuildingDialog
+  setShowBuildingDialog,
+  movePlayer,
+  handleBuildingExplosion
 }) => {
-  // Initialisation des hooks de jeu
   useGameTimer(gameState, setGameState);
   usePoliceMovement(gameState, setGameState);
   useCollisions(

@@ -9,7 +9,7 @@ export const usePoliceMovement = (
     if (gameState.gameOver) return;
 
     const moveInterval = setInterval(() => {
-      setGameState(prev => {
+      setGameState((prev: GameState) => {
         const newY = prev.police.movingDown
           ? prev.police.y + 1
           : prev.police.y - 1;

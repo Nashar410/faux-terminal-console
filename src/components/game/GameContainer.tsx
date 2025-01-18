@@ -18,7 +18,9 @@ export const GameContainer: React.FC<GameContainerProps> = ({
 }) => {
   const {
     gameState,
+    setGameState,
     isNearPolice,
+    setIsNearPolice,
     isExploding,
     showPoliceDialog,
     setShowPoliceDialog,
@@ -30,6 +32,8 @@ export const GameContainer: React.FC<GameContainerProps> = ({
     setShowArrestDialog,
     showBuildingDialog,
     setShowBuildingDialog,
+    movePlayer,
+    handleBuildingExplosion
   } = useGameState();
 
   switch (currentScreen) {
@@ -70,7 +74,9 @@ export const GameContainer: React.FC<GameContainerProps> = ({
       return (
         <GameScreen
           gameState={gameState}
+          setGameState={setGameState}
           isNearPolice={isNearPolice}
+          setIsNearPolice={setIsNearPolice}
           isExploding={isExploding}
           showPoliceDialog={showPoliceDialog}
           setShowPoliceDialog={setShowPoliceDialog}
@@ -82,6 +88,8 @@ export const GameContainer: React.FC<GameContainerProps> = ({
           setShowArrestDialog={setShowArrestDialog}
           showBuildingDialog={showBuildingDialog}
           setShowBuildingDialog={setShowBuildingDialog}
+          movePlayer={movePlayer}
+          handleBuildingExplosion={handleBuildingExplosion}
         />
       );
     
