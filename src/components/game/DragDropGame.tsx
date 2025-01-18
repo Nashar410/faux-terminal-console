@@ -14,10 +14,20 @@ type DragDropGameProps = {
   onComplete: () => void;
 };
 
+const shuffleArray = <T,>(array: T[]): T[] => {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
+
 const DragDropGame = ({ onComplete }: DragDropGameProps) => {
-  const [words] = useState<Word[]>(strings.game.dragDrop.words as Word[]);
+  // Initialiser les mots en les mélangeant
+  const [words] = useState<Word[]>(() => shuffleArray(strings.game.dragDrop.words as Word[]));
   const [columns, setColumns] = useState({
-    unassigned: strings.game.dragDrop.words.map(w => w.id),
+    unassigned: shuffleArray(strings.game.dragDrop.words.map(w => w.id)),
     positive: [],
     negative: []
   });
@@ -51,8 +61,9 @@ const DragDropGame = ({ onComplete }: DragDropGameProps) => {
           description: decodeBase64(strings.game.dragDrop.error),
           className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
         });
+        // Réinitialiser avec un nouvel ordre aléatoire
         setColumns({
-          unassigned: strings.game.dragDrop.words.map(w => w.id),
+          unassigned: shuffleArray(strings.game.dragDrop.words.map(w => w.id)),
           positive: [],
           negative: []
         });
