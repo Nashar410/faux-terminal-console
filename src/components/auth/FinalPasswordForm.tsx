@@ -33,25 +33,22 @@ export const FinalPasswordForm = ({
     choix: false
   });
 
-  // Déplacer la validation dans un useEffect séparé pour éviter la perte de focus
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      const cleanAndValidate = (input: string, target: string) => 
-        input.toLowerCase().trim() === decodeBase64(target).toLowerCase().trim();
+  const cleanAndValidate = (input: string, target: string) => 
+    input.toLowerCase().trim() === decodeBase64(target).toLowerCase().trim();
 
-      setValidPasswords({
-        determinisme: cleanAndValidate(finalPasswords.determinisme, strings.finalForm.hints.determinisme),
-        dieu: cleanAndValidate(finalPasswords.dieu, strings.finalForm.hints.dieu),
-        mechCola: cleanAndValidate(finalPasswords.mechCola, strings.finalForm.hints.mechCola),
-        choix: cleanAndValidate(finalPasswords.choix, strings.finalForm.hints.choix)
-      });
-    }, 500); // Délai de 500ms pour la validation
-
-    return () => clearTimeout(timeoutId);
-  }, [finalPasswords]);
+  const validatePasswords = () => {
+    setValidPasswords({
+      determinisme: cleanAndValidate(finalPasswords.determinisme, strings.finalForm.hints.determinisme),
+      dieu: cleanAndValidate(finalPasswords.dieu, strings.finalForm.hints.dieu),
+      mechCola: cleanAndValidate(finalPasswords.mechCola, strings.finalForm.hints.mechCola),
+      choix: cleanAndValidate(finalPasswords.choix, strings.finalForm.hints.choix)
+    });
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    validatePasswords();
+    
     if (Object.values(validPasswords).every(valid => valid)) {
       toast({
         description: decodeBase64(strings.console.finalPasswordValid),
