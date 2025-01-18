@@ -26,7 +26,7 @@ export type GameState = {
   timeLeft: number;
   gameOver: boolean;
   message: string;
-  endingMessage?: 'nord' | 'sud' | 'est' | 'ouest';
+  endingMessage?: string;
 };
 
 export type GameScreen = 

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { GameState } from '@/types/game';
 import { playSound } from '@/assets/gameSounds';
 import { decodeBase64 } from '@/utils/encoding';
