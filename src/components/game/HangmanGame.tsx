@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 
 type HangmanGameProps = {
   onComplete: (success: boolean) => void;
@@ -9,11 +10,13 @@ type HangmanGameProps = {
 export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
   const WORD_TO_GUESS = "DETERMINISME";
   const MAX_ERRORS = 6;
+  const MONEY_LOSS_PER_ERROR = 33;
   
   const [guessedLetters, setGuessedLetters] = useState<Set<string>>(new Set());
   const [errors, setErrors] = useState<number>(0);
   const [currentLetter, setCurrentLetter] = useState<string>("");
   const [gameStatus, setGameStatus] = useState<'playing' | 'won' | 'lost'>('playing');
+  const [moneyLeft, setMoneyLeft] = useState<number>(100);
 
   // Convertit le mot en tableau de lettres masquées ou révélées
   const displayWord = WORD_TO_GUESS.split('').map(letter => 
@@ -37,8 +40,12 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
       
       if (!WORD_TO_GUESS.includes(letter)) {
         const newErrors = errors + 1;
+        const newMoneyLeft = moneyLeft - MONEY_LOSS_PER_ERROR;
+        
         setErrors(newErrors);
-        if (newErrors >= MAX_ERRORS) {
+        setMoneyLeft(newMoneyLeft);
+        
+        if (newErrors >= MAX_ERRORS || newMoneyLeft <= 0) {
           setGameStatus('lost');
           onComplete(false);
         }
@@ -65,12 +72,27 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
     return () => window.removeEventListener('keypress', handleKeyPress);
   }, [handleKeyPress]);
 
+  // Génère la représentation ASCII de la jauge d'argent
+  const moneyGauge = Array(Math.ceil(moneyLeft / 25))
+    .fill('$')
+    .join('');
+
   return (
     <div className="flex flex-col items-center justify-center space-y-8 p-8 bg-terminal-bg text-terminal-text font-mono border-2 border-terminal-text">
       <h2 className="text-2xl">Le Pendu</h2>
       
       <div className="text-4xl tracking-wider mb-8">
         {displayWord}
+      </div>
+      
+      <div className="w-full max-w-xs space-y-2">
+        <div className="text-xl text-center">
+          Argent: {moneyLeft}%
+        </div>
+        <Progress value={moneyLeft} className="h-2" />
+        <div className="text-center">
+          {moneyGauge || '-'}
+        </div>
       </div>
       
       <div className="text-xl">
