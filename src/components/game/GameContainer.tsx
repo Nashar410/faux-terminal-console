@@ -2,6 +2,7 @@ import React from 'react';
 import { GameScreen } from './GameScreen';
 import DragDropGame from './DragDropGame';
 import { BuridanGame } from './BuridanGame';
+import { HangmanGame } from './HangmanGame';
 import { PlaceholderGame } from './PlaceholderGame';
 import { GameScreenType } from '@/types/game';
 import { useGameState } from '@/hooks/useGameState';
@@ -48,9 +49,12 @@ export const GameContainer: React.FC<GameContainerProps> = ({
     
     case 'minigame3':
       return (
-        <PlaceholderGame
-          gameNumber={3}
-          onComplete={() => onGameComplete('minigame3')}
+        <HangmanGame
+          onComplete={(success) => {
+            if (success) {
+              onGameComplete('minigame3');
+            }
+          }}
         />
       );
     
