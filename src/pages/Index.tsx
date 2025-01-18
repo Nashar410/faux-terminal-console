@@ -8,6 +8,12 @@ const Index = () => {
   const [password, setPassword] = useState("");
   const [showFinalInput, setShowFinalInput] = useState(false);
   const [showGame, setShowGame] = useState(false);
+  const [finalPasswords, setFinalPasswords] = useState({
+    determinisme: "",
+    dieu: "",
+    mechCola: "",
+    choix: ""
+  });
   const { 
     gameState, 
     isNearPolice, 
@@ -30,19 +36,19 @@ const Index = () => {
   const passwords = {
     1: { 
       value: 'YkBzMWwxYw==',     // b@s1l1c
-      hint: ''
+      hint: 'déterminisme'
     },
     2: { 
       value: 'OTI6ODc=',         // 92:87
-      hint: ''
+      hint: 'dieu'
     },
     3: { 
       value: btoa(unescape(encodeURIComponent('49crédits'))), // Encodage correct avec gestion des accents
-      hint: ''
+      hint: 'Mech-Cola'
     },
     4: { 
       value: 'OHVyMWRAbg==',     // 8ur1d@n
-      hint: ''
+      hint: 'choix'
     }
   };
 
@@ -55,50 +61,6 @@ const Index = () => {
       return '';
     }
   };
-
-  // Construction du mot de passe final à partir de la concaténation des mots de passe
-  const getFinalPassword = () => {
-    return Object.values(passwords)
-      .map(p => decodeBase64(p.value))
-      .join('');
-  };
-
-  useEffect(() => {
-    if (showGame && !gameState.gameOver) {
-      const handleKeyDown = (e: KeyboardEvent) => {
-        const step = 5;
-        let newX = gameState.playerX;
-        let newY = gameState.playerY;
-        let direction: 'left' | 'right' | 'idle' = 'idle';
-
-        switch (e.key) {
-          case 'ArrowLeft':
-          case 'a':
-            newX = Math.max(0, gameState.playerX - step);
-            direction = 'left';
-            break;
-          case 'ArrowRight':
-          case 'd':
-            newX = Math.min(90, gameState.playerX + step);
-            direction = 'right';
-            break;
-          case 'ArrowUp':
-          case 'w':
-            newY = Math.max(0, gameState.playerY - step);
-            break;
-          case 'ArrowDown':
-          case 's':
-            newY = Math.min(90, gameState.playerY + step);
-            break;
-        }
-
-        movePlayer(newX, newY, direction);
-      };
-
-      window.addEventListener('keydown', handleKeyDown as any);
-      return () => window.removeEventListener('keydown', handleKeyDown as any);
-    }
-  }, [showGame, gameState.gameOver, gameState.playerX, gameState.playerY, movePlayer]);
 
   // Gestion de la saisie utilisateur et vérification des mots de passe
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -123,7 +85,7 @@ const Index = () => {
         // Comparaison avec le mot de passe saisi (insensible à la casse, sans espaces)
         if (cleanedPassword.toLowerCase() === decodedPassword.toLowerCase()) {
           toast({
-            description: `Mot de passe ${currentStep} valide ! Indice : ${decodeBase64(currentPassword.hint)}`,
+            description: `Mot de passe ${currentStep} valide ! Indice : ${currentPassword.hint}`,
             className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
           });
 
@@ -141,23 +103,35 @@ const Index = () => {
           });
           setPassword("");
         }
-      } else {
-        // Vérification du mot de passe final
-        if (cleanedPassword.toLowerCase() === getFinalPassword().toLowerCase()) {
-          toast({
-            description: decodeBase64('TW90IGRlIHBhc3NlIGZpbmFsIHZhbGlkw6kgISBQcsOpcGFyZXotdm91cyBhdSBtaW5pIGpldS4uLg=='),
-            className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
-          });
-          setShowGame(true);
-        } else {
-          toast({
-            variant: "destructive",
-            description: decodeBase64('TW90IGRlIHBhc3NlIGZpbmFsIGluY29ycmVjdA=='),
-            className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
-          });
-          setPassword("");
-        }
       }
+    }
+  };
+
+  const handleFinalPasswordSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (
+      finalPasswords.determinisme.toLowerCase() === 'déterminisme' &&
+      finalPasswords.dieu.toLowerCase() === 'dieu' &&
+      finalPasswords.mechCola.toLowerCase() === 'mech-cola' &&
+      finalPasswords.choix.toLowerCase() === 'choix'
+    ) {
+      toast({
+        description: decodeBase64('TW90IGRlIHBhc3NlIGZpbmFsIHZhbGlkw6kgISBQcsOpcGFyZXotdm91cyBhdSBtaW5pIGpldS4uLg=='),
+        className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
+      });
+      setShowGame(true);
+    } else {
+      toast({
+        variant: "destructive",
+        description: decodeBase64('TW90IGRlIHBhc3NlIGZpbmFsIGluY29ycmVjdA=='),
+        className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
+      });
+      setFinalPasswords({
+        determinisme: "",
+        dieu: "",
+        mechCola: "",
+        choix: ""
+      });
     }
   };
 
@@ -184,18 +158,46 @@ const Index = () => {
               />
             </div>
           ) : (
-            <div className="mt-8">
+            <form onSubmit={handleFinalPasswordSubmit} className="mt-8 space-y-4">
               <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                onKeyDown={handleKeyPress}
-                placeholder={decodeBase64('RW50cmV6IGxlIG1vdCBkZSBwYXNzZSBmaW5hbC4uLg==')}
+                type="text"
+                value={finalPasswords.determinisme}
+                onChange={(e) => setFinalPasswords(prev => ({ ...prev, determinisme: e.target.value }))}
+                placeholder="Premier indice..."
                 className="w-full bg-terminal-bg text-terminal-text font-mono border border-terminal-text 
                          focus:outline-none focus:ring-1 focus:ring-terminal-text px-4 py-2"
-                autoFocus
               />
-            </div>
+              <input
+                type="text"
+                value={finalPasswords.dieu}
+                onChange={(e) => setFinalPasswords(prev => ({ ...prev, dieu: e.target.value }))}
+                placeholder="Deuxième indice..."
+                className="w-full bg-terminal-bg text-terminal-text font-mono border border-terminal-text 
+                         focus:outline-none focus:ring-1 focus:ring-terminal-text px-4 py-2"
+              />
+              <input
+                type="text"
+                value={finalPasswords.mechCola}
+                onChange={(e) => setFinalPasswords(prev => ({ ...prev, mechCola: e.target.value }))}
+                placeholder="Troisième indice..."
+                className="w-full bg-terminal-bg text-terminal-text font-mono border border-terminal-text 
+                         focus:outline-none focus:ring-1 focus:ring-terminal-text px-4 py-2"
+              />
+              <input
+                type="text"
+                value={finalPasswords.choix}
+                onChange={(e) => setFinalPasswords(prev => ({ ...prev, choix: e.target.value }))}
+                placeholder="Quatrième indice..."
+                className="w-full bg-terminal-bg text-terminal-text font-mono border border-terminal-text 
+                         focus:outline-none focus:ring-1 focus:ring-terminal-text px-4 py-2"
+              />
+              <button
+                type="submit"
+                className="w-full bg-terminal-text text-terminal-bg font-mono py-2 hover:bg-opacity-90 transition-opacity"
+              >
+                Valider
+              </button>
+            </form>
           )
         ) : (
           <GameScreen 
