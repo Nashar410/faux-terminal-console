@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { GameState } from '@/types/game';
 import { playSound } from '@/assets/gameSounds';
 import { useGameTimer } from './game/useGameTimer';
@@ -37,6 +37,29 @@ export const useGameState = () => {
     handleExplosion,
     showFirecrackerCollectedToast
   } = useCollisions();
+
+  // Effet pour mettre à jour l'état du jeu avec les nouvelles valeurs
+  useEffect(() => {
+    if (hasStarted && !gameState.gameOver) {
+      setGameState(prev => ({
+        ...prev,
+        timeLeft,
+        police,
+        currentFrame
+      }));
+    }
+  }, [hasStarted, timeLeft, police, currentFrame, gameState.gameOver]);
+
+  // Effet pour vérifier la fin du temps
+  useEffect(() => {
+    if (hasStarted && timeLeft <= 0 && !gameState.gameOver) {
+      setGameState(prev => ({
+        ...prev,
+        gameOver: true,
+        message: "Temps écoulé !"
+      }));
+    }
+  }, [hasStarted, timeLeft, gameState.gameOver]);
 
   const startGame = () => {
     setHasStarted(true);
@@ -101,10 +124,7 @@ export const useGameState = () => {
       ...prev,
       playerX: newX,
       playerY: newY,
-      playerDirection: direction,
-      currentFrame,
-      police,
-      timeLeft
+      playerDirection: direction
     }));
   };
 

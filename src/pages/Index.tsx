@@ -15,24 +15,13 @@ const Index = () => {
     choix: ""
   });
   
-  const { 
-    gameState, 
-    isNearPolice, 
-    isExploding, 
-    movePlayer,
-    showPoliceDialog,
-    setShowPoliceDialog,
-    handlePoliceConfirm,
-    showFirecrackerDialog,
-    setShowFirecrackerDialog,
-    handleFirecrackerConfirm,
-    showArrestDialog,
-    setShowArrestDialog,
-    showBuildingDialog,
-    setShowBuildingDialog,
-    startGame
-  } = useGameState();
+  const gameState = useGameState();
 
+  const handleGameStart = () => {
+    setShowGame(true);
+    gameState.startGame();
+  };
+  
   const passwords = {
     1: { 
       value: 'YkBzMWwxYw==',
@@ -66,31 +55,31 @@ const Index = () => {
               currentStep={currentStep}
               setCurrentStep={setCurrentStep}
               setShowFinalInput={setShowFinalInput}
-              setShowGame={setShowGame}
+              setShowGame={handleGameStart}
               passwords={passwords}
             />
           ) : (
             <FinalPasswordForm
               finalPasswords={finalPasswords}
               setFinalPasswords={setFinalPasswords}
-              onSuccess={() => setShowGame(true)}
+              onSuccess={handleGameStart}
             />
           )
         ) : (
           <GameScreen 
-            gameState={gameState}
-            isNearPolice={isNearPolice}
-            isExploding={isExploding}
-            showPoliceDialog={showPoliceDialog}
-            setShowPoliceDialog={setShowPoliceDialog}
-            handlePoliceConfirm={handlePoliceConfirm}
-            showFirecrackerDialog={showFirecrackerDialog}
-            setShowFirecrackerDialog={setShowFirecrackerDialog}
-            handleFirecrackerConfirm={handleFirecrackerConfirm}
-            showArrestDialog={showArrestDialog}
-            setShowArrestDialog={setShowArrestDialog}
-            showBuildingDialog={showBuildingDialog}
-            setShowBuildingDialog={setShowBuildingDialog}
+            gameState={gameState.gameState}
+            isNearPolice={gameState.isNearPolice}
+            isExploding={gameState.isExploding}
+            showPoliceDialog={gameState.showPoliceDialog}
+            setShowPoliceDialog={gameState.setShowPoliceDialog}
+            handlePoliceConfirm={gameState.handlePoliceConfirm}
+            showFirecrackerDialog={gameState.showFirecrackerDialog}
+            setShowFirecrackerDialog={gameState.setShowFirecrackerDialog}
+            handleFirecrackerConfirm={gameState.handleFirecrackerConfirm}
+            showArrestDialog={gameState.showArrestDialog}
+            setShowArrestDialog={gameState.setShowArrestDialog}
+            showBuildingDialog={gameState.showBuildingDialog}
+            setShowBuildingDialog={gameState.setShowBuildingDialog}
           />
         )}
       </div>
