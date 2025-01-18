@@ -3,10 +3,11 @@ import { GameState } from '@/types/game';
 
 export const useGameTimer = (
   gameState: GameState,
-  setGameState: React.Dispatch<React.SetStateAction<GameState>>
+  setGameState: React.Dispatch<React.SetStateAction<GameState>>,
+  isPaused: boolean
 ) => {
   useEffect(() => {
-    if (gameState.gameOver) return;
+    if (gameState.gameOver || isPaused) return;
 
     const timer = setInterval(() => {
       setGameState((prev: GameState): GameState => {
@@ -27,5 +28,5 @@ export const useGameTimer = (
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [gameState.gameOver, setGameState]);
+  }, [gameState.gameOver, setGameState, isPaused]);
 };

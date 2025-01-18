@@ -50,8 +50,10 @@ export const GameScreen: React.FC<GameScreenProps> = ({
   movePlayer,
   handleBuildingExplosion
 }) => {
-  useGameTimer(gameState, setGameState);
-  usePoliceMovement(gameState, setGameState);
+  const isPaused = showPoliceDialog || showFirecrackerDialog || showArrestDialog || showBuildingDialog;
+
+  useGameTimer(gameState, setGameState, isPaused);
+  usePoliceMovement(gameState, setGameState, isPaused);
   useCollisions(
     gameState,
     setIsNearPolice,
@@ -61,12 +63,11 @@ export const GameScreen: React.FC<GameScreenProps> = ({
     setShowBuildingDialog,
     handleBuildingExplosion
   );
-  usePlayerMovement(gameState, !gameState.gameOver, movePlayer);
+  usePlayerMovement(gameState, !gameState.gameOver && !isPaused, movePlayer);
 
   const movePlayerAway = () => {
-    const offset = 20;
-    const newX = gameState.playerX > 50 ? gameState.playerX - offset : gameState.playerX + offset;
-    movePlayer(newX, gameState.playerY, 'idle');
+    // Reset à la position initiale
+    movePlayer(12, 50, 'idle');
   };
 
   if (gameState.gameOver) {

@@ -3,16 +3,17 @@ import { GameState } from '@/types/game';
 
 export const usePoliceMovement = (
   gameState: GameState,
-  setGameState: React.Dispatch<React.SetStateAction<GameState>>
+  setGameState: React.Dispatch<React.SetStateAction<GameState>>,
+  isPaused: boolean
 ) => {
   useEffect(() => {
-    if (gameState.gameOver) return;
+    if (gameState.gameOver || isPaused) return;
 
     const moveInterval = setInterval(() => {
       setGameState((prev: GameState): GameState => {
         const newY = prev.police.movingDown
-          ? prev.police.y + 1.5  // Vitesse ajustée
-          : prev.police.y - 1.5;  // Vitesse ajustée
+          ? prev.police.y + 1.5
+          : prev.police.y - 1.5;
 
         const shouldChangeDirection =
           (prev.police.movingDown && newY >= 80) ||
@@ -28,8 +29,8 @@ export const usePoliceMovement = (
           }
         };
       });
-    }, 50);  // Garde l'intervalle rapide pour une animation fluide
+    }, 50);
 
     return () => clearInterval(moveInterval);
-  }, [gameState.gameOver, setGameState]);
+  }, [gameState.gameOver, setGameState, isPaused]);
 };
