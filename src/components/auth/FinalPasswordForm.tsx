@@ -129,8 +129,11 @@ export const FinalPasswordForm = ({
 
   const handleChange = useCallback((field: keyof PasswordState, value: string) => {
     console.log('handleChange called for field:', field, 'with value:', value);
-    setFinalPasswords((prev: PasswordState) => ({ ...prev, [field]: value }));
-  }, [setFinalPasswords]);
+    setFinalPasswords({
+      ...finalPasswords,
+      [field]: value
+    });
+  }, [setFinalPasswords, finalPasswords]);
 
   return (
     <form onSubmit={handleSubmit} className="mt-8 space-y-4">
