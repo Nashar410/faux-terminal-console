@@ -21,9 +21,9 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
   
   // Calcul du coût par lettre correcte basé sur le nombre de lettres cachées au début
   const COST_PER_CORRECT_LETTER = Math.ceil(
-    TOTAL_CREDITS / 
+    (TOTAL_CREDITS - 1) / // On réserve 1 crédit pour la victoire
     (new Set(WORD_TO_GUESS.split('')).size - 1) // Nombre de lettres uniques - première lettre
-  ) + 1; // +1 pour rendre la victoire plus difficile
+  );
   
   const [errors, setErrors] = useState<number>(0);
   const [currentLetter, setCurrentLetter] = useState<string>("");
@@ -92,7 +92,7 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
     return () => window.removeEventListener('keypress', handleKeyPress);
   }, [handleKeyPress]);
 
-  const creditsGauge = Array(Math.ceil(credits / 100))
+  const creditsGauge = Array(Math.max(0, MAX_ERRORS - errors))
     .fill('$')
     .join('');
 
