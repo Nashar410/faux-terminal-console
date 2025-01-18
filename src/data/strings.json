@@ -17,13 +17,13 @@
     "passwordPrompt": "Entrez le mot de passe n°",
     "invalidPassword": "TW90IGRlIHBhc3NlIGluY29ycmVjdA==",
     "cheatMode": "TW9kZSB0cmljaGUgYWN0aXbDqSAhIEFjY8OocyBkaXJlY3QgYXUgbWluaS1qZXUuLi4=",
-    "finalPasswordValid": "TW90IGRlIHBhc3NlIGZpbmFsIHZhbGlkw6kgISBDb21wbMOpdGV6IHZvdHJlIHTDomNoZS4=",
-    "finalPasswordInvalid": "TW90IGRlIHBhc3NlIGZpbmFsIGluY29ycmVjdC4="
+    "finalPasswordValid": "Mot de passe final validé ! Complétez votre tâche.",
+    "finalPasswordInvalid": "Mot de passe final incorrect."
   },
   "game": {
     "dragDrop": {
-      "success": "QnJhdm8gISBJbmRpY2UgOiA=",
-      "error": "TGUgZMOpc29yZHJlIGVzdCBkYW5nZXJldXguIFJlcGxhY2V6IGNlcyBtb3RzIGF2YW50IHF1ZSB0b3V0IHPigJllZmZvbmRyZS4=",
+      "success": "Bravo ! Indice : ",
+      "error": "Le désordre est dangereux. Replacez ces mots avant que tout s’effondre.",
       "words": [
         { "id": "word-0", "content": "fusion", "correctColumn": "positive" },
         { "id": "word-1", "content": "pression", "correctColumn": "negative" },
@@ -39,11 +39,11 @@
       "timeLimit": 10,
       "labels": {
         "donkey": "ÂNE",
-        "water": "U2FsYWlyZQ==",
-        "food": "Qm9uaGV1cg=="
+        "water": "Salaire",
+        "food": "Bonheur"
       },
-      "success": "QnJhdm8gISBWb3VzIGF2ZXogY2hvaXNpIHZvdHJlIGNhbXAgw6AgdGVtcHMuIEVzcMOpcm9ucyBxdWUgYyfDqXRhaXQgbGUgYm9uLg==",
-      "failure": "VHJvcCB0YXJkIDogbOKAmcOibmUgZXN0IHBlcmR1IGRhbnMgc29uIGRpbGVtbWUsIGV0IHZvdXMgYXVzc2ku"
+      "success": "Bravo ! Vous avez choisi votre camp à temps. Espérons que c'était le bon.",
+      "failure": "Trop tard : l’âne est perdu dans son dilemme, et vous aussi."
     },
     "dialogs": {
       "police": {
@@ -68,16 +68,16 @@
     },
     "submit": "Valider",
     "hints": {
-      "determinisme": "QnLDqGNoZQ==",
-      "dieu": "MDEvMDIvODIwNQ==",
-      "mechCola": "MjI6MzA=",
-      "choix": "bGliw6lyb25zLWxlLW1vbmRlLWVuc2VtYmxl"
+      "determinisme": "Brèche",
+      "dieu": "01/02/8205",
+      "mechCola": "22:30",
+      "choix": "libérons-le-monde-ensemble"
     }
   },
   "passwords": {
-    "1": "YkBzMWwxYw==",
-    "2": "OTI6ODc=",
-    "3": "NDljcsOpZGl0cw==",
-    "4": "OHVyMWRAbg=="
+    "1": "b@s1l1c",
+    "2": "92:87",
+    "3": "49crédits",
+    "4": "8ur1d@n"
   }
 }
