@@ -4,7 +4,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { DragDropZone } from './assembly/DragDropZone';
 import { FirecrackerPreview } from './assembly/FirecrackerPreview';
-import { Component, getRandomizedComponents, correctOrder } from './assembly/types';
+import { Component, getRandomizedComponents, correctOrder, initialComponents } from './assembly/types';
 
 type AssemblyGameProps = {
   onComplete: () => void;

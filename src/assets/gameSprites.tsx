@@ -1,6 +1,7 @@
 import { PlayerIdle, PlayerWalkLeft, PlayerWalkRight } from './sprites/PlayerSprite';
 import { PoliceIdle1, PoliceIdle2 } from './sprites/PoliceSprite';
 import { BuildingSprite } from './sprites/BuildingSprite';
+import { FirecrackerSprite } from './sprites/FirecrackerSprite';
 
 export const sprites = {
   player: {
@@ -12,7 +13,8 @@ export const sprites = {
     idle1: PoliceIdle1,
     idle2: PoliceIdle2
   },
-  building: BuildingSprite
+  building: BuildingSprite,
+  firecracker: FirecrackerSprite
 };
 
 // Animation frames for player movement
