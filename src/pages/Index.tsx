@@ -27,10 +27,19 @@ const Index = () => {
   const { toast } = useToast();
 
   const passwords = {
-    1: { value: 'secret1', hint: 'FLEUR' },
-    2: { value: 'secret2', hint: 'LUNE' },
-    3: { value: 'secret3', hint: 'COLLINE' },
-    4: { value: 'secret4', hint: 'AIGLE' },
+    1: { value: 'c2VjcmV0MQ==', hint: 'FLEUR' },    // secret1 encodé
+    2: { value: 'c2VjcmV0Mg==', hint: 'LUNE' },     // secret2 encodé
+    3: { value: 'c2VjcmV0Mw==', hint: 'COLLINE' },  // secret3 encodé
+    4: { value: 'c2VjcmV0NA==', hint: 'AIGLE' },    // secret4 encodé
+  };
+
+  const decodeBase64 = (str: string): string => {
+    try {
+      return atob(str);
+    } catch (e) {
+      console.error('Erreur de décodage base64:', e);
+      return '';
+    }
   };
 
   const getFinalPassword = () => {
@@ -88,19 +97,31 @@ const Index = () => {
         return;
       }
 
-      if (!showFinalInput && passwords[currentStep as keyof typeof passwords].value === password) {
-        toast({
-          description: `Mot de passe ${currentStep} valide ! Indice : ${passwords[currentStep as keyof typeof passwords].hint}`,
-          className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
-        });
+      if (!showFinalInput) {
+        const currentPassword = passwords[currentStep as keyof typeof passwords];
+        const decodedPassword = decodeBase64(currentPassword.value);
+        
+        if (password === decodedPassword) {
+          toast({
+            description: `Mot de passe ${currentStep} valide ! Indice : ${currentPassword.hint}`,
+            className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
+          });
 
-        if (currentStep === 4) {
-          setShowFinalInput(true);
+          if (currentStep === 4) {
+            setShowFinalInput(true);
+          } else {
+            setCurrentStep(prev => prev + 1);
+          }
+          setPassword("");
         } else {
-          setCurrentStep(prev => prev + 1);
+          toast({
+            variant: "destructive",
+            description: "Mot de passe incorrect",
+            className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
+          });
+          setPassword("");
         }
-        setPassword("");
-      } else if (showFinalInput) {
+      } else {
         if (password === getFinalPassword()) {
           toast({
             description: "Mot de passe final validé ! Préparez-vous au mini jeu...",
@@ -115,13 +136,6 @@ const Index = () => {
           });
           setPassword("");
         }
-      } else {
-        toast({
-          variant: "destructive",
-          description: "Mot de passe incorrect",
-          className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
-        });
-        setPassword("");
       }
     }
   };
