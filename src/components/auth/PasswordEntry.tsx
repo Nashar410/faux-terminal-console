@@ -1,64 +1,35 @@
 import React, { useState, KeyboardEvent } from 'react';
-import { useToast } from "@/hooks/use-toast";
 import { decodeBase64 } from '@/utils/encoding';
 import strings from '@/data/strings.json';
 
 type PasswordEntryProps = {
   currentStep: number;
-  setCurrentStep: (step: number) => void;
-  setShowFinalInput: (show: boolean) => void;
-  setShowGame: (show: boolean) => void;
-  setShowDragDropGame: (show: boolean) => void;
-  setShowBuridanGame: (show: boolean) => void;
+  setCurrentStep: () => void;
   passwords: Record<number, { value: string; hint: string }>;
+  onFailure: () => void;
 };
 
 export const PasswordEntry = ({ 
   currentStep, 
   setCurrentStep, 
-  setShowFinalInput,
-  setShowGame,
-  setShowDragDropGame,
-  setShowBuridanGame,
-  passwords 
+  passwords,
+  onFailure
 }: PasswordEntryProps) => {
   const [password, setPassword] = useState("");
-  const { toast } = useToast();
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       const cleanedPassword = password.replace(/\s+/g, '');
       
-      if (cleanedPassword.toLowerCase() === 'aaaaa123!') {
-        toast({
-          description: decodeBase64(strings.console.cheatMode),
-          className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
-        });
-        setShowGame(true);
-        return;
-      }
-
       const currentPassword = passwords[currentStep];
       const decodedPassword = decodeBase64(currentPassword.value);
       
       if (cleanedPassword.toLowerCase() === decodedPassword.toLowerCase()) {
-        if (currentStep === 1) {
-          setShowDragDropGame(true);
-        } else if (currentStep === 2) {
-          setShowBuridanGame(true);
-        } else if (currentStep === 4) {
-          setShowFinalInput(true);
-        } else {
-          setCurrentStep(currentStep + 1);
-        }
+        setCurrentStep();
         setPassword("");
       } else {
-        toast({
-          variant: "destructive",
-          description: decodeBase64(strings.console.invalidPassword),
-          className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
-        });
+        onFailure();
         setPassword("");
       }
     }

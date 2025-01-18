@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import strings from '@/data/strings.json';
 import { decodeBase64 } from '@/utils/encoding';
 
 type Position = 'center' | 'left' | 'right';
 
-export const BuridanGame = () => {
+type BuridanGameProps = {
+  onComplete: () => void;
+};
+
+export const BuridanGame: React.FC<BuridanGameProps> = ({ onComplete }) => {
   const [position, setPosition] = useState<Position>('center');
   const [timeLeft, setTimeLeft] = useState(10);
   const [gameOver, setGameOver] = useState(false);
@@ -48,6 +52,11 @@ export const BuridanGame = () => {
       description: won ? decodeBase64(strings.game.buridan.success) : decodeBase64(strings.game.buridan.failure),
       className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
     });
+    if (won) {
+      setTimeout(() => {
+        onComplete();
+      }, 1500);
+    }
   };
 
   const handleKeyDown = (e: KeyboardEvent) => {
