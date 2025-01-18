@@ -9,6 +9,7 @@ type PasswordEntryProps = {
   setShowFinalInput: (show: boolean) => void;
   setShowGame: (show: boolean) => void;
   setShowDragDropGame: (show: boolean) => void;
+  setShowBuridanGame: (show: boolean) => void;
   passwords: Record<number, { value: string; hint: string }>;
 };
 
@@ -18,6 +19,7 @@ export const PasswordEntry = ({
   setShowFinalInput,
   setShowGame,
   setShowDragDropGame,
+  setShowBuridanGame,
   passwords 
 }: PasswordEntryProps) => {
   const [password, setPassword] = useState("");

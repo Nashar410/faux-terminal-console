@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useToast } from '@/components/ui/use-toast';
 import strings from '@/data/strings.json';
+import { decodeBase64 } from '@/utils/encoding';
 
 type Position = 'center' | 'left' | 'right';
 
