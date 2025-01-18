@@ -13,17 +13,17 @@
     ]
   },
   "console": {
-    "welcome": "TGUgY2hvYyBlc3QgaW7DqXZpdGFibGUuIEF1Y3VuIHJldG91ciBlbiBhcnJpw6hyZS4=",
+    "welcome": "Le choc est inévitable. Aucun retour en arrière.",
     "passwordPrompt": "Entrez le mot de passe n°",
-    "invalidPassword": "TW90IGRlIHBhc3NlIGluY29ycmVjdA==",
-    "cheatMode": "TW9kZSB0cmljaGUgYWN0aXbDqSAhIEFjY8OocyBkaXJlY3QgYXUgbWluaS1qZXUuLi4=",
+    "invalidPassword": "Mot de passe incorrect",
+    "cheatMode": "Mode triche activé ! Accès direct au mini-jeu...",
     "finalPasswordValid": "Mot de passe final validé ! Complétez votre tâche.",
     "finalPasswordInvalid": "Mot de passe final incorrect."
   },
   "game": {
     "dragDrop": {
       "success": "Bravo ! Indice : ",
-      "error": "Le désordre est dangereux. Replacez ces mots avant que tout s’effondre.",
+      "error": "Le désordre est dangereux. Replacez ces mots avant que tout s'effondre.",
       "words": [
         { "id": "word-0", "content": "fusion", "correctColumn": "positive" },
         { "id": "word-1", "content": "pression", "correctColumn": "negative" },
@@ -43,7 +43,7 @@
         "food": "Bonheur"
       },
       "success": "Bravo ! Vous avez choisi votre camp à temps. Espérons que c'était le bon.",
-      "failure": "Trop tard : l’âne est perdu dans son dilemme, et vous aussi."
+      "failure": "Trop tard : l'âne est perdu dans son dilemme, et vous aussi."
     },
     "dialogs": {
       "police": {
@@ -68,16 +68,16 @@
     },
     "submit": "Valider",
     "hints": {
-      "determinisme": "Brèche",
-      "dieu": "01/02/8205",
-      "mechCola": "22:30",
-      "choix": "libérons-le-monde-ensemble"
+      "determinisme": "QnLDqGNoZQ==",
+      "dieu": "MDEvMDIvODIwNQ==",
+      "mechCola": "MjI6MzA=",
+      "choix": "bGliw6lyb25zLWxlLW1vbmRlLWVuc2VtYmxl"
     }
   },
   "passwords": {
-    "1": "b@s1l1c",
-    "2": "92:87",
-    "3": "49crédits",
-    "4": "8ur1d@n"
+    "1": "YkBzMWwxYw==",
+    "2": "OTI6ODc=",
+    "3": "NDljcsOpZGl0cw==",
+    "4": "OHVyMWRAbg=="
   }
 }
