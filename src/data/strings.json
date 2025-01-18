@@ -22,7 +22,7 @@
   },
   "game": {
     "dragDrop": {
-      "success": "Bravo ! Indice : ",
+      "success": "Indice : ",
       "error": "Le désordre est dangereux. Replacez ces mots avant que tout s'effondre.",
       "words": [
         { "id": "word-0", "content": "fusion", "correctColumn": "positive" },

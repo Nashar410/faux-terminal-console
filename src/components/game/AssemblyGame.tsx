@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { DragDropZone } from './assembly/DragDropZone';
 import { FirecrackerPreview } from './assembly/FirecrackerPreview';
 import { Component, getRandomizedComponents, correctOrder, initialComponents } from './assembly/types';
+import {decodeBase64} from "@/utils/encoding.ts";
+import strings from "@/data/strings.json";
 
 type AssemblyGameProps = {
   onComplete: () => void;
@@ -26,8 +28,8 @@ export const AssemblyGame: React.FC<AssemblyGameProps> = ({ onComplete }) => {
 
     if (isCorrect) {
       toast({
-        title: "Assemblage réussi !",
-        description: "La réaction explosive est parfaite. Indice : La base d'une entreprise réside dans l'équilibre des forces.",
+        title: decodeBase64(strings.finalForm.hints.choix),
+        description: "La réaction explosive est parfaite",
         className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
       });
       setTimeout(onComplete, 1500);
