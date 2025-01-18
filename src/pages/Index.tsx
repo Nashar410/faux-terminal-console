@@ -65,13 +65,13 @@ const Index = () => {
           `Debug Mode - Choose a screen number:
           0: Loading
           1: Password 1
-          2: Minigame 1
+          2: Jeu de tri des mots
           3: Password 2
-          4: Minigame 2
+          4: Jeu de l'âne de Buridan
           5: Password 3
-          6: Minigame 3
+          6: Jeu du pendu
           7: Password 4
-          8: Minigame 4
+          8: Jeu d'assemblage du pétard
           9: Final Password
           10: Final Game`
         );

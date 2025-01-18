@@ -40,14 +40,15 @@ export const AssemblyGame: React.FC<AssemblyGameProps> = ({ onComplete }) => {
     if (isCorrect) {
       toast({
         title: "Assemblage réussi !",
-        description: "La réaction explosive est parfaite.",
+        description: "La réaction explosive est parfaite. Indice : La base d'une entreprise réside dans l'équilibre des forces.",
         className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
       });
       setTimeout(onComplete, 1500);
     } else {
       toast({
         variant: "destructive",
-        description: "L'ordre d'assemblage n'est pas correct. Réessayez !",
+        title: "Mauvais assemblage...",
+        description: "La base n'est pas solide. Réessayez !",
         className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
       });
       // Réinitialiser
@@ -208,4 +209,5 @@ export const AssemblyGame: React.FC<AssemblyGameProps> = ({ onComplete }) => {
       </div>
     </div>
   );
+
 };
