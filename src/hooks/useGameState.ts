@@ -1,7 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { GameState } from '@/types/game';
 import { playSound } from '@/assets/gameSounds';
-import { useToast } from '@/hooks/use-toast';
+import { useGameTimer } from './game/useGameTimer';
+import { usePoliceMovement } from './game/usePoliceMovement';
+import { usePlayerAnimation } from './game/usePlayerAnimation';
+import { useCollisions } from './game/useCollisions';
 
 const INITIAL_STATE: GameState = {
   playerX: 10,
@@ -16,98 +19,30 @@ const INITIAL_STATE: GameState = {
   message: ""
 };
 
-const MIN_POLICE_Y = 10;
-const MAX_POLICE_Y = 50;
-const POLICE_SPEED = 0.5;
-
 export const useGameState = () => {
   const [gameState, setGameState] = useState<GameState>(INITIAL_STATE);
-  const [isNearPolice, setIsNearPolice] = useState(false);
-  const [isTimeRunningOut, setIsTimeRunningOut] = useState(false);
-  const [isExploding, setIsExploding] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
   const [showPoliceDialog, setShowPoliceDialog] = useState(false);
   const [showFirecrackerDialog, setShowFirecrackerDialog] = useState(false);
   const [showArrestDialog, setShowArrestDialog] = useState(false);
   const [showBuildingDialog, setShowBuildingDialog] = useState(false);
-  const { toast } = useToast();
+
+  const { timeLeft, isTimeRunningOut } = useGameTimer(hasStarted, gameState.gameOver);
+  const police = usePoliceMovement(hasStarted, gameState.gameOver);
+  const { currentFrame, playerDirection, setPlayerDirection } = usePlayerAnimation(hasStarted, gameState.gameOver);
+  const { 
+    isNearPolice, 
+    isExploding,
+    checkCollisions,
+    handleExplosion,
+    showFirecrackerCollectedToast
+  } = useCollisions();
 
   const startGame = () => {
     setHasStarted(true);
     setGameState(INITIAL_STATE);
     playSound('start');
   };
-
-  // Timer effect
-  useEffect(() => {
-    if (!hasStarted || gameState.gameOver) return;
-
-    const timer = setInterval(() => {
-      setGameState(prev => {
-        if (prev.timeLeft <= 0) {
-          playSound('siren');
-          return {
-            ...prev,
-            gameOver: true,
-            message: "Vous vous êtes fait arrêter !"
-          };
-        }
-        
-        setIsTimeRunningOut(prev.timeLeft <= 10);
-        return { ...prev, timeLeft: prev.timeLeft - 1 };
-      });
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [hasStarted, gameState.gameOver]);
-
-  // Police movement effect
-  useEffect(() => {
-    if (!hasStarted || gameState.gameOver) return;
-
-    const policeAnimation = setInterval(() => {
-      setGameState(prev => {
-        let newY = prev.police.y;
-        if (prev.police.movingDown) {
-          newY = Math.min(MAX_POLICE_Y, prev.police.y + POLICE_SPEED);
-          if (newY >= MAX_POLICE_Y) {
-            return {
-              ...prev,
-              police: { ...prev.police, y: newY, movingDown: false, frame: prev.police.frame === 0 ? 1 : 0 }
-            };
-          }
-        } else {
-          newY = Math.max(MIN_POLICE_Y, prev.police.y - POLICE_SPEED);
-          if (newY <= MIN_POLICE_Y) {
-            return {
-              ...prev,
-              police: { ...prev.police, y: newY, movingDown: true, frame: prev.police.frame === 0 ? 1 : 0 }
-            };
-          }
-        }
-        return {
-          ...prev,
-          police: { ...prev.police, y: newY, frame: prev.police.frame === 0 ? 1 : 0 }
-        };
-      });
-    }, 50);
-
-    return () => clearInterval(policeAnimation);
-  }, [hasStarted, gameState.gameOver]);
-
-  // Player animation effect
-  useEffect(() => {
-    if (!hasStarted || gameState.gameOver) return;
-
-    const playerAnimation = setInterval(() => {
-      setGameState(prev => ({
-        ...prev,
-        currentFrame: (prev.currentFrame + 1) % 2
-      }));
-    }, 500);
-
-    return () => clearInterval(playerAnimation);
-  }, [hasStarted, gameState.gameOver]);
 
   const movePlayer = (newX: number, newY: number, direction: 'left' | 'right' | 'idle') => {
     if (!hasStarted) {
@@ -116,66 +51,61 @@ export const useGameState = () => {
 
     if (gameState.gameOver) return;
 
-    const distance = (x1: number, y1: number, x2: number, y2: number) => 
-      Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    const collisions = checkCollisions(
+      { x: newX, y: newY },
+      { x: police.x, y: police.y },
+      gameState.building,
+      gameState.firecracker
+    );
 
-    setGameState(prev => {
-      const distanceToPolice = distance(newX, newY, prev.police.x, prev.police.y);
-      const distanceToBuilding = distance(newX, newY, prev.building.x, prev.building.y);
-      setIsNearPolice(distanceToPolice < 20);
-
-      if (distanceToPolice < 10) {
-        if (prev.firecracker.collected) {
-          setShowArrestDialog(true);
-          setTimeout(() => {
-            setGameState(prevState => ({
-              ...prevState,
-              gameOver: true,
-              message: "Vous vous êtes fait arrêter avec le pétard !"
-            }));
-          }, 2000);
-          return prev;
-        } else if (!showPoliceDialog) {
-          setShowPoliceDialog(true);
-          return prev;
-        }
-        return prev;
-      }
-
-      if (!prev.firecracker.collected && 
-          distance(newX, newY, prev.firecracker.x, prev.firecracker.y) < 10) {
-        if (!showFirecrackerDialog) {
-          setShowFirecrackerDialog(true);
-          return prev;
-        }
-        return prev;
-      }
-
-      if (distanceToBuilding < 10) {
-        if (prev.firecracker.collected) {
-          setIsExploding(true);
-          playSound('explosion');
-          setTimeout(() => setIsExploding(false), 500);
-          return {
+    if (collisions.withPolice) {
+      if (gameState.firecracker.collected) {
+        setShowArrestDialog(true);
+        setTimeout(() => {
+          setGameState(prev => ({
             ...prev,
             gameOver: true,
-            message: "Boom, vous avez tout fait exploser… défaite !"
-          };
-        } else if (!showBuildingDialog) {
-          setShowBuildingDialog(true);
-          setTimeout(() => setShowBuildingDialog(false), 5000);
-          return prev;
-        }
-        return prev;
+            message: "Vous vous êtes fait arrêter avec le pétard !"
+          }));
+        }, 2000);
+        return;
+      } else if (!showPoliceDialog) {
+        setShowPoliceDialog(true);
+        return;
       }
+      return;
+    }
 
-      return {
-        ...prev,
-        playerX: newX,
-        playerY: newY,
-        playerDirection: direction
-      };
-    });
+    if (collisions.withFirecracker && !showFirecrackerDialog) {
+      setShowFirecrackerDialog(true);
+      return;
+    }
+
+    if (collisions.withBuilding) {
+      if (gameState.firecracker.collected) {
+        handleExplosion();
+        setGameState(prev => ({
+          ...prev,
+          gameOver: true,
+          message: "Boom, vous avez tout fait exploser… défaite !"
+        }));
+      } else if (!showBuildingDialog) {
+        setShowBuildingDialog(true);
+        setTimeout(() => setShowBuildingDialog(false), 5000);
+      }
+      return;
+    }
+
+    setPlayerDirection(direction);
+    setGameState(prev => ({
+      ...prev,
+      playerX: newX,
+      playerY: newY,
+      playerDirection: direction,
+      currentFrame,
+      police,
+      timeLeft
+    }));
   };
 
   const handlePoliceConfirm = () => {
@@ -194,10 +124,7 @@ export const useGameState = () => {
       ...prev,
       firecracker: { ...prev.firecracker, collected: true }
     }));
-    toast({
-      description: "Vous avez ramassé le pétard",
-      className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
-    });
+    showFirecrackerCollectedToast();
   };
 
   return {
