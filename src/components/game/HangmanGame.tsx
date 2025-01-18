@@ -14,21 +14,22 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
   const WRONG_GUESS_COST = 200;
   
   const [guessedLetters, setGuessedLetters] = useState<Set<string>>(() => {
-    // Révéler uniquement la première lettre et toutes ses occurrences
+    // Révéler uniquement la première lettre
     const firstLetter = WORD_TO_GUESS[0];
     return new Set([firstLetter]);
   });
   
   // Calcul du coût par lettre correcte basé sur le nombre de lettres cachées au début
-  const COST_PER_CORRECT_LETTER = Math.ceil(
-    (TOTAL_CREDITS - 1) / // On réserve 1 crédit pour la victoire
-    (new Set(WORD_TO_GUESS.split('')).size - 1) // Nombre de lettres uniques - première lettre
+  const hiddenUniqueLetters = new Set(WORD_TO_GUESS.slice(1).split('')).size;
+  const COST_PER_CORRECT_LETTER = Math.floor(
+    (TOTAL_CREDITS - WRONG_GUESS_COST - 1) / // On réserve 1 crédit pour la victoire et le coût d'une erreur
+    hiddenUniqueLetters // Nombre de lettres uniques restantes à deviner
   );
   
   const [errors, setErrors] = useState<number>(0);
   const [currentLetter, setCurrentLetter] = useState<string>("");
   const [gameStatus, setGameStatus] = useState<'playing' | 'won' | 'lost'>('playing');
-  const [credits, setCredits] = useState<number>(600);
+  const [credits, setCredits] = useState<number>(TOTAL_CREDITS);
 
   const displayWord = WORD_TO_GUESS.split('').map((letter, index) => 
     guessedLetters.has(letter) ? letter : '_'
@@ -48,8 +49,8 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
       setGuessedLetters(newGuessedLetters);
       
       if (!WORD_TO_GUESS.includes(letter)) {
-        const newCredits = credits - WRONG_GUESS_COST;
         const newErrors = errors + 1;
+        const newCredits = credits - WRONG_GUESS_COST;
         
         setErrors(newErrors);
         setCredits(newCredits);
@@ -62,12 +63,17 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
         const newCredits = credits - COST_PER_CORRECT_LETTER;
         setCredits(newCredits);
         
-        if (newCredits <= 0) {
+        if (checkWin()) {
+          if (newCredits > 0) {
+            setGameStatus('won');
+            onComplete(true);
+          } else {
+            setGameStatus('lost');
+            onComplete(false);
+          }
+        } else if (newCredits <= 0) {
           setGameStatus('lost');
           onComplete(false);
-        } else if (checkWin()) {
-          setGameStatus('won');
-          onComplete(true);
         }
       }
     }
