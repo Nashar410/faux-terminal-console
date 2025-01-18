@@ -32,6 +32,7 @@ const Index = () => {
   };
 
   const handleDragDropComplete = () => {
+    setShowDragDropGame(false);
     setCurrentStep(2);
   };
   
@@ -41,7 +42,7 @@ const Index = () => {
       hint: 'ZMOpdGVybWluaXNtZQ=='
     },
     2: { 
-      value: 'OTI6ODc=',
+      value: '92:87',
       hint: 'ZGlldQ=='
     },
     3: { 

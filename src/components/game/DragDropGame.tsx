@@ -38,6 +38,11 @@ const DragDropGame = ({ onComplete }: DragDropGameProps) => {
           className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
         });
         setTimeout(() => {
+          setColumns({
+            unassigned: [],
+            positive: [],
+            negative: []
+          });
           onComplete();
         }, 1500);
       } else {
