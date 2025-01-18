@@ -2,28 +2,28 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { useToast } from "@/hooks/use-toast";
 
 type HangmanGameProps = {
   onComplete: (success: boolean) => void;
 };
 
 export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
+  const { toast } = useToast();
   const WORD_TO_GUESS = "DETERMINISME";
   const MAX_ERRORS = 3;
   const TOTAL_CREDITS = 600;
   const WRONG_GUESS_COST = 200;
   
   const [guessedLetters, setGuessedLetters] = useState<Set<string>>(() => {
-    // Révéler uniquement la première lettre
     const firstLetter = WORD_TO_GUESS[0];
     return new Set([firstLetter]);
   });
   
-  // Calcul du coût par lettre correcte basé sur le nombre de lettres cachées au début
   const hiddenUniqueLetters = new Set(WORD_TO_GUESS.slice(1).split('')).size;
   const COST_PER_CORRECT_LETTER = Math.floor(
-    (TOTAL_CREDITS - WRONG_GUESS_COST - 1) / // On réserve 1 crédit pour la victoire et le coût d'une erreur
-    hiddenUniqueLetters // Nombre de lettres uniques restantes à deviner
+    (TOTAL_CREDITS - WRONG_GUESS_COST - 1) /
+    hiddenUniqueLetters
   );
   
   const [errors, setErrors] = useState<number>(0);
@@ -66,6 +66,10 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
         if (checkWin()) {
           if (newCredits > 0) {
             setGameStatus('won');
+            toast({
+              description: "Indice n°3 débloqué : Le mot de passe est lié au déterminisme...",
+              className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
+            });
             onComplete(true);
           } else {
             setGameStatus('lost');
