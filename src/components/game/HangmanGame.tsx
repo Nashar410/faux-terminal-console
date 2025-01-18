@@ -40,12 +40,12 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
     console.log('Word to guess:', WORD_TO_GUESS);
     console.log('Current guessed letters:', Array.from(guessedLetters));
     
-    // Vérifie que chaque lettre du mot est dans guessedLetters
-    const hasWon = WORD_TO_GUESS.split('').every(letter => guessedLetters.has(letter));
+    const hasWon = !displayWord.includes('_');
+    console.log('Display word:', displayWord);
     console.log('Has won:', hasWon);
     
     return hasWon;
-  }, [guessedLetters]);
+  }, [guessedLetters, displayWord]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -64,6 +64,7 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
         setCredits(newCredits);
         
         if (newErrors >= MAX_ERRORS || newCredits <= 0) {
+          console.log('Game lost due to errors or credits');
           setGameStatus('lost');
           onComplete(false);
         }
@@ -75,7 +76,7 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
         if (checkWin()) {
           console.log('Win condition met!');
           if (newCredits > 0) {
-            console.log('Game won with positive credits, calling onComplete(true)');
+            console.log('Game won with positive credits:', newCredits);
             setGameStatus('won');
             toast({
               description: "Indice n°3 débloqué : Le mot de passe est lié au déterminisme...",
