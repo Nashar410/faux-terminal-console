@@ -13,14 +13,14 @@ export const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
     if (currentIndex >= strings.loadingScreen.messages.length) {
       const timer = setTimeout(() => {
         onLoadingComplete();
-      }, 1000);
+      }, 1000); // Délai de 1 seconde après le dernier message
       return () => clearTimeout(timer);
     }
 
     const timer = setTimeout(() => {
       setDisplayedMessages(prev => [...prev, strings.loadingScreen.messages[currentIndex]]);
       setCurrentIndex(prev => prev + 1);
-    }, Math.random() * 300 + 400);
+    }, Math.random() * 300 + 400); // Délai aléatoire entre 400ms et 700ms
 
     return () => clearTimeout(timer);
   }, [currentIndex, onLoadingComplete]);
