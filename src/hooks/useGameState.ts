@@ -53,7 +53,7 @@ export const useGameState = () => {
     setGameState(prev => ({
       ...prev,
       gameOver: true,
-      message: "Vous vous êtes rendu...",
+      message: "Vous vous êtes rendu aux forces de l'ordre...",
       endingMessage: 'nord'
     }));
     playSound('siren');
@@ -81,6 +81,18 @@ export const useGameState = () => {
       }));
     }, 1000);
   };
+
+  // Effet pour gérer l'arrestation
+  useEffect(() => {
+    if (showArrestDialog) {
+      setGameState(prev => ({
+        ...prev,
+        gameOver: true,
+        message: "Vous vous êtes fait arrêter avec le pétard...",
+        endingMessage: 'sud'
+      }));
+    }
+  }, [showArrestDialog]);
 
   return {
     gameState,

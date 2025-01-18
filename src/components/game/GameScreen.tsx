@@ -66,7 +66,6 @@ export const GameScreen: React.FC<GameScreenProps> = ({
   usePlayerMovement(gameState, !gameState.gameOver && !isPaused, movePlayer);
 
   const movePlayerAway = () => {
-    // Reset à la position initiale
     movePlayer(12, 50, 'idle');
   };
 

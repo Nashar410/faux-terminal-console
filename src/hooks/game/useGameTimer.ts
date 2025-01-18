@@ -12,7 +12,6 @@ export const useGameTimer = (
     const timer = setInterval(() => {
       setGameState((prev: GameState): GameState => {
         if (prev.timeLeft <= 0) {
-          clearInterval(timer);
           return {
             ...prev,
             gameOver: true,
