@@ -141,7 +141,7 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
 
       {gameStatus === 'won' && (
         <div className="text-2xl text-green-500">
-          Bravo ! Vous avez deviné le mot... Mais il ne vous reste que {credits} crédits !
+          Bravo ! Vous avez deviné le mot avec {credits} crédits !
         </div>
       )}
       
