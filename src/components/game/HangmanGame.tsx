@@ -40,10 +40,8 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
     console.log('Word to guess:', WORD_TO_GUESS);
     console.log('Current guessed letters:', Array.from(guessedLetters));
     
-    const missingLetters = WORD_TO_GUESS.split('').filter(letter => !guessedLetters.has(letter));
-    console.log('Missing letters:', missingLetters);
-    
-    const hasWon = missingLetters.length === 0;
+    // Vérifie que chaque lettre du mot est dans guessedLetters
+    const hasWon = WORD_TO_GUESS.split('').every(letter => guessedLetters.has(letter));
     console.log('Has won:', hasWon);
     
     return hasWon;
