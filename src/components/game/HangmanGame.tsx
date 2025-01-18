@@ -11,6 +11,13 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
   const WORD_TO_GUESS = "DETERMINISME";
   const MAX_ERRORS = 6;
   const MONEY_LOSS_PER_ERROR = 33;
+  const TOTAL_COST_FOR_CORRECT_LETTERS = 30; // 30% au total pour toutes les lettres justes
+  
+  // Calcul du coût par lettre correcte
+  const COST_PER_CORRECT_LETTER = Math.ceil(
+    TOTAL_COST_FOR_CORRECT_LETTERS / 
+    new Set(WORD_TO_GUESS.split('')).size // Nombre de lettres uniques
+  );
   
   const [guessedLetters, setGuessedLetters] = useState<Set<string>>(new Set());
   const [errors, setErrors] = useState<number>(0);
@@ -49,9 +56,18 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
           setGameStatus('lost');
           onComplete(false);
         }
-      } else if (checkWin()) {
-        setGameStatus('won');
-        onComplete(true);
+      } else {
+        // Lettre correcte : on déduit le coût par lettre
+        const newMoneyLeft = moneyLeft - COST_PER_CORRECT_LETTER;
+        setMoneyLeft(newMoneyLeft);
+        
+        if (newMoneyLeft <= 0) {
+          setGameStatus('lost');
+          onComplete(false);
+        } else if (checkWin()) {
+          setGameStatus('won');
+          onComplete(true);
+        }
       }
     }
     setCurrentLetter("");
