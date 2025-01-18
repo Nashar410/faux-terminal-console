@@ -3,23 +3,23 @@ import { GameState } from '@/types/game';
 import { playSound } from '@/assets/gameSounds';
 
 const INITIAL_STATE: GameState = {
-  playerX: 15,  // Tout à gauche
+  playerX: 15,  // Premier quart (0-25%)
   playerY: 80,
   playerDirection: 'idle',
   currentFrame: 0,
   firecracker: {
-    x: 35,  // Après le joueur
+    x: 40,  // Deuxième quart (25-50%)
     y: 50,
     collected: false
   },
   police: {
-    x: 65,  // Entre le pétard et l'immeuble
+    x: 65,  // Troisième quart (50-75%)
     y: 20,
     frame: 0,
     movingDown: true
   },
   building: {
-    x: 85,  // Tout à droite
+    x: 90,  // Dernier quart (75-100%)
     y: 80
   },
   timeLeft: 30,
