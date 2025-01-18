@@ -8,6 +8,7 @@ type HangmanGameProps = {
 };
 
 export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
+  // Constantes configurables
   const WORD_TO_GUESS = "DETERMINISME";
   const MAX_ERRORS = 6;
   const MONEY_LOSS_PER_ERROR = 33;
@@ -135,7 +136,9 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
       )}
 
       {gameStatus === 'won' && (
-        <div className="text-2xl text-green-500">Victoire !</div>
+        <div className="text-2xl text-green-500">
+          Bravo ! Vous avez deviné le mot... Mais il ne vous reste que {moneyLeft}% !
+        </div>
       )}
       
       {gameStatus === 'lost' && (
