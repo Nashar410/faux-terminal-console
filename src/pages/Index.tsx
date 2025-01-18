@@ -27,10 +27,22 @@ const Index = () => {
   const { toast } = useToast();
 
   const passwords = {
-    1: { value: 'c2VjcmV0MQ==', hint: 'FLEUR' },    // secret1 encodé
-    2: { value: 'c2VjcmV0Mg==', hint: 'LUNE' },     // secret2 encodé
-    3: { value: 'c2VjcmV0Mw==', hint: 'COLLINE' },  // secret3 encodé
-    4: { value: 'c2VjcmV0NA==', hint: 'AIGLE' },    // secret4 encodé
+    1: { 
+      value: 'c2VjcmV0MQ==',     // "secret1" encodé
+      hint: 'RkxFVVI='           // "FLEUR" encodé
+    },
+    2: { 
+      value: 'c2VjcmV0Mg==',     // "secret2" encodé
+      hint: 'TFVORQ=='           // "LUNE" encodé
+    },
+    3: { 
+      value: 'c2VjcmV0Mw==',     // "secret3" encodé
+      hint: 'Q09MTElORQ=='       // "COLLINE" encodé
+    },
+    4: { 
+      value: 'c2VjcmV0NA==',     // "secret4" encodé
+      hint: 'QUlHTEU='           // "AIGLE" encodé
+    }
   };
 
   const decodeBase64 = (str: string): string => {
@@ -44,7 +56,7 @@ const Index = () => {
 
   const getFinalPassword = () => {
     return Object.values(passwords)
-      .map(p => p.hint)
+      .map(p => decodeBase64(p.hint))
       .join('');
   };
 
@@ -90,7 +102,7 @@ const Index = () => {
       // Cheat code
       if (password === 'aaaaa') {
         toast({
-          description: "Mode triche activé ! Accès direct au mini-jeu...",
+          description: decodeBase64('TW9kZSB0cmljaGUgYWN0aXbDqSAhIEFjY8OocyBkaXJlY3QgYXUgbWluaS1qZXUuLi4='), // "Mode triche activé ! Accès direct au mini-jeu..."
           className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
         });
         setShowGame(true);
@@ -103,7 +115,7 @@ const Index = () => {
         
         if (password === decodedPassword) {
           toast({
-            description: `Mot de passe ${currentStep} valide ! Indice : ${currentPassword.hint}`,
+            description: `Mot de passe ${currentStep} valide ! Indice : ${decodeBase64(currentPassword.hint)}`,
             className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
           });
 
@@ -116,7 +128,7 @@ const Index = () => {
         } else {
           toast({
             variant: "destructive",
-            description: "Mot de passe incorrect",
+            description: decodeBase64('TW90IGRlIHBhc3NlIGluY29ycmVjdA=='), // "Mot de passe incorrect"
             className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
           });
           setPassword("");
@@ -124,14 +136,14 @@ const Index = () => {
       } else {
         if (password === getFinalPassword()) {
           toast({
-            description: "Mot de passe final validé ! Préparez-vous au mini jeu...",
+            description: decodeBase64('TW90IGRlIHBhc3NlIGZpbmFsIHZhbGlkw6kgISBQcsOpcGFyZXotdm91cyBhdSBtaW5pIGpldS4uLg=='), // "Mot de passe final validé ! Préparez-vous au mini jeu..."
             className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
           });
           setShowGame(true);
         } else {
           toast({
             variant: "destructive",
-            description: "Mot de passe final incorrect",
+            description: decodeBase64('TW90IGRlIHBhc3NlIGZpbmFsIGluY29ycmVjdA=='), // "Mot de passe final incorrect"
             className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
           });
           setPassword("");
@@ -144,7 +156,7 @@ const Index = () => {
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="max-w-2xl w-full">
         <div className="typing-animation inline-block mb-4">
-          <span>Bienvenue sur ma console secrète</span>
+          <span>{decodeBase64('QmllbnZlbnVlIHN1ciBtYSBjb25zb2xlIHNlY3LDqHRl')}</span>
           <span className="terminal-cursor"></span>
         </div>
         
@@ -169,7 +181,7 @@ const Index = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 onKeyDown={handleKeyPress}
-                placeholder="Entrez le mot de passe final..."
+                placeholder={decodeBase64('RW50cmV6IGxlIG1vdCBkZSBwYXNzZSBmaW5hbC4uLg==')} // "Entrez le mot de passe final..."
                 className="w-full bg-terminal-bg text-terminal-text font-mono border border-terminal-text 
                          focus:outline-none focus:ring-1 focus:ring-terminal-text px-4 py-2"
                 autoFocus
