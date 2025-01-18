@@ -84,6 +84,10 @@ export const FinalPasswordForm = ({
     }
   };
 
+  const handleChange = (field: keyof typeof finalPasswords, value: string) => {
+    setFinalPasswords({ ...finalPasswords, [field]: value });
+  };
+
   const InputWithCheck = ({ 
     id, 
     value, 
@@ -108,6 +112,7 @@ export const FinalPasswordForm = ({
         value={value}
         onChange={onChange}
         onKeyDown={onKeyDown}
+        onPaste={(e) => e.stopPropagation()}
         placeholder={placeholder}
         className="w-full bg-terminal-bg text-terminal-text font-mono border border-terminal-text 
                  focus:outline-none focus:ring-2 focus:ring-terminal-text px-4 py-2 pr-10"
@@ -126,7 +131,7 @@ export const FinalPasswordForm = ({
       <InputWithCheck
         id="determinisme"
         value={finalPasswords.determinisme}
-        onChange={(e) => setFinalPasswords({ ...finalPasswords, determinisme: e.target.value })}
+        onChange={(e) => handleChange('determinisme', e.target.value)}
         onKeyDown={(e) => handleKeyDown(e, 'dieu')}
         placeholder={strings.finalForm.placeholders.first}
         isValid={validPasswords.determinisme}
@@ -135,7 +140,7 @@ export const FinalPasswordForm = ({
       <InputWithCheck
         id="dieu"
         value={finalPasswords.dieu}
-        onChange={(e) => setFinalPasswords({ ...finalPasswords, dieu: e.target.value })}
+        onChange={(e) => handleChange('dieu', e.target.value)}
         onKeyDown={(e) => handleKeyDown(e, 'mechCola')}
         placeholder={strings.finalForm.placeholders.second}
         isValid={validPasswords.dieu}
@@ -143,7 +148,7 @@ export const FinalPasswordForm = ({
       <InputWithCheck
         id="mechCola"
         value={finalPasswords.mechCola}
-        onChange={(e) => setFinalPasswords({ ...finalPasswords, mechCola: e.target.value })}
+        onChange={(e) => handleChange('mechCola', e.target.value)}
         onKeyDown={(e) => handleKeyDown(e, 'choix')}
         placeholder={strings.finalForm.placeholders.third}
         isValid={validPasswords.mechCola}
@@ -151,7 +156,7 @@ export const FinalPasswordForm = ({
       <InputWithCheck
         id="choix"
         value={finalPasswords.choix}
-        onChange={(e) => setFinalPasswords({ ...finalPasswords, choix: e.target.value })}
+        onChange={(e) => handleChange('choix', e.target.value)}
         onKeyDown={(e) => handleKeyDown(e, null)}
         placeholder={strings.finalForm.placeholders.fourth}
         isValid={validPasswords.choix}
