@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { decodeBase64 } from '@/utils/encoding';
+import { Check } from 'lucide-react';
 import strings from '@/data/strings.json';
 
 type FinalPasswordFormProps = {
@@ -25,15 +26,25 @@ export const FinalPasswordForm = ({
   onSuccess 
 }: FinalPasswordFormProps) => {
   const { toast } = useToast();
+  const [validPasswords, setValidPasswords] = useState({
+    determinisme: false,
+    dieu: false,
+    mechCola: false,
+    choix: false
+  });
+
+  useEffect(() => {
+    setValidPasswords({
+      determinisme: finalPasswords.determinisme.toLowerCase() === 'déterminisme',
+      dieu: finalPasswords.dieu.toLowerCase() === 'dieu',
+      mechCola: finalPasswords.mechCola.toLowerCase() === 'mech-cola',
+      choix: finalPasswords.choix.toLowerCase() === 'choix'
+    });
+  }, [finalPasswords]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (
-      finalPasswords.determinisme.toLowerCase() === 'déterminisme' &&
-      finalPasswords.dieu.toLowerCase() === 'dieu' &&
-      finalPasswords.mechCola.toLowerCase() === 'mech-cola' &&
-      finalPasswords.choix.toLowerCase() === 'choix'
-    ) {
+    if (Object.values(validPasswords).every(valid => valid)) {
       toast({
         description: decodeBase64(strings.console.finalPasswordValid),
         className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
@@ -51,6 +62,12 @@ export const FinalPasswordForm = ({
         mechCola: "",
         choix: ""
       });
+      setValidPasswords({
+        determinisme: false,
+        dieu: false,
+        mechCola: false,
+        choix: false
+      });
     }
   };
 
@@ -67,48 +84,77 @@ export const FinalPasswordForm = ({
     }
   };
 
+  const InputWithCheck = ({ 
+    id, 
+    value, 
+    onChange, 
+    onKeyDown, 
+    placeholder, 
+    isValid, 
+    autoFocus = false 
+  }: {
+    id: string;
+    value: string;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+    placeholder: string;
+    isValid: boolean;
+    autoFocus?: boolean;
+  }) => (
+    <div className="relative">
+      <input
+        id={id}
+        type="text"
+        value={value}
+        onChange={onChange}
+        onKeyDown={onKeyDown}
+        placeholder={placeholder}
+        className="w-full bg-terminal-bg text-terminal-text font-mono border border-terminal-text 
+                 focus:outline-none focus:ring-2 focus:ring-terminal-text px-4 py-2 pr-10"
+        autoFocus={autoFocus}
+      />
+      {isValid && (
+        <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+          <Check className="h-4 w-4 text-green-500" />
+        </div>
+      )}
+    </div>
+  );
+
   return (
     <form onSubmit={handleSubmit} className="mt-8 space-y-4">
-      <input
+      <InputWithCheck
         id="determinisme"
-        type="text"
         value={finalPasswords.determinisme}
         onChange={(e) => setFinalPasswords({ ...finalPasswords, determinisme: e.target.value })}
         onKeyDown={(e) => handleKeyDown(e, 'dieu')}
         placeholder={strings.finalForm.placeholders.first}
-        className="w-full bg-terminal-bg text-terminal-text font-mono border border-terminal-text 
-                 focus:outline-none focus:ring-2 focus:ring-terminal-text px-4 py-2"
+        isValid={validPasswords.determinisme}
         autoFocus
       />
-      <input
+      <InputWithCheck
         id="dieu"
-        type="text"
         value={finalPasswords.dieu}
         onChange={(e) => setFinalPasswords({ ...finalPasswords, dieu: e.target.value })}
         onKeyDown={(e) => handleKeyDown(e, 'mechCola')}
         placeholder={strings.finalForm.placeholders.second}
-        className="w-full bg-terminal-bg text-terminal-text font-mono border border-terminal-text 
-                 focus:outline-none focus:ring-2 focus:ring-terminal-text px-4 py-2"
+        isValid={validPasswords.dieu}
       />
-      <input
+      <InputWithCheck
         id="mechCola"
-        type="text"
         value={finalPasswords.mechCola}
         onChange={(e) => setFinalPasswords({ ...finalPasswords, mechCola: e.target.value })}
         onKeyDown={(e) => handleKeyDown(e, 'choix')}
         placeholder={strings.finalForm.placeholders.third}
-        className="w-full bg-terminal-bg text-terminal-text font-mono border border-terminal-text 
-                 focus:outline-none focus:ring-2 focus:ring-terminal-text px-4 py-2"
+        isValid={validPasswords.mechCola}
       />
-      <input
+      <InputWithCheck
         id="choix"
-        type="text"
         value={finalPasswords.choix}
         onChange={(e) => setFinalPasswords({ ...finalPasswords, choix: e.target.value })}
         onKeyDown={(e) => handleKeyDown(e, null)}
         placeholder={strings.finalForm.placeholders.fourth}
-        className="w-full bg-terminal-bg text-terminal-text font-mono border border-terminal-text 
-                 focus:outline-none focus:ring-2 focus:ring-terminal-text px-4 py-2"
+        isValid={validPasswords.choix}
       />
       <button
         type="submit"
