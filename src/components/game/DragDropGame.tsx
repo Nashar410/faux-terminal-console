@@ -15,7 +15,7 @@ type DragDropGameProps = {
 };
 
 const DragDropGame = ({ onComplete }: DragDropGameProps) => {
-  const [words, setWords] = useState<Word[]>(strings.game.dragDrop.words);
+  const [words] = useState<Word[]>(strings.game.dragDrop.words as Word[]);
   const [columns, setColumns] = useState({
     unassigned: strings.game.dragDrop.words.map(w => w.id),
     positive: [],
@@ -24,19 +24,28 @@ const DragDropGame = ({ onComplete }: DragDropGameProps) => {
   const { toast } = useToast();
 
   const checkCompletion = () => {
-    const allCorrect = [...columns.positive, ...columns.negative].every(wordId => {
-      const word = words.find(w => w.id === wordId);
-      const column = columns.positive.includes(wordId) ? 'positive' : 'negative';
-      return word?.correctColumn === column;
-    });
-
-    if (allCorrect && (columns.positive.length + columns.negative.length) === words.length) {
-      toast({
-        title: "Bravo !",
-        description: decodeBase64(strings.game.dragDrop.success),
-        className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
+    // Ne vérifie que si tous les mots ont été placés
+    if ((columns.positive.length + columns.negative.length) === words.length) {
+      const allCorrect = [...columns.positive, ...columns.negative].every(wordId => {
+        const word = words.find(w => w.id === wordId);
+        const column = columns.positive.includes(wordId) ? 'positive' : 'negative';
+        return word?.correctColumn === column;
       });
-      onComplete();
+
+      if (allCorrect) {
+        toast({
+          title: "Bravo !",
+          description: decodeBase64(strings.game.dragDrop.success),
+          className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
+        });
+        onComplete();
+      } else {
+        toast({
+          variant: "destructive",
+          description: decodeBase64(strings.game.dragDrop.error),
+          className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
+        });
+      }
     }
   };
 

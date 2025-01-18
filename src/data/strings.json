@@ -23,6 +23,7 @@
   "game": {
     "dragDrop": {
       "success": "QnJhdm8gISBJbmRpY2UgOiBMZSBtb3QgZGUgcGFzc2UgZXN0IGxpw6kgYXUgZMOpdGVybWluaXNtZS4uLg==",
+      "error": "Q2VydGFpbnMgbW90cyBuZSBzb250IHBhcyBkYW5zIGxhIGJvbm5lIGNvbG9ubmUuIFLDqWVzc2F5ZXogIQ==",
       "words": [
         { "id": "word-1", "content": "esclavagiste", "correctColumn": "negative" },
         { "id": "word-2", "content": "manager", "correctColumn": "positive" },
@@ -32,22 +33,6 @@
         { "id": "word-6", "content": "changement", "correctColumn": "positive" },
         { "id": "word-7", "content": "confiance en soi", "correctColumn": "positive" }
       ]
-    },
-    "timeRemaining": "Temps restant",
-    "inventory": "Inventaire",
-    "controls": "Utilisez les flèches ou WASD pour vous déplacer",
-    "dialogs": {
-      "police": {
-        "question": "Vous voulez vous dénoncer aux policiers ? (OUI / NON)",
-        "arrest": "Policier : Vous détenez un pétard, c'est illégal. Vous êtes arrêté !"
-      },
-      "firecracker": {
-        "title": "Pétard trouvé",
-        "question": "Voulez-vous prendre le pétard ? (OUI / NON)"
-      },
-      "building": {
-        "message": "Vous ne voyez que peur et désolation"
-      }
     }
   },
   "finalForm": {
