@@ -146,20 +146,52 @@ export const sprites: Sprites = {
 
     return (
       <svg width="32" height="32" viewBox="0 0 32 32">
-        {/* Base (partie 1) */}
-        <circle cx="16" cy="22" r="8" fill="#4A5568" /> {/* Base ronde */}
-        
-        {/* Corps (partie 2) */}
-        <rect x="13" y="8" width="6" height="14" fill="#E53E3E" /> {/* Corps rouge */}
-        <rect x="12" y="8" width="8" height="3" fill="#742A2A" /> {/* Bande supérieure */}
-        
-        {/* Mèche (partie 3) */}
-        <path d="M16 8 L16 4" stroke="#000000" strokeWidth="2" /> {/* Mèche */}
+        {/* Partie 1: Cercle extérieur avec ombre */}
+        <defs>
+          <filter id="shadow">
+            <feDropShadow dx="0" dy="1" stdDeviation="1" floodOpacity="0.5"/>
+          </filter>
+          <linearGradient id="edge" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style={{ stopColor: '#000', stopOpacity: 0.8 }} />
+            <stop offset="100%" style={{ stopColor: '#333', stopOpacity: 0.6 }} />
+          </linearGradient>
+        </defs>
+        <circle 
+          cx="16" 
+          cy="16" 
+          r="12" 
+          fill="url(#edge)"
+          filter="url(#shadow)"
+        />
+        <circle 
+          cx="16" 
+          cy="16" 
+          r="10" 
+          fill="transparent"
+          stroke="#000"
+          strokeWidth="1"
+        />
+
+        {/* Partie 2: Remplissage intérieur */}
+        <circle 
+          cx="16" 
+          cy="16" 
+          r="9" 
+          fill="#ea384c"
+        />
+
+        {/* Partie 3: Mèche */}
+        <path 
+          d="M16,4 C16,4 13,6 16,8 C19,6 16,4 16,4" 
+          fill="#888888"
+          stroke="#333"
+          strokeWidth="1"
+        />
         {isSparking && (
           <>
-            <circle cx="16" cy="2" r="1.5" fill="#FCD34D" /> {/* Étincelle centrale */}
-            <circle cx="14" cy="3" r="1" fill="#F59E0B" /> {/* Étincelle gauche */}
-            <circle cx="18" cy="3" r="1" fill="#F59E0B" /> {/* Étincelle droite */}
+            <circle cx="16" cy="4" r="1.5" fill="#fcd34d" />
+            <circle cx="14" cy="3" r="1" fill="#f59e0b" />
+            <circle cx="18" cy="3" r="1" fill="#f59e0b" />
           </>
         )}
       </svg>
