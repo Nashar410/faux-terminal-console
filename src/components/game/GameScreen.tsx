@@ -4,6 +4,7 @@ import { sprites, playerFrames, policeFrames } from '@/assets/gameSprites';
 import { GameState } from '@/types/game';
 import { PoliceDialog } from './PoliceDialog';
 import { FirecrackerDialog } from './FirecrackerDialog';
+import { ArrestDialog } from './ArrestDialog';
 
 type GameScreenProps = {
   gameState: GameState;
@@ -15,6 +16,8 @@ type GameScreenProps = {
   showFirecrackerDialog: boolean;
   setShowFirecrackerDialog: (show: boolean) => void;
   handleFirecrackerConfirm: () => void;
+  showArrestDialog: boolean;
+  setShowArrestDialog: (show: boolean) => void;
 };
 
 export const GameScreen: React.FC<GameScreenProps> = ({ 
@@ -26,7 +29,9 @@ export const GameScreen: React.FC<GameScreenProps> = ({
   handlePoliceConfirm,
   showFirecrackerDialog,
   setShowFirecrackerDialog,
-  handleFirecrackerConfirm
+  handleFirecrackerConfirm,
+  showArrestDialog,
+  setShowArrestDialog
 }) => {
   const SPRITE_SCALE = 2;
 
@@ -110,6 +115,11 @@ export const GameScreen: React.FC<GameScreenProps> = ({
           open={showFirecrackerDialog}
           onOpenChange={setShowFirecrackerDialog}
           onConfirm={handleFirecrackerConfirm}
+        />
+
+        <ArrestDialog
+          open={showArrestDialog}
+          onOpenChange={setShowArrestDialog}
         />
       </div>
     </div>

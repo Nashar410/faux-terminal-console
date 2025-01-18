@@ -28,6 +28,7 @@ export const useGameState = () => {
   const [hasStarted, setHasStarted] = useState(false);
   const [showPoliceDialog, setShowPoliceDialog] = useState(false);
   const [showFirecrackerDialog, setShowFirecrackerDialog] = useState(false);
+  const [showArrestDialog, setShowArrestDialog] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -49,7 +50,6 @@ export const useGameState = () => {
         });
       }, 1000);
 
-      // Animation du policier
       const policeAnimation = setInterval(() => {
         setGameState(prev => {
           let newY = prev.police.y;
@@ -77,7 +77,6 @@ export const useGameState = () => {
         });
       }, 50);
 
-      // Animation du joueur
       const playerAnimation = setInterval(() => {
         setGameState(prev => ({
           ...prev,
@@ -107,7 +106,18 @@ export const useGameState = () => {
       setIsNearPolice(distanceToPolice < 20);
 
       if (distanceToPolice < 10) {
-        if (!showPoliceDialog) {
+        if (prev.firecracker.collected) {
+          // Arrestation immédiate si le joueur a le pétard
+          setShowArrestDialog(true);
+          setTimeout(() => {
+            setGameState(prevState => ({
+              ...prevState,
+              gameOver: true,
+              message: "Vous vous êtes fait arrêter avec le pétard !"
+            }));
+          }, 2000);
+          return prev;
+        } else if (!showPoliceDialog) {
           setShowPoliceDialog(true);
           return prev;
         }
@@ -150,7 +160,7 @@ export const useGameState = () => {
     setGameState(prev => ({
       ...prev,
       gameOver: true,
-      message: "Vous vous faites arrêter !"
+      message: "Vous vous êtes dénoncé aux policiers !"
     }));
   };
 
@@ -177,6 +187,8 @@ export const useGameState = () => {
     handlePoliceConfirm,
     showFirecrackerDialog,
     setShowFirecrackerDialog,
-    handleFirecrackerConfirm
+    handleFirecrackerConfirm,
+    showArrestDialog,
+    setShowArrestDialog
   };
 };
