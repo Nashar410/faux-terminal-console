@@ -33,10 +33,15 @@ export const FinalPasswordForm = ({
     choix: false
   });
 
-  const cleanAndValidate = (input: string, target: string) => 
-    input.toLowerCase().trim() === decodeBase64(target).toLowerCase().trim();
+  console.log('Component rendered with passwords:', finalPasswords);
+
+  const cleanAndValidate = (input: string, target: string) => {
+    console.log('Validating input:', input, 'against target:', decodeBase64(target));
+    return input.toLowerCase().trim() === decodeBase64(target).toLowerCase().trim();
+  }
 
   const validatePasswords = () => {
+    console.log('Running password validation');
     setValidPasswords({
       determinisme: cleanAndValidate(finalPasswords.determinisme, strings.finalForm.hints.determinisme),
       dieu: cleanAndValidate(finalPasswords.dieu, strings.finalForm.hints.dieu),
@@ -47,15 +52,18 @@ export const FinalPasswordForm = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('Form submitted');
     validatePasswords();
     
     if (Object.values(validPasswords).every(valid => valid)) {
+      console.log('All passwords valid, triggering success');
       toast({
         description: decodeBase64(strings.console.finalPasswordValid),
         className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
       });
       onSuccess();
     } else {
+      console.log('Invalid passwords, resetting form');
       toast({
         variant: "destructive",
         description: decodeBase64(strings.console.finalPasswordInvalid),
@@ -77,6 +85,7 @@ export const FinalPasswordForm = ({
   };
 
   const handleChange = (field: keyof typeof finalPasswords, value: string) => {
+    console.log('handleChange called for field:', field, 'with value:', value);
     setFinalPasswords({ ...finalPasswords, [field]: value });
   };
 
@@ -92,24 +101,27 @@ export const FinalPasswordForm = ({
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     placeholder: string;
     isValid: boolean;
-  }) => (
-    <div className="relative">
-      <input
-        id={id}
-        type="text"
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        className="w-full bg-terminal-bg text-terminal-text font-mono border border-terminal-text 
-                 focus:outline-none focus:ring-2 focus:ring-terminal-text px-4 py-2 pr-10"
-      />
-      {isValid && (
-        <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-          <Check className="h-4 w-4 text-green-500" />
-        </div>
-      )}
-    </div>
-  );
+  }) => {
+    console.log('Rendering input for:', id, 'with value:', value, 'isValid:', isValid);
+    return (
+      <div className="relative">
+        <input
+          id={id}
+          type="text"
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          className="w-full bg-terminal-bg text-terminal-text font-mono border border-terminal-text 
+                   focus:outline-none focus:ring-2 focus:ring-terminal-text px-4 py-2 pr-10"
+        />
+        {isValid && (
+          <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+            <Check className="h-4 w-4 text-green-500" />
+          </div>
+        )}
+      </div>
+    );
+  };
 
   return (
     <form onSubmit={handleSubmit} className="mt-8 space-y-4">
