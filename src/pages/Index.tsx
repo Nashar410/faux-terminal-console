@@ -14,6 +14,7 @@ const Index = () => {
     mechCola: "",
     choix: ""
   });
+  
   const { 
     gameState, 
     isNearPolice, 
@@ -27,7 +28,8 @@ const Index = () => {
     setShowFirecrackerDialog,
     handleFirecrackerConfirm,
     showArrestDialog,
-    setShowArrestDialog
+    setShowArrestDialog,
+    startGame
   } = useGameState();
 
   const { toast } = useToast();
@@ -43,7 +45,7 @@ const Index = () => {
       hint: 'dieu'
     },
     3: { 
-      value: btoa(unescape(encodeURIComponent('49crédits'))), // Encodage correct avec gestion des accents
+      value: btoa(unescape(encodeURIComponent('49crédits'))), 
       hint: 'Mech-Cola'
     },
     4: { 
@@ -51,6 +53,57 @@ const Index = () => {
       hint: 'choix'
     }
   };
+
+  // Démarrer le jeu quand showGame devient true
+  useEffect(() => {
+    if (showGame) {
+      startGame();
+    }
+  }, [showGame]);
+
+  // Gestion des touches pour le mouvement du joueur
+  useEffect(() => {
+    if (!showGame) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const speed = 2;
+      let newX = gameState.playerX;
+      let newY = gameState.playerY;
+      let direction: 'left' | 'right' | 'idle' = 'idle';
+
+      switch (e.key) {
+        case 'ArrowLeft':
+        case 'a':
+        case 'A':
+          newX = Math.max(0, gameState.playerX - speed);
+          direction = 'left';
+          break;
+        case 'ArrowRight':
+        case 'd':
+        case 'D':
+          newX = Math.min(100, gameState.playerX + speed);
+          direction = 'right';
+          break;
+        case 'ArrowUp':
+        case 'w':
+        case 'W':
+          newY = Math.max(0, gameState.playerY - speed);
+          break;
+        case 'ArrowDown':
+        case 's':
+        case 'S':
+          newY = Math.min(100, gameState.playerY + speed);
+          break;
+      }
+
+      if (newX !== gameState.playerX || newY !== gameState.playerY) {
+        movePlayer(newX, newY, direction);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [showGame, gameState.playerX, gameState.playerY, movePlayer]);
 
   // Fonction de décodage base64 avec gestion des caractères spéciaux
   const decodeBase64 = (str: string): string => {

@@ -31,6 +31,12 @@ export const useGameState = () => {
   const [showArrestDialog, setShowArrestDialog] = useState(false);
   const { toast } = useToast();
 
+  const startGame = () => {
+    setGameState(INITIAL_STATE);
+    setHasStarted(true);
+    playSound('start');
+  };
+
   useEffect(() => {
     if (hasStarted && !gameState.gameOver) {
       const timer = setInterval(() => {
@@ -107,7 +113,6 @@ export const useGameState = () => {
 
       if (distanceToPolice < 10) {
         if (prev.firecracker.collected) {
-          // Arrestation immédiate si le joueur a le pétard
           setShowArrestDialog(true);
           setTimeout(() => {
             setGameState(prevState => ({
@@ -189,6 +194,7 @@ export const useGameState = () => {
     setShowFirecrackerDialog,
     handleFirecrackerConfirm,
     showArrestDialog,
-    setShowArrestDialog
+    setShowArrestDialog,
+    startGame
   };
 };
