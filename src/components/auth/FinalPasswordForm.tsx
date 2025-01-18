@@ -34,11 +34,14 @@ export const FinalPasswordForm = ({
   });
 
   useEffect(() => {
+    const cleanAndValidate = (input: string, target: string) => 
+      input.toLowerCase().trim() === target.toLowerCase().trim();
+
     setValidPasswords({
-      determinisme: finalPasswords.determinisme.toLowerCase() === 'déterminisme',
-      dieu: finalPasswords.dieu.toLowerCase() === 'dieu',
-      mechCola: finalPasswords.mechCola.toLowerCase() === 'mech-cola',
-      choix: finalPasswords.choix.toLowerCase() === 'choix'
+      determinisme: cleanAndValidate(finalPasswords.determinisme, 'déterminisme'),
+      dieu: cleanAndValidate(finalPasswords.dieu, 'dieu'),
+      mechCola: cleanAndValidate(finalPasswords.mechCola, 'mech-cola'),
+      choix: cleanAndValidate(finalPasswords.choix, 'choix')
     });
   }, [finalPasswords]);
 
@@ -71,19 +74,6 @@ export const FinalPasswordForm = ({
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, nextFieldId: string | null) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      if (nextFieldId) {
-        const nextField = document.getElementById(nextFieldId);
-        nextField?.focus();
-      } else {
-        const form = e.currentTarget.form;
-        if (form) form.requestSubmit();
-      }
-    }
-  };
-
   const handleChange = (field: keyof typeof finalPasswords, value: string) => {
     setFinalPasswords({ ...finalPasswords, [field]: value });
   };
@@ -92,18 +82,14 @@ export const FinalPasswordForm = ({
     id, 
     value, 
     onChange, 
-    onKeyDown, 
     placeholder, 
-    isValid, 
-    autoFocus = false 
+    isValid 
   }: {
     id: string;
     value: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
     placeholder: string;
     isValid: boolean;
-    autoFocus?: boolean;
   }) => (
     <div className="relative">
       <input
@@ -111,12 +97,9 @@ export const FinalPasswordForm = ({
         type="text"
         value={value}
         onChange={onChange}
-        onKeyDown={onKeyDown}
-        onPaste={(e) => e.stopPropagation()}
         placeholder={placeholder}
         className="w-full bg-terminal-bg text-terminal-text font-mono border border-terminal-text 
                  focus:outline-none focus:ring-2 focus:ring-terminal-text px-4 py-2 pr-10"
-        autoFocus={autoFocus}
       />
       {isValid && (
         <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
@@ -132,16 +115,13 @@ export const FinalPasswordForm = ({
         id="determinisme"
         value={finalPasswords.determinisme}
         onChange={(e) => handleChange('determinisme', e.target.value)}
-        onKeyDown={(e) => handleKeyDown(e, 'dieu')}
         placeholder={strings.finalForm.placeholders.first}
         isValid={validPasswords.determinisme}
-        autoFocus
       />
       <InputWithCheck
         id="dieu"
         value={finalPasswords.dieu}
         onChange={(e) => handleChange('dieu', e.target.value)}
-        onKeyDown={(e) => handleKeyDown(e, 'mechCola')}
         placeholder={strings.finalForm.placeholders.second}
         isValid={validPasswords.dieu}
       />
@@ -149,7 +129,6 @@ export const FinalPasswordForm = ({
         id="mechCola"
         value={finalPasswords.mechCola}
         onChange={(e) => handleChange('mechCola', e.target.value)}
-        onKeyDown={(e) => handleKeyDown(e, 'choix')}
         placeholder={strings.finalForm.placeholders.third}
         isValid={validPasswords.mechCola}
       />
@@ -157,7 +136,6 @@ export const FinalPasswordForm = ({
         id="choix"
         value={finalPasswords.choix}
         onChange={(e) => handleChange('choix', e.target.value)}
-        onKeyDown={(e) => handleKeyDown(e, null)}
         placeholder={strings.finalForm.placeholders.fourth}
         isValid={validPasswords.choix}
       />
