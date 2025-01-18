@@ -45,6 +45,25 @@ const Index = () => {
     choix: ""
   });
 
+  const passwords = {
+    1: { 
+      value: 'YkBzMWwxYw==',
+      hint: 'ZMOpdGVybWluaXNtZQ=='
+    },
+    2: { 
+      value: '92:87',
+      hint: 'ZGlldQ=='
+    },
+    3: { 
+      value: btoa(unescape(encodeURIComponent('49crédits'))),
+      hint: 'TWVjaC1Db2xh'
+    },
+    4: { 
+      value: 'OHVyMWRAbg==',
+      hint: 'Y2hvaXg='
+    }
+  };
+
   const renderCurrentScreen = () => {
     switch (gameProgress.currentScreen) {
       case 'loading':
