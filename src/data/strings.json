@@ -25,18 +25,16 @@
       "success": "Indice : ",
       "error": "Le désordre est dangereux. Replacez ces mots avant que tout s'effondre.",
       "words": [
-        { "id": "word-0", "content": "fusion", "correctColumn": "positive" },
         { "id": "word-1", "content": "pression", "correctColumn": "negative" },
         { "id": "word-2", "content": "bombe à retardement", "correctColumn": "negative" },
         { "id": "word-3", "content": "dynamisme", "correctColumn": "positive" },
-        { "id": "word-4", "content": "éclatement", "correctColumn": "positive" },
-        { "id": "word-5", "content": "impact", "correctColumn": "positive" },
-        { "id": "word-6", "content": "explosion de talents", "correctColumn": "positive" },
-        { "id": "word-7", "content": "implosion", "correctColumn": "negative" }
+        { "id": "word-4", "content": "impact", "correctColumn": "positive" },
+        { "id": "word-5", "content": "explosion de force", "correctColumn": "positive" },
+        { "id": "word-6", "content": "implosion", "correctColumn": "negative" }
       ]
     },
     "buridan": {
-      "timeLimit": 10,
+      "timeLimit": 12,
       "labels": {
         "donkey": "ÂNE",
         "water": "Salaire",
@@ -72,7 +70,7 @@
       "third": "Troisième indice...",
       "fourth": "Quatrième indice..."
     },
-    "submit": "Valider",
+    "submit": "Consentir",
     "hints": {
       "determinisme": "QnLDqGNoZQ==",
       "dieu": "MDEvMDIvODIwNQ==",

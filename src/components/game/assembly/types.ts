@@ -4,9 +4,9 @@ export type Component = {
 };
 
 export const initialComponents: Component[] = [
-  { id: 'fuel', name: 'Carburant' },
-  { id: 'oxidizer', name: 'Comburant' },
-  { id: 'combustible', name: 'Combustible' }
+  { id: 'fuel', name: 'Carburant (soi)' },
+  { id: 'oxidizer', name: 'Comburant (motivation)' },
+  { id: 'combustible', name: 'Combustible (oppréssion)' }
 ];
 
 // Mélange aléatoire des composants

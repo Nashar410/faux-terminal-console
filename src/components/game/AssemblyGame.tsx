@@ -99,7 +99,7 @@ export const AssemblyGame: React.FC<AssemblyGameProps> = ({ onComplete }) => {
                   onClick={checkAssembly}
                   className="bg-terminal-text text-terminal-bg hover:bg-terminal-text/80"
                 >
-                  Valider la construction
+                  Consentir
                 </Button>
               </div>
             )}
