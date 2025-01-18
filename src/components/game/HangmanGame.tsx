@@ -13,17 +13,17 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
   const TOTAL_CREDITS = 600;
   const WRONG_GUESS_COST = 200;
   
+  const [guessedLetters, setGuessedLetters] = useState<Set<string>>(() => {
+    // Révéler uniquement la première lettre et toutes ses occurrences
+    const firstLetter = WORD_TO_GUESS[0];
+    return new Set([firstLetter]);
+  });
+  
+  // Calcul du coût par lettre correcte basé sur le nombre de lettres cachées au début
   const COST_PER_CORRECT_LETTER = Math.ceil(
     TOTAL_CREDITS / 
-    new Set(WORD_TO_GUESS.split('')).size // Nombre de lettres uniques
+    (new Set(WORD_TO_GUESS.split('')).size - 1) // Nombre de lettres uniques - première lettre
   ) + 1; // +1 pour rendre la victoire plus difficile
-  
-  const [guessedLetters, setGuessedLetters] = useState<Set<string>>(() => {
-    // Révéler la première et dernière lettre, ainsi que toutes les occurrences de la première lettre
-    const firstLetter = WORD_TO_GUESS[0];
-    const lastLetter = WORD_TO_GUESS[WORD_TO_GUESS.length - 1];
-    return new Set([firstLetter, lastLetter]);
-  });
   
   const [errors, setErrors] = useState<number>(0);
   const [currentLetter, setCurrentLetter] = useState<string>("");
@@ -31,7 +31,7 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
   const [credits, setCredits] = useState<number>(600);
 
   const displayWord = WORD_TO_GUESS.split('').map((letter, index) => 
-    guessedLetters.has(letter) || index === 0 || index === WORD_TO_GUESS.length - 1 ? letter : '_'
+    guessedLetters.has(letter) ? letter : '_'
   ).join(' ');
 
   const checkWin = useCallback(() => {
