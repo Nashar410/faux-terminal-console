@@ -65,7 +65,13 @@
       "third": "Troisième indice...",
       "fourth": "Quatrième indice..."
     },
-    "submit": "Valider"
+    "submit": "Valider",
+    "hints": {
+      "determinisme": "ZMOpdGVybWluaXNtZQ==",
+      "dieu": "ZGlldQ==",
+      "mechCola": "bWVjaC1jb2xh",
+      "choix": "Y2hvaXg="
+    }
   },
   "passwords": {
     "1": "YkBzMWwxYw==",

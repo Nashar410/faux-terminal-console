@@ -35,13 +35,13 @@ export const FinalPasswordForm = ({
 
   useEffect(() => {
     const cleanAndValidate = (input: string, target: string) => 
-      input.toLowerCase().trim() === target.toLowerCase().trim();
+      input.toLowerCase().trim() === decodeBase64(target).toLowerCase().trim();
 
     setValidPasswords({
-      determinisme: cleanAndValidate(finalPasswords.determinisme, 'déterminisme'),
-      dieu: cleanAndValidate(finalPasswords.dieu, 'dieu'),
-      mechCola: cleanAndValidate(finalPasswords.mechCola, 'mech-cola'),
-      choix: cleanAndValidate(finalPasswords.choix, 'choix')
+      determinisme: cleanAndValidate(finalPasswords.determinisme, strings.finalForm.hints.determinisme),
+      dieu: cleanAndValidate(finalPasswords.dieu, strings.finalForm.hints.dieu),
+      mechCola: cleanAndValidate(finalPasswords.mechCola, strings.finalForm.hints.mechCola),
+      choix: cleanAndValidate(finalPasswords.choix, strings.finalForm.hints.choix)
     });
   }, [finalPasswords]);
 
