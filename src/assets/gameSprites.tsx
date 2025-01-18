@@ -145,15 +145,21 @@ export const sprites: Sprites = {
     }, []);
 
     return (
-      <svg width="16" height="16" viewBox="0 0 16 16">
-        <rect x="6" y="4" width="4" height="8" fill="#DC2626" /> {/* Corps du pétard */}
-        <rect x="5" y="4" width="6" height="2" fill="#7F1D1D" /> {/* Haut du pétard */}
-        <rect x="7" y="2" width="2" height="2" fill="#BLACK" /> {/* Mèche */}
+      <svg width="32" height="32" viewBox="0 0 32 32">
+        {/* Base (partie 1) */}
+        <circle cx="16" cy="22" r="8" fill="#4A5568" /> {/* Base ronde */}
+        
+        {/* Corps (partie 2) */}
+        <rect x="13" y="8" width="6" height="14" fill="#E53E3E" /> {/* Corps rouge */}
+        <rect x="12" y="8" width="8" height="3" fill="#742A2A" /> {/* Bande supérieure */}
+        
+        {/* Mèche (partie 3) */}
+        <path d="M16 8 L16 4" stroke="#000000" strokeWidth="2" /> {/* Mèche */}
         {isSparking && (
           <>
-            <circle cx="8" cy="1" r="1" fill="#FDE047" /> {/* Étincelle */}
-            <circle cx="7" cy="2" r="1" fill="#FDE047" />
-            <circle cx="9" cy="2" r="1" fill="#FDE047" />
+            <circle cx="16" cy="2" r="1.5" fill="#FCD34D" /> {/* Étincelle centrale */}
+            <circle cx="14" cy="3" r="1" fill="#F59E0B" /> {/* Étincelle gauche */}
+            <circle cx="18" cy="3" r="1" fill="#F59E0B" /> {/* Étincelle droite */}
           </>
         )}
       </svg>
