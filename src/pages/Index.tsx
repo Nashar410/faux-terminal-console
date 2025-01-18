@@ -66,6 +66,7 @@ const Index = () => {
               currentStep={currentStep}
               setCurrentStep={setCurrentStep}
               setShowFinalInput={setShowFinalInput}
+              setShowGame={setShowGame}
               passwords={passwords}
             />
           ) : (

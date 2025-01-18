@@ -6,6 +6,7 @@ type PasswordEntryProps = {
   currentStep: number;
   setCurrentStep: (step: number) => void;
   setShowFinalInput: (show: boolean) => void;
+  setShowGame: (show: boolean) => void;
   passwords: Record<number, { value: string; hint: string }>;
 };
 
@@ -13,6 +14,7 @@ export const PasswordEntry = ({
   currentStep, 
   setCurrentStep, 
   setShowFinalInput,
+  setShowGame,
   passwords 
 }: PasswordEntryProps) => {
   const [password, setPassword] = useState("");
@@ -27,7 +29,7 @@ export const PasswordEntry = ({
           description: decodeBase64('TW9kZSB0cmljaGUgYWN0aXbDqSAhIEFjY8OocyBkaXJlY3QgYXUgbWluaS1qZXUuLi4='),
           className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
         });
-        setShowFinalInput(true);
+        setShowGame(true);
         return;
       }
 
