@@ -45,6 +45,12 @@ const DragDropGame = ({ onComplete }: DragDropGameProps) => {
           description: decodeBase64(strings.game.dragDrop.error),
           className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
         });
+        // Reset columns to allow retry
+        setColumns({
+          unassigned: strings.game.dragDrop.words.map(w => w.id),
+          positive: [],
+          negative: []
+        });
       }
     }
   };
