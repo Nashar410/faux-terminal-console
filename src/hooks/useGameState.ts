@@ -29,8 +29,8 @@ export const useGameState = () => {
   const [showPoliceDialog, setShowPoliceDialog] = useState(false);
   const [showFirecrackerDialog, setShowFirecrackerDialog] = useState(false);
   const [showArrestDialog, setShowArrestDialog] = useState(false);
-  const { toast } = useToast();
   const [showBuildingDialog, setShowBuildingDialog] = useState(false);
+  const { toast } = useToast();
 
   const startGame = () => {
     setGameState(INITIAL_STATE);
