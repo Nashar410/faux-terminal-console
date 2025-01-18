@@ -11,8 +11,8 @@ export const usePoliceMovement = (
     const moveInterval = setInterval(() => {
       setGameState((prev: GameState): GameState => {
         const newY = prev.police.movingDown
-          ? prev.police.y + 1
-          : prev.police.y - 1;
+          ? prev.police.y + 2  // Doublé la vitesse
+          : prev.police.y - 2;  // Doublé la vitesse
 
         const shouldChangeDirection =
           (prev.police.movingDown && newY >= 80) ||
@@ -28,7 +28,7 @@ export const usePoliceMovement = (
           }
         };
       });
-    }, 100);
+    }, 50);  // Réduit l'intervalle de 100 à 50ms
 
     return () => clearInterval(moveInterval);
   }, [gameState.gameOver, setGameState]);

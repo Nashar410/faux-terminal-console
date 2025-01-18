@@ -31,6 +31,11 @@ export const PoliceDialog: React.FC<PoliceDialogProps> = ({
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [open, onOpenChange]);
 
+  const handleConfirm = () => {
+    onConfirm();
+    onOpenChange(false);  // Ferme la fenêtre après confirmation
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="bg-terminal-bg border-terminal-text text-terminal-text">
@@ -39,7 +44,7 @@ export const PoliceDialog: React.FC<PoliceDialogProps> = ({
         </DialogDescription>
         <DialogFooter className="flex gap-4 justify-center">
           <Button
-            onClick={onConfirm}
+            onClick={handleConfirm}  // Utilise le nouveau handler
             className="bg-terminal-text text-terminal-bg hover:bg-terminal-glow focus:ring-2 focus:ring-terminal-text focus:outline-none"
             autoFocus
           >

@@ -1,25 +1,25 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { GameState } from '@/types/game';
 import { playSound } from '@/assets/gameSounds';
 
 const INITIAL_STATE: GameState = {
-  playerX: 50,
+  playerX: 20,  // Déplacé à gauche
   playerY: 80,
   playerDirection: 'idle',
   currentFrame: 0,
   firecracker: {
-    x: 20,
+    x: 40,  // Placé après le joueur
     y: 50,
     collected: false
   },
   police: {
-    x: 80,
+    x: 60,  // Placé au milieu
     y: 20,
     frame: 0,
     movingDown: true
   },
   building: {
-    x: 80,
+    x: 80,  // Placé à droite
     y: 80
   },
   timeLeft: 30,
