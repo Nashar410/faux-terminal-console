@@ -34,34 +34,31 @@ const Index = () => {
 
   const { toast } = useToast();
 
-  // Structure contenant les mots de passe encodés en base64
   const passwords = {
     1: { 
-      value: 'YkBzMWwxYw==',     // b@s1l1c
-      hint: 'déterminisme'
+      value: 'YkBzMWwxYw==',
+      hint: 'ZMOpdGVybWluaXNtZQ=='
     },
     2: { 
-      value: 'OTI6ODc=',         // 92:87
-      hint: 'dieu'
+      value: 'OTI6ODc=',
+      hint: 'ZGlldQ=='
     },
     3: { 
-      value: btoa(unescape(encodeURIComponent('49crédits'))), 
-      hint: 'Mech-Cola'
+      value: btoa(unescape(encodeURIComponent('49crédits'))),
+      hint: 'TWVjaC1Db2xh'
     },
     4: { 
-      value: 'OHVyMWRAbg==',     // 8ur1d@n
-      hint: 'choix'
+      value: 'OHVyMWRAbg==',
+      hint: 'Y2hvaXg='
     }
   };
 
-  // Démarrer le jeu quand showGame devient true
   useEffect(() => {
     if (showGame) {
       startGame();
     }
   }, [showGame]);
 
-  // Gestion des touches pour le mouvement du joueur
   useEffect(() => {
     if (!showGame) return;
 
@@ -105,7 +102,6 @@ const Index = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [showGame, gameState.playerX, gameState.playerY, movePlayer]);
 
-  // Fonction de décodage base64 avec gestion des caractères spéciaux
   const decodeBase64 = (str: string): string => {
     try {
       return decodeURIComponent(escape(atob(str)));
@@ -115,13 +111,10 @@ const Index = () => {
     }
   };
 
-  // Gestion de la saisie utilisateur et vérification des mots de passe
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      // Nettoyage de la saisie (suppression des espaces)
       const cleanedPassword = password.replace(/\s+/g, '');
       
-      // Code de triche
       if (cleanedPassword.toLowerCase() === 'aaaaa123!') {
         toast({
           description: decodeBase64('TW9kZSB0cmljaGUgYWN0aXbDqSAhIEFjY8OocyBkaXJlY3QgYXUgbWluaS1qZXUuLi4='),
@@ -134,11 +127,11 @@ const Index = () => {
       if (!showFinalInput) {
         const currentPassword = passwords[currentStep as keyof typeof passwords];
         const decodedPassword = decodeBase64(currentPassword.value);
+        const decodedHint = decodeBase64(currentPassword.hint);
         
-        // Comparaison avec le mot de passe saisi (insensible à la casse, sans espaces)
         if (cleanedPassword.toLowerCase() === decodedPassword.toLowerCase()) {
           toast({
-            description: `Mot de passe ${currentStep} valide ! Indice : ${currentPassword.hint}`,
+            description: `Mot de passe ${currentStep} valide ! Indice : ${decodedHint}`,
             className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
           });
 
