@@ -3,6 +3,7 @@ import { GameScreen } from '@/components/game/GameScreen';
 import { useGameState } from '@/hooks/useGameState';
 import { PasswordEntry } from '@/components/auth/PasswordEntry';
 import { FinalPasswordForm } from '@/components/auth/FinalPasswordForm';
+import { usePlayerMovement } from '@/hooks/usePlayerMovement';
 
 const Index = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -17,6 +18,9 @@ const Index = () => {
   
   const gameState = useGameState();
 
+  // Ajout du hook de mouvement du joueur
+  usePlayerMovement(gameState.gameState, showGame, gameState.movePlayer);
+  
   const handleGameStart = () => {
     setShowGame(true);
     gameState.startGame();
