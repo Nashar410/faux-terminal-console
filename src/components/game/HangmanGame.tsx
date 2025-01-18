@@ -36,7 +36,9 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
   ).join(' ');
 
   const checkWin = useCallback(() => {
-    return WORD_TO_GUESS.split('').every(letter => guessedLetters.has(letter));
+    const hasWon = WORD_TO_GUESS.split('').every(letter => guessedLetters.has(letter));
+    console.log('checkWin called, result:', hasWon);
+    return hasWon;
   }, [guessedLetters]);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -62,9 +64,12 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
       } else {
         const newCredits = credits - COST_PER_CORRECT_LETTER;
         setCredits(newCredits);
+        console.log('Correct letter, new credits:', newCredits);
         
         if (checkWin()) {
+          console.log('Win condition met!');
           if (newCredits > 0) {
+            console.log('Game won with positive credits, calling onComplete(true)');
             setGameStatus('won');
             toast({
               description: "Indice n°3 débloqué : Le mot de passe est lié au déterminisme...",
@@ -72,10 +77,12 @@ export const HangmanGame: React.FC<HangmanGameProps> = ({ onComplete }) => {
             });
             onComplete(true);
           } else {
+            console.log('Game lost due to insufficient credits');
             setGameStatus('lost');
             onComplete(false);
           }
         } else if (newCredits <= 0) {
+          console.log('Game lost due to insufficient credits');
           setGameStatus('lost');
           onComplete(false);
         }
