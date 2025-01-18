@@ -26,23 +26,23 @@ const Index = () => {
 
   const { toast } = useToast();
 
-  // Structure contenant les mots de passe et indices encodés en base64
+  // Structure contenant les mots de passe encodés en base64
   const passwords = {
     1: { 
-      value: 'c2VjcmV0MQ==',     // Encoded password 1
-      hint: 'RkxFVVI='           // Encoded hint 1
+      value: 'YkBzMWwxYw==',     // b@s1l1c
+      hint: ''
     },
     2: { 
-      value: 'c2VjcmV0Mg==',     // Encoded password 2
-      hint: 'TFVORQ=='           // Encoded hint 2
+      value: 'OTI6ODc=',         // 92:87
+      hint: ''
     },
     3: { 
-      value: 'c2VjcmV0Mw==',     // Encoded password 3
-      hint: 'Q09MTElORQ=='       // Encoded hint 3
+      value: 'NDljcsOpZGl0cw==', // 49crédits
+      hint: ''
     },
     4: { 
-      value: 'c2VjcmV0NA==',     // Encoded password 4
-      hint: 'QUlHTEU='           // Encoded hint 4
+      value: 'OHVyMWRAbg==',     // 8ur1d@n
+      hint: ''
     }
   };
 
@@ -56,10 +56,10 @@ const Index = () => {
     }
   };
 
-  // Construction du mot de passe final à partir des indices décodés
+  // Construction du mot de passe final à partir de la concaténation des mots de passe
   const getFinalPassword = () => {
     return Object.values(passwords)
-      .map(p => decodeBase64(p.hint))
+      .map(p => decodeBase64(p.value))
       .join('');
   };
 
@@ -103,8 +103,11 @@ const Index = () => {
   // Gestion de la saisie utilisateur et vérification des mots de passe
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
+      // Nettoyage de la saisie (suppression des espaces)
+      const cleanedPassword = password.replace(/\s+/g, '');
+      
       // Code de triche
-      if (password === 'aaaaa') {
+      if (cleanedPassword.toLowerCase() === 'aaaaa123!') {
         toast({
           description: decodeBase64('TW9kZSB0cmljaGUgYWN0aXbDqSAhIEFjY8OocyBkaXJlY3QgYXUgbWluaS1qZXUuLi4='),
           className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
@@ -117,8 +120,8 @@ const Index = () => {
         const currentPassword = passwords[currentStep as keyof typeof passwords];
         const decodedPassword = decodeBase64(currentPassword.value);
         
-        // Comparaison avec le mot de passe saisi
-        if (password === decodedPassword) {
+        // Comparaison avec le mot de passe saisi (insensible à la casse, sans espaces)
+        if (cleanedPassword.toLowerCase() === decodedPassword.toLowerCase()) {
           toast({
             description: `Mot de passe ${currentStep} valide ! Indice : ${decodeBase64(currentPassword.hint)}`,
             className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
@@ -140,7 +143,7 @@ const Index = () => {
         }
       } else {
         // Vérification du mot de passe final
-        if (password === getFinalPassword()) {
+        if (cleanedPassword.toLowerCase() === getFinalPassword().toLowerCase()) {
           toast({
             description: decodeBase64('TW90IGRlIHBhc3NlIGZpbmFsIHZhbGlkw6kgISBQcsOpcGFyZXotdm91cyBhdSBtaW5pIGpldS4uLg=='),
             className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
