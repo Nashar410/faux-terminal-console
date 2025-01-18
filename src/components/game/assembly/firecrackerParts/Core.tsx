@@ -5,6 +5,6 @@ export const Core = () => (
     cx="16" 
     cy="16" 
     r="9" 
-    fill="#ea384c"
+    fill="#8B0000"
   />
 );

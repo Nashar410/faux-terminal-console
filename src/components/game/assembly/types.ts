@@ -9,4 +9,9 @@ export const initialComponents: Component[] = [
   { id: 'combustible', name: 'Combustible' }
 ];
 
+// Mélange aléatoire des composants
+export const getRandomizedComponents = () => {
+  return [...initialComponents].sort(() => Math.random() - 0.5);
+};
+
 export const correctOrder = ['fuel', 'oxidizer', 'combustible'];

@@ -4,7 +4,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { DragDropZone } from './assembly/DragDropZone';
 import { FirecrackerPreview } from './assembly/FirecrackerPreview';
-import { Component, initialComponents, correctOrder } from './assembly/types';
+import { Component, getRandomizedComponents, correctOrder } from './assembly/types';
 
 type AssemblyGameProps = {
   onComplete: () => void;
@@ -16,7 +16,7 @@ export const AssemblyGame: React.FC<AssemblyGameProps> = ({ onComplete }) => {
   const { toast } = useToast();
 
   useEffect(() => {
-    setAvailableComponents([...initialComponents].sort(() => Math.random() - 0.5));
+    setAvailableComponents(getRandomizedComponents());
   }, []);
 
   const checkAssembly = () => {
