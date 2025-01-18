@@ -65,13 +65,13 @@ const Index = () => {
   useEffect(() => {
     if (!showGame) return;
 
-    const handleKeyDown = (e: KeyboardEvent) => {
+    const handleKeyDown = (event: globalThis.KeyboardEvent) => {
       const speed = 2;
       let newX = gameState.playerX;
       let newY = gameState.playerY;
       let direction: 'left' | 'right' | 'idle' = 'idle';
 
-      switch (e.key) {
+      switch (event.key) {
         case 'ArrowLeft':
         case 'a':
         case 'A':
