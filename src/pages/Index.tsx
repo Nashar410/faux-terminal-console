@@ -6,6 +6,7 @@ import { FinalPasswordForm } from '@/components/auth/FinalPasswordForm';
 import { usePlayerMovement } from '@/hooks/usePlayerMovement';
 import { LoadingScreen } from '@/components/LoadingScreen';
 import DragDropGame from '@/components/game/DragDropGame';
+import { BuridanGame } from '@/components/game/BuridanGame';
 import strings from '@/data/strings.json';
 
 const Index = () => {
@@ -14,6 +15,7 @@ const Index = () => {
   const [showFinalInput, setShowFinalInput] = useState(false);
   const [showGame, setShowGame] = useState(false);
   const [showDragDropGame, setShowDragDropGame] = useState(false);
+  const [showBuridanGame, setShowBuridanGame] = useState(false);
   const [finalPasswords, setFinalPasswords] = useState({
     determinisme: "",
     dieu: "",
@@ -68,6 +70,8 @@ const Index = () => {
           !showFinalInput ? (
             showDragDropGame ? (
               <DragDropGame onComplete={handleDragDropComplete} />
+            ) : showBuridanGame ? (
+              <BuridanGame />
             ) : (
               <PasswordEntry
                 currentStep={currentStep}
@@ -75,6 +79,7 @@ const Index = () => {
                 setShowFinalInput={setShowFinalInput}
                 setShowGame={handleGameStart}
                 setShowDragDropGame={setShowDragDropGame}
+                setShowBuridanGame={setShowBuridanGame}
                 passwords={passwords}
               />
             )

@@ -34,6 +34,10 @@
         { "id": "word-7", "content": "confiance en soi", "correctColumn": "positive" }
       ]
     },
+    "buridan": {
+      "success": "QnJhdm8gISBWb3VzIGF2ZXogY2hvaXNpIGxhIGJvbm5lIG9wdGlvbiAh",
+      "failure": "Vm91cyBhdmV6IMOpY2hvdcOpLiBSw6llc3NheWV6IGF2ZWMgdW4gbWVpbGxldXIgY2hvaXguLi4="
+    },
     "timeRemaining": "Temps restant",
     "inventory": "Inventaire",
     "controls": "Utilisez les flèches ou WASD pour vous déplacer",
