@@ -37,7 +37,7 @@ const Index = () => {
       hint: ''
     },
     3: { 
-      value: 'NDljcsOpZGl0cw==', // 49crédits
+      value: btoa(encodeURIComponent('49crédits')), // Encodage correct avec gestion des accents
       hint: ''
     },
     4: { 
@@ -46,10 +46,10 @@ const Index = () => {
     }
   };
 
-  // Fonction de décodage base64
+  // Fonction de décodage base64 avec gestion des caractères spéciaux
   const decodeBase64 = (str: string): string => {
     try {
-      return atob(str);
+      return decodeURIComponent(atob(str));
     } catch (e) {
       console.error('Erreur de décodage base64:', e);
       return '';
@@ -160,6 +160,8 @@ const Index = () => {
       }
     }
   };
+
+  // ... keep existing code (render JSX)
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
