@@ -11,7 +11,7 @@ type BuridanGameProps = {
 
 export const BuridanGame: React.FC<BuridanGameProps> = ({ onComplete }) => {
   const [position, setPosition] = useState<Position>('center');
-  const [timeLeft, setTimeLeft] = useState(10);
+  const [timeLeft, setTimeLeft] = useState(strings.game.buridan.timeLimit);
   const [gameOver, setGameOver] = useState(false);
   const [hasWon, setHasWon] = useState(false);
   const { toast } = useToast();
@@ -84,7 +84,7 @@ export const BuridanGame: React.FC<BuridanGameProps> = ({ onComplete }) => {
           onClick={moveLeft}
           className="absolute left-0 top-1/2 -translate-y-1/2 w-24 h-24 border border-terminal-text flex items-center justify-center cursor-pointer hover:bg-terminal-text/10"
         >
-          Eau
+          {strings.game.buridan.labels.water}
         </div>
 
         {/* Right target - Food */}
@@ -92,7 +92,7 @@ export const BuridanGame: React.FC<BuridanGameProps> = ({ onComplete }) => {
           onClick={moveRight}
           className="absolute right-0 top-1/2 -translate-y-1/2 w-24 h-24 border border-terminal-text flex items-center justify-center cursor-pointer hover:bg-terminal-text/10"
         >
-          Bouffe
+          {strings.game.buridan.labels.food}
         </div>
 
         {/* Donkey */}
@@ -100,7 +100,7 @@ export const BuridanGame: React.FC<BuridanGameProps> = ({ onComplete }) => {
           className={`absolute top-1/2 -translate-y-1/2 w-16 h-16 flex items-center justify-center transition-all duration-300
             ${position === 'left' ? 'left-24' : position === 'right' ? 'right-24' : 'left-1/2 -translate-x-1/2'}`}
         >
-          ÂNE
+          {strings.game.buridan.labels.donkey}
         </div>
       </div>
 
