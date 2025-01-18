@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { LoadingScreen } from '@/components/LoadingScreen';
 import { PasswordEntry } from '@/components/auth/PasswordEntry';
 import { FinalPasswordForm } from '@/components/auth/FinalPasswordForm';
@@ -8,9 +8,12 @@ import { PlaceholderGame } from '@/components/game/PlaceholderGame';
 import { GameScreen } from '@/components/game/GameScreen';
 import { useGameProgress } from '@/hooks/useGameProgress';
 import { useGameState } from '@/hooks/useGameState';
+import { useToast } from '@/hooks/use-toast';
+import { GameScreen as GameScreenType } from '@/types/game';
 import strings from '@/data/strings.json';
 
 const Index = () => {
+  const { toast } = useToast();
   const {
     gameProgress,
     startGame,
@@ -63,6 +66,54 @@ const Index = () => {
       hint: 'Y2hvaXg='
     }
   };
+
+  useEffect(() => {
+    const handleDebugKeyPress = (event: KeyboardEvent) => {
+      // Detect Ctrl+Alt+T
+      if (event.ctrlKey && event.altKey && event.key === 't') {
+        const screens: GameScreenType[] = [
+          'loading',
+          'password1',
+          'minigame1',
+          'password2',
+          'minigame2',
+          'password3',
+          'minigame3',
+          'password4',
+          'minigame4',
+          'finalPassword',
+          'finalGame'
+        ];
+
+        const screenChoice = prompt(
+          `Debug Mode - Choose a screen number:
+          0: Loading
+          1: Password 1
+          2: Minigame 1
+          3: Password 2
+          4: Minigame 2
+          5: Password 3
+          6: Minigame 3
+          7: Password 4
+          8: Minigame 4
+          9: Final Password
+          10: Final Game`
+        );
+
+        const screenIndex = parseInt(screenChoice || '0', 10);
+        if (screenIndex >= 0 && screenIndex < screens.length) {
+          goToScreen(screens[screenIndex]);
+          toast({
+            description: `Debug: Navigating to ${screens[screenIndex]}`,
+            className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
+          });
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleDebugKeyPress);
+    return () => window.removeEventListener('keydown', handleDebugKeyPress);
+  }, [goToScreen, toast]);
 
   const renderCurrentScreen = () => {
     switch (gameProgress.currentScreen) {
