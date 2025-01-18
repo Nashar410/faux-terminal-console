@@ -3,6 +3,8 @@ import DragDropGame from './DragDropGame';
 import { BuridanGame } from './BuridanGame';
 import { HangmanGame } from './HangmanGame';
 import { PlaceholderGame } from './PlaceholderGame';
+import { GameScreen } from './GameScreen';
+import { useGameState } from '@/hooks/useGameState';
 import { GameScreenType } from '@/types/game';
 
 type GameContainerProps = {
@@ -14,6 +16,22 @@ export const GameContainer: React.FC<GameContainerProps> = ({
   currentScreen,
   onGameComplete,
 }) => {
+  const {
+    gameState,
+    isNearPolice,
+    isExploding,
+    showPoliceDialog,
+    setShowPoliceDialog,
+    handlePoliceConfirm,
+    showFirecrackerDialog,
+    setShowFirecrackerDialog,
+    handleFirecrackerConfirm,
+    showArrestDialog,
+    setShowArrestDialog,
+    showBuildingDialog,
+    setShowBuildingDialog,
+  } = useGameState();
+
   switch (currentScreen) {
     case 'minigame1':
       return (
@@ -50,9 +68,21 @@ export const GameContainer: React.FC<GameContainerProps> = ({
     
     case 'agir':
       return (
-        <div className="text-center p-4">
-          <p>Mini-jeu en cours de reconstruction</p>
-        </div>
+        <GameScreen
+          gameState={gameState}
+          isNearPolice={isNearPolice}
+          isExploding={isExploding}
+          showPoliceDialog={showPoliceDialog}
+          setShowPoliceDialog={setShowPoliceDialog}
+          handlePoliceConfirm={handlePoliceConfirm}
+          showFirecrackerDialog={showFirecrackerDialog}
+          setShowFirecrackerDialog={setShowFirecrackerDialog}
+          handleFirecrackerConfirm={handleFirecrackerConfirm}
+          showArrestDialog={showArrestDialog}
+          setShowArrestDialog={setShowArrestDialog}
+          showBuildingDialog={showBuildingDialog}
+          setShowBuildingDialog={setShowBuildingDialog}
+        />
       );
     
     default:

@@ -6,6 +6,10 @@ import { ArrestDialog } from './ArrestDialog';
 import { BuildingDialog } from './BuildingDialog';
 import { GameOverlay } from './screen/GameOverlay';
 import { GameSprites } from './screen/GameSprites';
+import { useGameTimer } from '@/hooks/game/useGameTimer';
+import { usePoliceMovement } from '@/hooks/game/usePoliceMovement';
+import { useCollisions } from '@/hooks/game/useCollisions';
+import { usePlayerMovement } from '@/hooks/usePlayerMovement';
 
 type GameScreenProps = {
   gameState: GameState;
@@ -24,8 +28,8 @@ type GameScreenProps = {
 };
 
 export const GameScreen: React.FC<GameScreenProps> = ({ 
-  gameState, 
-  isNearPolice, 
+  gameState,
+  isNearPolice,
   isExploding,
   showPoliceDialog,
   setShowPoliceDialog,
@@ -38,6 +42,20 @@ export const GameScreen: React.FC<GameScreenProps> = ({
   showBuildingDialog,
   setShowBuildingDialog
 }) => {
+  // Initialisation des hooks de jeu
+  useGameTimer(gameState, setGameState);
+  usePoliceMovement(gameState, setGameState);
+  useCollisions(
+    gameState,
+    setIsNearPolice,
+    setShowPoliceDialog,
+    setShowFirecrackerDialog,
+    setShowArrestDialog,
+    setShowBuildingDialog,
+    handleBuildingExplosion
+  );
+  usePlayerMovement(gameState, true, movePlayer);
+
   return (
     <div className="relative">
       <GameOverlay gameState={gameState} timeLeft={gameState.timeLeft} />
