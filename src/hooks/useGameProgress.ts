@@ -67,19 +67,19 @@ export const useGameProgress = () => {
     markGameCompleted(currentScreen);
     switch (currentScreen) {
       case 'minigame1':
-        addHint("Indice 1 débloqué");
+        addHint("Information 1 débloqué");
         goToScreen('password2');
         break;
       case 'minigame2':
-        addHint("Indice 2 débloqué");
+        addHint("Information 2 débloqué");
         goToScreen('password3');
         break;
       case 'minigame3':
-        addHint("Indice 3 débloqué");
+        addHint("Information 3 débloqué");
         goToScreen('password4');
         break;
       case 'minigame4':
-        addHint("Indice 4 débloqué");
+        addHint("Information 4 débloqué");
         goToScreen('finalPassword');
         break;
     }
