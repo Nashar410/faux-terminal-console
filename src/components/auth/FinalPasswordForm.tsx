@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback, memo } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { decodeBase64 } from '@/utils/encoding';
 import { Check } from 'lucide-react';
@@ -20,6 +20,48 @@ type FinalPasswordFormProps = {
   onSuccess: () => void;
 };
 
+type PasswordState = {
+  determinisme: string;
+  dieu: string;
+  mechCola: string;
+  choix: string;
+};
+
+const InputWithCheck = memo(({ 
+  id, 
+  value, 
+  onChange, 
+  placeholder, 
+  isValid 
+}: {
+  id: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder: string;
+  isValid: boolean;
+}) => {
+  return (
+    <div className="relative">
+      <input
+        id={id}
+        type="text"
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        className="w-full bg-terminal-bg text-terminal-text font-mono border border-terminal-text 
+                 focus:outline-none focus:ring-2 focus:ring-terminal-text px-4 py-2 pr-10"
+      />
+      {isValid && (
+        <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+          <Check className="h-4 w-4 text-green-500" />
+        </div>
+      )}
+    </div>
+  );
+});
+
+InputWithCheck.displayName = 'InputWithCheck';
+
 export const FinalPasswordForm = ({ 
   finalPasswords, 
   setFinalPasswords, 
@@ -33,21 +75,25 @@ export const FinalPasswordForm = ({
     choix: false
   });
 
-  useEffect(() => {
-    const cleanAndValidate = (input: string, target: string) => 
-      input.toLowerCase().trim() === decodeBase64(target).toLowerCase().trim();
+  const cleanAndValidate = useCallback((input: string, target: string) => {
+    return input.toLowerCase().trim() === decodeBase64(target).toLowerCase().trim();
+  }, []);
 
-    setValidPasswords({
+  const validatePasswords = useCallback(() => {
+    const newValidPasswords = {
       determinisme: cleanAndValidate(finalPasswords.determinisme, strings.finalForm.hints.determinisme),
       dieu: cleanAndValidate(finalPasswords.dieu, strings.finalForm.hints.dieu),
       mechCola: cleanAndValidate(finalPasswords.mechCola, strings.finalForm.hints.mechCola),
       choix: cleanAndValidate(finalPasswords.choix, strings.finalForm.hints.choix)
-    });
-  }, [finalPasswords]);
+    };
+    setValidPasswords(newValidPasswords);
+    return Object.values(newValidPasswords).every(valid => valid);
+  }, [finalPasswords, cleanAndValidate]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (Object.values(validPasswords).every(valid => valid)) {
+    
+    if (validatePasswords()) {
       toast({
         description: decodeBase64(strings.console.finalPasswordValid),
         className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
@@ -74,40 +120,12 @@ export const FinalPasswordForm = ({
     }
   };
 
-  const handleChange = (field: keyof typeof finalPasswords, value: string) => {
-    setFinalPasswords({ ...finalPasswords, [field]: value });
-  };
-
-  const InputWithCheck = ({ 
-    id, 
-    value, 
-    onChange, 
-    placeholder, 
-    isValid 
-  }: {
-    id: string;
-    value: string;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    placeholder: string;
-    isValid: boolean;
-  }) => (
-    <div className="relative">
-      <input
-        id={id}
-        type="text"
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        className="w-full bg-terminal-bg text-terminal-text font-mono border border-terminal-text 
-                 focus:outline-none focus:ring-2 focus:ring-terminal-text px-4 py-2 pr-10"
-      />
-      {isValid && (
-        <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-          <Check className="h-4 w-4 text-green-500" />
-        </div>
-      )}
-    </div>
-  );
+  const handleChange = useCallback((field: keyof PasswordState, value: string) => {
+    setFinalPasswords({
+      ...finalPasswords,
+      [field]: value
+    });
+  }, [setFinalPasswords, finalPasswords]);
 
   return (
     <form onSubmit={handleSubmit} className="mt-8 space-y-4">

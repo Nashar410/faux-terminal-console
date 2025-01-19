@@ -1,4 +1,4 @@
-export const WORD_TO_GUESS = "DETERMINISME";
+export const WORD_TO_GUESS = "SACRIFICE";
 export const MAX_ERRORS = 3;
 export const TOTAL_CREDITS = 600;
 export const WRONG_GUESS_COST = 200;

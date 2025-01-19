@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { GameState } from '@/types/game';
 import { playSound } from '@/assets/gameSounds';
+import { decodeBase64 } from '@/utils/encoding';
+import strings from '@/data/strings.json';
 import {
   INITIAL_PLAYER_POSITION,
   INITIAL_POLICE_POSITION,
@@ -61,7 +63,7 @@ export const useGameState = () => {
       ...prev,
       gameOver: true,
       message: "Vous vous êtes rendu aux forces de l'ordre...",
-      endingMessage: 'nord'
+      endingMessage: decodeBase64(strings.game.endings["1"])
     }));
     playSound('siren');
   };
@@ -84,10 +86,21 @@ export const useGameState = () => {
         ...prev,
         gameOver: true,
         message: "Vous avez fait exploser le bâtiment !",
-        endingMessage: 'est'
+        endingMessage: decodeBase64(strings.game.endings["2"])
       }));
     }, 1000);
   };
+
+  useEffect(() => {
+    if (showArrestDialog) {
+      setGameState(prev => ({
+        ...prev,
+        gameOver: true,
+        message: "Vous vous êtes fait arrêter avec la bombe...",
+        endingMessage: decodeBase64(strings.game.endings["3"])
+      }));
+    }
+  }, [showArrestDialog]);
 
   return {
     gameState,

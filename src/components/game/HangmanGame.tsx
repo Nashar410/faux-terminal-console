@@ -46,7 +46,7 @@ export const HangmanGame: React.FC<HangmanProps> = ({ onComplete }) => {
           onClick={handleValidateWord}
           className="bg-terminal-text text-terminal-bg hover:bg-terminal-text/80"
         >
-          Valider le mot
+          Consentir
         </Button>
       )}
 

@@ -42,7 +42,7 @@ const DragDropGame = ({ onComplete }: DragDropGameProps) => {
 
       if (allCorrect) {
         toast({
-          title: "Bravo !",
+          title: decodeBase64(strings.finalForm.hints.determinisme),
           description: decodeBase64(strings.game.dragDrop.success),
           className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
         });

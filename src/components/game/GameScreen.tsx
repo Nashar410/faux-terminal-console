@@ -64,7 +64,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({
   usePlayerMovement(gameState, !gameState.gameOver && !isPaused, movePlayer);
 
   if (gameState.gameOver) {
-    return <GameOver message={gameState.message} />;
+    return <GameOver message={gameState.message} endingMessage={gameState.endingMessage} />;
   }
 
   return (

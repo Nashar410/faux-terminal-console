@@ -13,49 +13,54 @@
     ]
   },
   "console": {
-    "welcome": "Bienvenue sur ma console secrète",
+    "welcome": "Le choc est inévitable. Aucun retour en arrière.",
     "passwordPrompt": "Entrez le mot de passe n°",
-    "invalidPassword": "TW90IGRlIHBhc3NlIGluY29ycmVjdA==",
-    "cheatMode": "TW9kZSB0cmljaGUgYWN0aXbDqSAhIEFjY8OocyBkaXJlY3QgYXUgbWluaS1qZXUuLi4=",
-    "finalPasswordValid": "TW90IGRlIHBhc3NlIGZpbmFsIHZhbGlkw6kgISBQcsOpcGFyZXotdm91cyBhdSBtaW5pIGpldS4uLg==",
-    "finalPasswordInvalid": "TW90IGRlIHBhc3NlIGZpbmFsIGluY29ycmVjdA=="
+    "invalidPassword": "Mot de passe incorrect",
+    "cheatMode": "Mode triche activé ! Accès direct au mini-jeu...",
+    "finalPasswordValid": "Mot de passe final validé ! Complétez votre tâche.",
+    "finalPasswordInvalid": "Mot de passe final incorrect."
   },
   "game": {
     "dragDrop": {
-      "success": "QnJhdm8gISBJbmRpY2UgOiBMZSBtb3QgZGUgcGFzc2UgZXN0IGxpw6kgYXUgZMOpdGVybWluaXNtZS4uLg==",
-      "error": "Q2VydGFpbnMgbW90cyBuZSBzb250IHBhcyBkYW5zIGxhIGJvbm5lIGNvbG9ubmUuIFLDqWVzc2F5ZXogIQ==",
+      "success": "Indice : ",
+      "error": "Le désordre est dangereux. Replacez ces mots avant que tout s'effondre.",
       "words": [
-        { "id": "word-1", "content": "esclavagiste", "correctColumn": "negative" },
-        { "id": "word-2", "content": "manager", "correctColumn": "positive" },
-        { "id": "word-3", "content": "opprésariat", "correctColumn": "negative" },
-        { "id": "word-4", "content": "salarié libre", "correctColumn": "positive" },
-        { "id": "word-5", "content": "selfmade man", "correctColumn": "positive" },
-        { "id": "word-6", "content": "changement", "correctColumn": "positive" },
-        { "id": "word-7", "content": "confiance en soi", "correctColumn": "positive" }
+        { "id": "word-1", "content": "pression", "correctColumn": "negative" },
+        { "id": "word-2", "content": "bombe à retardement", "correctColumn": "negative" },
+        { "id": "word-3", "content": "dynamisme", "correctColumn": "positive" },
+        { "id": "word-4", "content": "impact", "correctColumn": "positive" },
+        { "id": "word-5", "content": "explosion de force", "correctColumn": "positive" },
+        { "id": "word-6", "content": "implosion", "correctColumn": "negative" }
       ]
     },
     "buridan": {
-      "timeLimit": 10,
+      "timeLimit": 12,
       "labels": {
         "donkey": "ÂNE",
-        "water": "Eau",
-        "food": "Bouffe"
+        "water": "Salaire",
+        "food": "Bonheur"
       },
-      "success": "QnJhdm8gISBWb3VzIGF2ZXogY2hvaXNpIGxhIEJvdWZmZSDDoCB0ZW1wcy4=",
-      "failure": "Vm91cyBhdmV6IMOpY2hvdcOpIDogbCfDom5lIHJlc3RlIGluZMOpY2lz4oCm"
+      "success": "Bravo ! Vous avez choisi votre camp à temps. Espérons que c'était le bon.",
+      "failure": "Trop tard : l'âne est perdu dans son dilemme, et vous aussi."
     },
     "dialogs": {
       "police": {
-        "question": "Vous voulez vous dénoncer aux policiers ? (OUI / NON)",
-        "arrest": "Policier : Vous détenez un pétard, c'est illégal. Vous êtes arrêté !"
+        "question": "La police attend. Allez-vous vous livrer ? (OUI / NON)",
+        "arrest": "Policier : Vous détenez une bombe, c'est illégal. Vous êtes arrêté !"
       },
       "firecracker": {
-        "title": "Pétard trouvé",
-        "question": "Voulez-vous prendre le pétard ? (OUI / NON)"
+        "title": "Bombe trouvée",
+        "question": "Voulez-vous prendre la bombe ? (OUI / NON)"
       },
       "building": {
         "message": "Vous ne voyez que peur et désolation"
       }
+    },
+    "endings": {
+      "1": "bGliw6lyb25z",
+      "2": "bm91cw==",
+      "3": "dG91cw==",
+      "4": "ZW5zZW1ibGU="
     }
   },
   "finalForm": {
@@ -65,17 +70,17 @@
       "third": "Troisième indice...",
       "fourth": "Quatrième indice..."
     },
-    "submit": "Valider",
+    "submit": "Consentir",
     "hints": {
-      "determinisme": "ZMOpdGVybWluaXNtZQ==",
-      "dieu": "ZGlldQ==",
-      "mechCola": "bWVjaC1jb2xh",
-      "choix": "Y2hvaXg="
+      "determinisme": "QnLDqGNoZQ==",
+      "dieu": "MDEvMDIvODIwNQ==",
+      "mechCola": "MjI6MzA=",
+      "choix": "QsOidGltZW50IFVzaW5lIFpCVA=="
     }
   },
   "passwords": {
     "1": "YkBzMWwxYw==",
-    "2": "dHJ1ZmZl",
+    "2": "OTI6ODc=",
     "3": "NDljcsOpZGl0cw==",
     "4": "OHVyMWRAbg=="
   }
