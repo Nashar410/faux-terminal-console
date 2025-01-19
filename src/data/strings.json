@@ -14,15 +14,15 @@
   },
   "console": {
     "welcome": "Le choc est inévitable. Aucun retour en arrière.",
-    "passwordPrompt": "Entrez le mot de passe n°",
-    "invalidPassword": "Mot de passe incorrect",
+    "passwordPrompt": "Entrez le code n°",
+    "invalidPassword": "Code incorrect",
     "cheatMode": "Mode triche activé ! Accès direct au mini-jeu...",
-    "finalPasswordValid": "Mot de passe final validé ! Complétez votre tâche.",
-    "finalPasswordInvalid": "Mot de passe final incorrect."
+    "finalPasswordValid": "Code final validé ! Complétez votre tâche.",
+    "finalPasswordInvalid": "Code final incorrect."
   },
   "game": {
     "dragDrop": {
-      "success": "Indice : ",
+      "success": "Information : ",
       "error": "Le désordre est dangereux. Replacez ces mots avant que tout s'effondre.",
       "words": [
         { "id": "word-1", "content": "pression", "correctColumn": "negative" },
@@ -65,10 +65,10 @@
   },
   "finalForm": {
     "placeholders": {
-      "first": "Premier indice...",
-      "second": "Deuxième indice...",
-      "third": "Troisième indice...",
-      "fourth": "Quatrième indice..."
+      "first": "Premier information...",
+      "second": "Deuxième information...",
+      "third": "Troisième information...",
+      "fourth": "Quatrième information..."
     },
     "submit": "Consentir",
     "hints": {
