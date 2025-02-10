@@ -18,7 +18,7 @@ export const useGameTimer = (
             ...prev,
             gameOver: true,
             message: "Le temps est écoulé !",
-            endingMessage: decodeBase64(strings.game.endings["3"])
+            endingMessage: decodeBase64(strings.game.endings["4"])
           };
         }
         return {
