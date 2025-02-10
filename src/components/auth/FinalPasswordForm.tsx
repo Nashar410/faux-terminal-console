@@ -145,17 +145,17 @@ export const FinalPasswordForm = ({
       />
       <InputWithCheck
         id="mechCola"
-        value={finalPasswords.mechCola}
+        value={finalPasswords.choix}
         onChange={(e) => handleChange('mechCola', e.target.value)}
         placeholder={strings.finalForm.placeholders.third}
-        isValid={validPasswords.mechCola}
+        isValid={validPasswords.choix}
       />
       <InputWithCheck
         id="choix"
-        value={finalPasswords.choix}
+        value={finalPasswords.mechCola}
         onChange={(e) => handleChange('choix', e.target.value)}
         placeholder={strings.finalForm.placeholders.fourth}
-        isValid={validPasswords.choix}
+        isValid={validPasswords.mechCola}
       />
       <button
         type="submit"
