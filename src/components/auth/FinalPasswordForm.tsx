@@ -83,8 +83,8 @@ export const FinalPasswordForm = ({
     const newValidPasswords = {
       determinisme: cleanAndValidate(finalPasswords.determinisme, strings.finalForm.hints.determinisme),
       dieu: cleanAndValidate(finalPasswords.dieu, strings.finalForm.hints.dieu),
-      mechCola: cleanAndValidate(finalPasswords.mechCola, strings.finalForm.hints.mechCola),
-      choix: cleanAndValidate(finalPasswords.choix, strings.finalForm.hints.choix)
+      choix: cleanAndValidate(finalPasswords.mechCola, strings.finalForm.hints.mechCola),
+      mechCola: cleanAndValidate(finalPasswords.choix, strings.finalForm.hints.choix)
     };
     setValidPasswords(newValidPasswords);
     return Object.values(newValidPasswords).every(valid => valid);
