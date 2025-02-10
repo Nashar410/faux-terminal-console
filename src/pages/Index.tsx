@@ -46,7 +46,7 @@ const Index = () => {
 
   useEffect(() => {
     const handleDebugKeyPress = (event: KeyboardEvent) => {
-      if (event.ctrlKey && event.altKey && event.key === 't') {
+    if (event.ctrlKey && event.altKey && event.code === 'KeyT') {
         const screens: GameScreenType[] = [
           'loading',
           'password1',
