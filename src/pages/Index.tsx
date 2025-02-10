@@ -44,54 +44,82 @@ const Index = () => {
     }
   };
 
-  useEffect(() => {
-    const handleDebugKeyPress = (event: KeyboardEvent) => {
-      if (event.ctrlKey && event.altKey && event.key === 't') {
-        const screens: GameScreenType[] = [
-          'loading',
-          'password1',
-          'minigame1',
-          'password2',
-          'minigame2',
-          'password3',
-          'minigame3',
-          'password4',
-          'minigame4',
-          'finalPassword',
-          'agir'
-        ];
+    useEffect(() => {
+        let macKeyPressCount = 0;
+        let macKeyPressTimer: NodeJS.Timeout | null = null;
 
-        const screenChoice = prompt(
-          `Debug Mode - Choose a screen number:
-          0: Loading
-          1: Password 1
-          2: Jeu de tri des mots
-          3: Password 2
-          4: Jeu de l'âne de Buridan
-          5: Password 3
-          6: Jeu du pendu
-          7: Password 4
-          8: Jeu d'assemblage du pétard
-          9: Final Password
-          10: Agir`
-        );
+        const handleDebugKeyPress = (event: KeyboardEvent) => {
+            // Raccourci Windows/Linux : Ctrl + Alt + T
+            if (event.ctrlKey && event.altKey && event.code === 'KeyT') {
+                triggerDebugMode();
+            }
 
-        const screenIndex = parseInt(screenChoice || '0', 10);
-        if (screenIndex >= 0 && screenIndex < screens.length) {
-          goToScreen(screens[screenIndex]);
-          toast({
-            description: `Debug: Navigating to ${screens[screenIndex]}`,
-            className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
-          });
-        }
-      }
-    };
+            // Raccourci Mac (ou autre OS) : Appuyer 5 fois sur "D" rapidement
+            if (event.code === 'KeyD') {
+                macKeyPressCount++;
 
-    window.addEventListener('keydown', handleDebugKeyPress);
-    return () => window.removeEventListener('keydown', handleDebugKeyPress);
-  }, [goToScreen, toast]);
+                if (macKeyPressTimer) {
+                    clearTimeout(macKeyPressTimer);
+                }
 
-  return (
+                macKeyPressTimer = setTimeout(() => {
+                    macKeyPressCount = 0;
+                }, 1000); // Réinitialise après 1 seconde d'inactivité
+
+                if (macKeyPressCount >= 5) {
+                    macKeyPressCount = 0;
+                    triggerDebugMode();
+                }
+            }
+        };
+
+        const triggerDebugMode = () => {
+            const screens: GameScreenType[] = [
+                'loading',
+                'password1',
+                'minigame1',
+                'password2',
+                'minigame2',
+                'password3',
+                'minigame3',
+                'password4',
+                'minigame4',
+                'finalPassword',
+                'agir'
+            ];
+
+            const screenChoice = prompt(
+                `Debug Mode - Choose a screen number:
+      0: Loading
+      1: Password 1
+      2: Jeu de tri des mots
+      3: Password 2
+      4: Jeu de l'âne de Buridan
+      5: Password 3
+      6: Jeu du pendu
+      7: Password 4
+      8: Jeu d'assemblage du pétard
+      9: Final Password
+      10: Agir`
+            );
+
+            const screenIndex = parseInt(screenChoice || '0', 10);
+            if (screenIndex >= 0 && screenIndex < screens.length) {
+                goToScreen(screens[screenIndex]);
+                toast({
+                    description: `Debug: Navigating to ${screens[screenIndex]}`,
+                    className: "font-mono bg-terminal-bg border-terminal-text text-terminal-text",
+                });
+            }
+        };
+
+        window.addEventListener('keydown', handleDebugKeyPress);
+        return () => {
+            window.removeEventListener('keydown', handleDebugKeyPress);
+        };
+    }, [goToScreen, toast]);
+
+    return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="max-w-2xl w-full">
         <div className="typing-animation inline-block mb-4">
